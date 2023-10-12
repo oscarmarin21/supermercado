@@ -1,26 +1,22 @@
 package co.edu.uniquindio.supermercado.model;
 
-import co.edu.uniquindio.supermercado.enumeracion.RolEmpleado;
+import co.edu.uniquindio.supermercado.enumeracion.TipoIdentificacion;
 
-public class Empleado {
+public class Cliente {
     private String numIdentificacion;
+    private TipoIdentificacion tipoIdentificacion;
     private String nombres;
     private String apellidos;
-    private RolEmpleado rol;
-    private String fechaNacimiento;
-    private String telefono;
     Supermercado ownedBySupermercado;
 
-    public Empleado() {
+    public Cliente() {
     }
 
-    public Empleado(String numIdentificacion, String nombres, String apellidos, RolEmpleado rol, String fechaNacimiento, String telefono) {
+    public Cliente(String numIdentificacion, TipoIdentificacion tipoIdentificacion, String nombres, String apellidos) {
         this.numIdentificacion = numIdentificacion;
+        this.tipoIdentificacion = tipoIdentificacion;
         this.nombres = nombres;
         this.apellidos = apellidos;
-        this.rol = rol;
-        this.fechaNacimiento = fechaNacimiento;
-        this.telefono = telefono;
     }
 
     public String getNumIdentificacion() {
@@ -29,6 +25,14 @@ public class Empleado {
 
     public void setNumIdentificacion(String numIdentificacion) {
         this.numIdentificacion = numIdentificacion;
+    }
+
+    public TipoIdentificacion getTipoIdentificacion() {
+        return tipoIdentificacion;
+    }
+
+    public void setTipoIdentificacion(TipoIdentificacion tipoIdentificacion) {
+        this.tipoIdentificacion = tipoIdentificacion;
     }
 
     public String getNombres() {
@@ -47,30 +51,6 @@ public class Empleado {
         this.apellidos = apellidos;
     }
 
-    public RolEmpleado getRol() {
-        return rol;
-    }
-
-    public void setRol(RolEmpleado rol) {
-        this.rol = rol;
-    }
-
-    public String getFechaNacimiento() {
-        return fechaNacimiento;
-    }
-
-    public void setFechaNacimiento(String fechaNacimiento) {
-        this.fechaNacimiento = fechaNacimiento;
-    }
-
-    public String getTelefono() {
-        return telefono;
-    }
-
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
-    }
-
     public Supermercado getOwnedBySupermercado() {
         return ownedBySupermercado;
     }
@@ -81,13 +61,11 @@ public class Empleado {
 
     @Override
     public String toString() {
-        return "Empleado{" +
+        return "Cliente{" +
                 "numIdentificacion='" + numIdentificacion + '\'' +
+                ", tipoIdentificacion=" + tipoIdentificacion +
                 ", nombres='" + nombres + '\'' +
                 ", apellidos='" + apellidos + '\'' +
-                ", rol=" + rol +
-                ", fechaNacimiento='" + fechaNacimiento + '\'' +
-                ", telefono='" + telefono + '\'' +
                 '}';
     }
 }

@@ -7,6 +7,10 @@ public class Producto {
     private String fechaVencimiento;
     private int cantidad;
     private double precio;
+    Supermercado ownedBySupermercado;
+
+    public Producto() {
+    }
 
     public Producto(String idProducto, String nombre, String marca, String fechaVencimiento, int cantidad, double precio) {
         this.idProducto = idProducto;
@@ -63,5 +67,25 @@ public class Producto {
 
     public void setPrecio(double precio) {
         this.precio = precio;
+    }
+
+    public Supermercado getOwnedBySupermercado() {
+        return ownedBySupermercado;
+    }
+
+    public void setOwnedBySupermercado(Supermercado ownedBySupermercado) {
+        this.ownedBySupermercado = ownedBySupermercado;
+    }
+
+    @Override
+    public String toString() {
+        return "Producto{" +
+                "idProducto='" + idProducto + '\'' +
+                ", nombre='" + nombre + '\'' +
+                ", marca='" + marca + '\'' +
+                ", fechaVencimiento='" + fechaVencimiento + '\'' +
+                ", cantidad=" + cantidad +
+                ", precio=" + precio +
+                '}';
     }
 }

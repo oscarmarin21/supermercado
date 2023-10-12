@@ -1,140 +1,115 @@
 package co.edu.uniquindio.supermercado;
 
 import co.edu.uniquindio.supermercado.enumeracion.RolEmpleado;
+import co.edu.uniquindio.supermercado.enumeracion.TipoIdentificacion;
+import co.edu.uniquindio.supermercado.model.Cliente;
 import co.edu.uniquindio.supermercado.model.Empleado;
 import co.edu.uniquindio.supermercado.model.Producto;
+import co.edu.uniquindio.supermercado.model.Supermercado;
+
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        Producto producto1 = inicializaProductosPrueba("001","Galletas", "Noel","31/11/2023", 7500, 7500);
-        Producto producto2 = inicializaProductosPrueba("002","Crispetas", "Doria","24/12/2024", 4200, 4700);
-        Producto producto3 = inicializaProductosPrueba("003","Frijol", "La granja","15/05/2024", 3400, 2600);
-        Producto producto4 = inicializaProductosPrueba("004","Alitas", "Cock","30/10/2023", 2000, 14100);
+        Supermercado supermercado = inicializarDatosPrueba();
 
-        Empleado empleado1 = inicializaEmpleadosPrueba( "102030","Ivan","Cortez", RolEmpleado.Surtidor, "13/05/1997","3104569887");
-        Empleado empleado2 = inicializaEmpleadosPrueba( "908070","Casper","Galeon", RolEmpleado.Empacador, "31/05/1995","3205897412");
-        Empleado empleado3 = inicializaEmpleadosPrueba( "506040","Isco","Martinel", RolEmpleado.Gerente, "25/01/1996", "3189636547");
-        Empleado empleado4 = inicializaEmpleadosPrueba( "123456","Pocholo","Garcia", RolEmpleado.Domiciliario, "01/01/1990", "3128529647");
+        //CRUD CLIENTE
 
-        
+        //Create
+        crearCliente(supermercado,"529753", TipoIdentificacion.Cedula, "Teresa", "Ramirez");
+        crearCliente(supermercado,"756351", TipoIdentificacion.Cedula, "Gloria", "Valencia");
+        crearCliente(supermercado,"764865", TipoIdentificacion.Cedula, "Santiago", "Castrillon");
+        crearCliente(supermercado,"557691", TipoIdentificacion.Cedula, "Steven", "Marin");
+
+        //Read
+        mostrarInformacionClientes(supermercado);
+
+        //Update
+        editarCliente(supermercado, "764865", TipoIdentificacion.Cedula, "Mariana", "Castrillon");
+        System.out.println("\nDespues de editar Cliente");
+        mostrarInformacionClientes(supermercado);
 
 
+        //Delete
+        eliminarCliente(supermercado, "529753");
+        System.out.println("\nDespues de eliminar Cliente");
+        mostrarInformacionClientes(supermercado);
+        System.out.println();
 
 
+        //CRUD EMPLEADO
+
+        //Create
+        crearEmpleado(supermercado,"102030","Ivan","Cortez", RolEmpleado.Surtidor, "13/05/1997","3104569887");
+        crearEmpleado(supermercado,"908070","Casper","Galeon", RolEmpleado.Empacador, "31/05/1995","3205897412");
+        crearEmpleado(supermercado,"506040","Isco","Martinel", RolEmpleado.Gerente, "25/01/1996", "3189636547");
+        crearEmpleado(supermercado,"123456","Pocholo","Garcia", RolEmpleado.Domiciliario, "01/01/1990", "3128529647");
+
+        //Read
+        mostrarImformacionEmpleados(supermercado);
+
+        //Update
+        editarEmpleado(supermercado,"123456","Pocholo","Marquez",RolEmpleado.Domiciliario,"01/01/1990","3128529647");
+        System.out.println("\nDespues de editar Cliente");
+        mostrarImformacionEmpleados(supermercado);
 
 
+        //Delete
+        eliminarEmpleados(supermercado, "506040");
+        System.out.println("\nDespues de eliminar Cliente");
+        mostrarImformacionEmpleados(supermercado);
+        System.out.println();
 
-        /**
-        System.out.println("El empleado con mejor salario es: "+mostrarNombreMejorSalario(empleado1,empleado2,empleado3,empleado4)+"\n");
-        System.out.println("El producto mas costoso es: "+mostrarProductoMasCostoso(producto1,producto2,producto3,producto4)+"\n");
-        System.out.println("El producto con menor existencia es: "+mostrarProductoMenorExistencia(producto1,producto2,producto3,producto4)+"\n");
-        System.out.println("El total de productos en existencia es: "+mostrarTotalInventario(producto1,producto2,producto3,producto4)+"\n");
-        System.out.println("Los productos que comienzan por C son: \n"+mostrarProductosComienzanC(producto1,producto2,producto3,producto4));
-        System.out.println("El total de la nomina mensual es de: "+mostrarTotalNomina(empleado1,empleado2,empleado3,empleado4));
-        **/
     }
 
-
-    private static Producto inicializaProductosPrueba(String idProducto, String nombre, String marca, String fechaVencimiento, int cantidad, double precio) {
-        Producto producto = new Producto(idProducto, nombre, marca, fechaVencimiento, cantidad, precio);
-        return producto;
-    }
-    private static Empleado inicializaEmpleadosPrueba(String identificacion, String nombre, String apellido, RolEmpleado rol, String fechaNacimiento, String telefono) {
-        Empleado empleado = new Empleado(identificacion,nombre, apellido, rol, fechaNacimiento, telefono);
-        return empleado;
+    private static Supermercado inicializarDatosPrueba() {
+        Supermercado supermercado = new Supermercado();
+        supermercado.setNit("951753852");
+        supermercado.setNombre("SuperCundi");
+        return supermercado;
     }
 
+    private static void crearCliente(Supermercado supermercado, String numIdentificacion, TipoIdentificacion tipoIdentificacion, String nombres, String apellidos) {
+        supermercado.crearCliente(numIdentificacion, tipoIdentificacion, nombres, apellidos, supermercado);
 
-
-
-
-
-    /**
-    private static String mostrarNombreMejorSalario(Empleado empleado1, Empleado empleado2, Empleado empleado3, Empleado empleado4){
-        String nombre = "";
-        double mejorSalario = 0;
-        if(empleado1.getSalario()>mejorSalario){
-            mejorSalario = empleado1.getSalario();
-            nombre = empleado1.getNombre();
-        }
-        if(empleado2.getSalario()>mejorSalario){
-            mejorSalario = empleado2.getSalario();
-            nombre = empleado2.getNombre();
-        }
-        if(empleado3.getSalario()>mejorSalario){
-            mejorSalario = empleado3.getSalario();
-            nombre = empleado3.getNombre();
-        }
-        if(empleado4.getSalario()>mejorSalario){
-            nombre = empleado4.getNombre();
-        }
-        return nombre;
     }
 
-    private static String mostrarProductoMasCostoso(Producto producto1, Producto producto2, Producto producto3, Producto producto4){
-        String productoMasCostoso = "";
-        double precio = 0;
-        if(producto1.getPrecio()>precio){
-            precio = producto1.getPrecio();
-            productoMasCostoso = producto1.getNombre();
+    private static void mostrarInformacionClientes(Supermercado supermercado) {
+        List<Cliente> listaClientes = supermercado.obtenerClientes();
+        int tamanioLista = listaClientes.size();
+        for(int i=0; i<tamanioLista; i++) {
+            Cliente cliente = listaClientes.get(i);
+            System.out.println(cliente.toString());
         }
-        if(producto2.getPrecio()>precio){
-            precio = producto2.getPrecio();
-            productoMasCostoso = producto2.getNombre();
-        }
-        if(producto3.getPrecio()>precio){
-            precio = producto3.getPrecio();
-            productoMasCostoso = producto3.getNombre();
-        }
-        if(producto4.getPrecio()>precio){
-            precio = producto4.getPrecio();
-            productoMasCostoso = producto4.getNombre();
-        }
-        return productoMasCostoso;
     }
 
-    private static String mostrarProductoMenorExistencia(Producto producto1, Producto producto2, Producto producto3, Producto producto4){
-        String productoMenorExistencia = producto1.getNombre();
-        double existencia = producto1.getCantidad();
-        if(producto2.getCantidad()<existencia){
-            existencia = producto2.getCantidad();
-            productoMenorExistencia = producto2.getNombre();
-        }
-        if(producto3.getCantidad()<existencia){
-            existencia = producto3.getCantidad();
-            productoMenorExistencia = producto3.getNombre();
-        }
-        if(producto4.getCantidad()<existencia){
-            existencia = producto4.getCantidad();
-            productoMenorExistencia = producto4.getNombre();
-        }
-        return productoMenorExistencia;
+    private static void editarCliente(Supermercado supermercado, String numIdentificacion, TipoIdentificacion tipoIdentificacion, String nombres, String apellidos) {
+        supermercado.editarCliente(numIdentificacion, tipoIdentificacion, nombres, apellidos, supermercado);
     }
 
-    private static int mostrarTotalInventario(Producto producto1, Producto producto2, Producto producto3, Producto producto4){
-        int totalInventario = producto1.getCantidad()+producto2.getCantidad()+producto3.getCantidad()+producto4.getCantidad();
-        return totalInventario;
+    private static void eliminarCliente(Supermercado supermercado, String numIdentificacion){
+        supermercado.eliminarCliente(numIdentificacion);
     }
 
-    private static String mostrarProductosComienzanC(Producto producto1, Producto producto2, Producto producto3, Producto producto4){
-        String productos = "";
-        if(producto1.getNombre().toLowerCase().startsWith("c")){
-            productos += producto1.getNombre()+"\n";
-        }
-        if(producto2.getNombre().toLowerCase().startsWith("c")){
-            productos += producto2.getNombre()+"\n";
-        }
-        if(producto3.getNombre().toLowerCase().startsWith("c")){
-            productos += producto3.getNombre()+"\n";
-        }
-        if(producto4.getNombre().toLowerCase().startsWith("c")){
-            productos += producto4.getNombre()+"\n";
-        }
-        return productos;
+    private static void crearEmpleado(Supermercado supermercado, String numIdentificacion, String nombres, String apellidos, RolEmpleado rol, String fechaNacimiento, String telefono){
+        supermercado.crearEmpleado(numIdentificacion,nombres,apellidos,rol, fechaNacimiento, telefono,supermercado);
     }
 
-    private static double mostrarTotalNomina(Empleado empleado1, Empleado empleado2, Empleado empleado3, Empleado empleado4){
-        double totalNomina = empleado1.getSalario()+empleado2.getSalario()+empleado3.getSalario()+empleado4.getSalario();
-        return totalNomina;
-    } **/
+    private static void mostrarImformacionEmpleados(Supermercado supermercado){
+        List<Empleado> listaEmpleados = supermercado.obtenerEmpleados();
+        int tamanioLista = listaEmpleados.size();
+        for(int i=0; i<tamanioLista; i++){
+            Empleado empleado = listaEmpleados.get(i);
+            System.out.println(empleado.toString());
+        }
+    }
+
+    private static void editarEmpleado(Supermercado supermercado, String numIdentificacion, String nombres, String apellidos, RolEmpleado rolEmpleado, String fechaNacimiento, String telefono) {
+        supermercado.editarEmpleado(numIdentificacion, nombres, apellidos, rolEmpleado, fechaNacimiento, telefono, supermercado);
+    }
+
+    private static void eliminarEmpleados(Supermercado supermercado, String numIdentificacion){
+        supermercado.eliminarEmpleado(numIdentificacion);
+    }
+
 }
