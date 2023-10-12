@@ -3,32 +3,44 @@ package co.edu.uniquindio.supermercado.model;
 import co.edu.uniquindio.supermercado.enumeracion.RolEmpleado;
 
 public class Empleado {
-    private String nombre;
-    private String identificacion;
+    private String numIdentificacion;
+    private String nombres;
+    private String apellidos;
     private RolEmpleado rol;
-    private double salario;
+    private String fechaNacimiento;
+    private String telefono;
 
-    public Empleado(String nombre, String identificacion, RolEmpleado rol, double salario) {
-        this.nombre = nombre;
-        this.identificacion = identificacion;
+    public Empleado(String numIdentificacion, String nombres, String apellidos, RolEmpleado rol, String fechaNacimiento, String telefono) {
+        this.numIdentificacion = numIdentificacion;
+        this.nombres = nombres;
+        this.apellidos = apellidos;
         this.rol = rol;
-        this.salario = salario;
+        this.fechaNacimiento = fechaNacimiento;
+        this.telefono = telefono;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getNumIdentificacion() {
+        return numIdentificacion;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setNumIdentificacion(String numIdentificacion) {
+        this.numIdentificacion = numIdentificacion;
     }
 
-    public String getIdentificacion() {
-        return identificacion;
+    public String getNombres() {
+        return nombres;
     }
 
-    public void setIdentificacion(String identificacion) {
-        this.identificacion = identificacion;
+    public void setNombres(String nombres) {
+        this.nombres = nombres;
+    }
+
+    public String getApellidos() {
+        return apellidos;
+    }
+
+    public void setApellidos(String apellidos) {
+        this.apellidos = apellidos;
     }
 
     public RolEmpleado getRol() {
@@ -39,11 +51,19 @@ public class Empleado {
         this.rol = rol;
     }
 
-    public double getSalario() {
-        return salario;
+    public String getFechaNacimiento() {
+        return fechaNacimiento;
     }
 
-    public void setSalario(double salario) {
-        this.salario = salario;
+    public void setFechaNacimiento(String fechaNacimiento) {
+        this.fechaNacimiento = fechaNacimiento;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
     }
 }

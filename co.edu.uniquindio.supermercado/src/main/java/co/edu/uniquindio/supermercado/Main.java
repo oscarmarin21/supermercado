@@ -6,33 +6,50 @@ import co.edu.uniquindio.supermercado.model.Producto;
 
 public class Main {
     public static void main(String[] args) {
-        Producto producto1 = inicializaProductosPrueba("Galletas", 159, 7500, "G123");
-        Producto producto2 = inicializaProductosPrueba("Crispetas", 951, 4200, "C321");
-        Producto producto3 = inicializaProductosPrueba("Frijol", 753, 3400, "F456");
-        Producto producto4 = inicializaProductosPrueba("Carne", 357, 20000, "C654");
+        Producto producto1 = inicializaProductosPrueba("001","Galletas", "Noel","31/11/2023", 7500, 7500);
+        Producto producto2 = inicializaProductosPrueba("002","Crispetas", "Doria","24/12/2024", 4200, 4700);
+        Producto producto3 = inicializaProductosPrueba("003","Frijol", "La granja","15/05/2024", 3400, 2600);
+        Producto producto4 = inicializaProductosPrueba("004","Alitas", "Cock","30/10/2023", 2000, 14100);
 
-        Empleado empleado1 = inicializaEmpleadosPrueba("Ivan", "102030", RolEmpleado.Surtidor, 1300000);
-        Empleado empleado2 = inicializaEmpleadosPrueba("Casper", "908070", RolEmpleado.Empacador, 1450000);
-        Empleado empleado3 = inicializaEmpleadosPrueba("Isco", "506040", RolEmpleado.Gerente, 2000000);
-        Empleado empleado4 = inicializaEmpleadosPrueba("Pocholo", "123456", RolEmpleado.Domiciliario, 1200000);
+        Empleado empleado1 = inicializaEmpleadosPrueba( "102030","Ivan","Cortez", RolEmpleado.Surtidor, "13/05/1997","3104569887");
+        Empleado empleado2 = inicializaEmpleadosPrueba( "908070","Casper","Galeon", RolEmpleado.Empacador, "31/05/1995","3205897412");
+        Empleado empleado3 = inicializaEmpleadosPrueba( "506040","Isco","Martinel", RolEmpleado.Gerente, "25/01/1996", "3189636547");
+        Empleado empleado4 = inicializaEmpleadosPrueba( "123456","Pocholo","Garcia", RolEmpleado.Domiciliario, "01/01/1990", "3128529647");
 
+        
+
+
+
+
+
+
+
+        /**
         System.out.println("El empleado con mejor salario es: "+mostrarNombreMejorSalario(empleado1,empleado2,empleado3,empleado4)+"\n");
         System.out.println("El producto mas costoso es: "+mostrarProductoMasCostoso(producto1,producto2,producto3,producto4)+"\n");
         System.out.println("El producto con menor existencia es: "+mostrarProductoMenorExistencia(producto1,producto2,producto3,producto4)+"\n");
         System.out.println("El total de productos en existencia es: "+mostrarTotalInventario(producto1,producto2,producto3,producto4)+"\n");
         System.out.println("Los productos que comienzan por C son: \n"+mostrarProductosComienzanC(producto1,producto2,producto3,producto4));
         System.out.println("El total de la nomina mensual es de: "+mostrarTotalNomina(empleado1,empleado2,empleado3,empleado4));
-
+        **/
     }
-    private static Producto inicializaProductosPrueba(String nombre, int cantidad, double precio, String serial) {
-        Producto producto = new Producto(nombre, cantidad, precio, serial);
+
+
+    private static Producto inicializaProductosPrueba(String idProducto, String nombre, String marca, String fechaVencimiento, int cantidad, double precio) {
+        Producto producto = new Producto(idProducto, nombre, marca, fechaVencimiento, cantidad, precio);
         return producto;
     }
-    private static Empleado inicializaEmpleadosPrueba(String nombre, String identificacion, RolEmpleado rol, double salario) {
-        Empleado empleado = new Empleado(nombre, identificacion, rol, salario);
+    private static Empleado inicializaEmpleadosPrueba(String identificacion, String nombre, String apellido, RolEmpleado rol, String fechaNacimiento, String telefono) {
+        Empleado empleado = new Empleado(identificacion,nombre, apellido, rol, fechaNacimiento, telefono);
         return empleado;
     }
 
+
+
+
+
+
+    /**
     private static String mostrarNombreMejorSalario(Empleado empleado1, Empleado empleado2, Empleado empleado3, Empleado empleado4){
         String nombre = "";
         double mejorSalario = 0;
@@ -119,5 +136,5 @@ public class Main {
     private static double mostrarTotalNomina(Empleado empleado1, Empleado empleado2, Empleado empleado3, Empleado empleado4){
         double totalNomina = empleado1.getSalario()+empleado2.getSalario()+empleado3.getSalario()+empleado4.getSalario();
         return totalNomina;
-    }
+    } **/
 }

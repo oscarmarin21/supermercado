@@ -1,16 +1,28 @@
 package co.edu.uniquindio.supermercado.model;
 
 public class Producto {
+    private String idProducto;
     private String nombre;
+    private String marca;
+    private String fechaVencimiento;
     private int cantidad;
     private double precio;
-    private String serial;
 
-    public Producto(String nombre, int cantidad, double precio, String serial) {
+    public Producto(String idProducto, String nombre, String marca, String fechaVencimiento, int cantidad, double precio) {
+        this.idProducto = idProducto;
         this.nombre = nombre;
+        this.marca = marca;
+        this.fechaVencimiento = fechaVencimiento;
         this.cantidad = cantidad;
         this.precio = precio;
-        this.serial = serial;
+    }
+
+    public String getIdProducto() {
+        return idProducto;
+    }
+
+    public void setIdProducto(String idProducto) {
+        this.idProducto = idProducto;
     }
 
     public String getNombre() {
@@ -19,6 +31,22 @@ public class Producto {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public String getMarca() {
+        return marca;
+    }
+
+    public void setMarca(String marca) {
+        this.marca = marca;
+    }
+
+    public String getFechaVencimiento() {
+        return fechaVencimiento;
+    }
+
+    public void setFechaVencimiento(String fechaVencimiento) {
+        this.fechaVencimiento = fechaVencimiento;
     }
 
     public int getCantidad() {
@@ -35,13 +63,5 @@ public class Producto {
 
     public void setPrecio(double precio) {
         this.precio = precio;
-    }
-
-    public String getSerial() {
-        return serial;
-    }
-
-    public void setSerial(String serial) {
-        this.serial = serial;
     }
 }
