@@ -3,6 +3,7 @@ package co.edu.uniquindio.supermercado.model;
 import co.edu.uniquindio.supermercado.enumeracion.RolEmpleado;
 import co.edu.uniquindio.supermercado.enumeracion.TipoIdentificacion;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,6 +64,7 @@ public class Supermercado {
 
     /**
      * Metodo para crear un cliente
+     *
      * @param numIdentificacion
      * @param tipoIdentificacion
      * @param nombres
@@ -70,15 +72,40 @@ public class Supermercado {
      * @param supermercado
      * @return boolean
      */
-    public boolean crearCliente(String numIdentificacion, TipoIdentificacion tipoIdentificacion, String nombres, String apellidos, Supermercado supermercado){
-        Cliente cliente = new Cliente(numIdentificacion, tipoIdentificacion, nombres, apellidos);
-        cliente.setOwnedBySupermercado(supermercado);
-        getListaClientes().add(cliente);
-        return true;
+    public boolean crearCliente(String numIdentificacion, TipoIdentificacion tipoIdentificacion, String nombres, String apellidos, Supermercado supermercado, boolean mostrarVentana) {
+
+        List<Cliente> clientes = obtenerClientes();
+        int numClientes = clientes.size();
+        boolean guardar = true;
+
+        for (int i = 0; i < numClientes; i++) {
+            Cliente cliente = clientes.get(i);
+
+            if (cliente.getNumIdentificacion().equalsIgnoreCase(numIdentificacion)) {
+                JOptionPane.showMessageDialog(null, "El número de identificación ya se encuentra registrado");
+                guardar = false;
+                break;
+            }
+        }
+
+        if (guardar) {
+            Cliente cliente = new Cliente(numIdentificacion, tipoIdentificacion, nombres, apellidos);
+            cliente.setOwnedBySupermercado(supermercado);
+            getListaClientes().add(cliente);
+            if (mostrarVentana){
+                JOptionPane.showMessageDialog(null, "Cliente Registrado con exito");
+
+            }
+            return true;
+        } else {
+            return false;
+        }
+
     }
 
     /**
      * Metodo para obtener la lista de clientes
+     *
      * @return List<Cliente>
      */
     public List<Cliente> obtenerClientes() {
@@ -87,6 +114,7 @@ public class Supermercado {
 
     /**
      * Metodo para obtener editar cliente
+     *
      * @param numIdentificacion
      * @param tipoIdentificacion
      * @param nombres
@@ -95,36 +123,61 @@ public class Supermercado {
      */
     public void editarCliente(String numIdentificacion, TipoIdentificacion tipoIdentificacion, String nombres, String apellidos, Supermercado supermercado) {
         int tamanioLista = getListaClientes().size();
-        for(int i = 0; i < tamanioLista; i++){
+        boolean actualizar = false;
+
+        for (int i = 0; i < tamanioLista; i++) {
             Cliente cliente = getListaClientes().get(i);
-            if(cliente.getNumIdentificacion().equalsIgnoreCase(numIdentificacion)){
+            if (cliente.getNumIdentificacion().equalsIgnoreCase(numIdentificacion)) {
                 cliente.setTipoIdentificacion(tipoIdentificacion);
                 cliente.setNombres(nombres);
                 cliente.setApellidos(apellidos);
                 cliente.setOwnedBySupermercado(supermercado);
+                actualizar = true;
                 break;
             }
+        }
+
+        if (actualizar){
+            JOptionPane.showMessageDialog(null, "Cliente actualizado");
+
+        }else{
+            JOptionPane.showMessageDialog(null, "El número de identificación del cliente no se encuentra registrado");
+
         }
     }
 
     /**
      * Metodo para eliminar cliente
+     *
      * @param numIdentificacion
      */
     public void eliminarCliente(String numIdentificacion) {
         int tamanioLista = getListaClientes().size();
-        for(int i = 0; i < tamanioLista; i++){
+        boolean eliminado = false;
+
+        for (int i = 0; i < tamanioLista; i++) {
             Cliente cliente = getListaClientes().get(i);
-            if(cliente.getNumIdentificacion().equalsIgnoreCase(numIdentificacion)){
+            if (cliente.getNumIdentificacion().equalsIgnoreCase(numIdentificacion)) {
                 getListaClientes().remove(i);
+                eliminado = true;
                 break;
             }
         }
+
+        if (eliminado){
+            JOptionPane.showMessageDialog(null, "Cliente eliminado");
+
+        }else{
+            JOptionPane.showMessageDialog(null, "El número de identificación del cliente no se encuentra registrado");
+
+        }
+
     }
 
 
     /**
      * Metodo para crear un empleado
+     *
      * @param numIdentificacion
      * @param nombres
      * @param apellidos
@@ -135,7 +188,7 @@ public class Supermercado {
      * @return boolean
      */
     public boolean crearEmpleado(String numIdentificacion, String nombres, String apellidos, RolEmpleado rol, String fechaNcimiento, String telefono, Supermercado supermercado) {
-        Empleado empleado = new Empleado(numIdentificacion,nombres,apellidos,rol,fechaNcimiento,telefono);
+        Empleado empleado = new Empleado(numIdentificacion, nombres, apellidos, rol, fechaNcimiento, telefono);
         empleado.setOwnedBySupermercado(supermercado);
         getListaEmpleados().add(empleado);
         return true;
@@ -143,14 +196,16 @@ public class Supermercado {
 
     /**
      * Metodo para obtener los empleados
+     *
      * @return List<Empleado>
      */
-    public List<Empleado> obtenerEmpleados(){
+    public List<Empleado> obtenerEmpleados() {
         return getListaEmpleados();
     }
 
     /**
      * Metodo para esitar empleados
+     *
      * @param numIdentificacion
      * @param nombres
      * @param apellidos
@@ -159,11 +214,11 @@ public class Supermercado {
      * @param telefono
      * @param supermercado
      */
-    public void editarEmpleado(String numIdentificacion, String nombres, String apellidos, RolEmpleado rol, String fechaNacimiento, String telefono, Supermercado supermercado){
+    public void editarEmpleado(String numIdentificacion, String nombres, String apellidos, RolEmpleado rol, String fechaNacimiento, String telefono, Supermercado supermercado) {
         int tamanioLista = getListaEmpleados().size();
-        for(int i = 0; i < tamanioLista; i++){
+        for (int i = 0; i < tamanioLista; i++) {
             Empleado empleado = getListaEmpleados().get(i);
-            if (empleado.getNumIdentificacion().equalsIgnoreCase(numIdentificacion)){
+            if (empleado.getNumIdentificacion().equalsIgnoreCase(numIdentificacion)) {
                 empleado.setNombres(nombres);
                 empleado.setApellidos(apellidos);
                 empleado.setRol(rol);
@@ -177,13 +232,14 @@ public class Supermercado {
 
     /**
      * Metodo para eliminar empleados
+     *
      * @param numIdentificacion
      */
-    public void eliminarEmpleado(String numIdentificacion){
+    public void eliminarEmpleado(String numIdentificacion) {
         int tamanioLista = getListaEmpleados().size();
-        for(int i=0; i<tamanioLista; i++){
+        for (int i = 0; i < tamanioLista; i++) {
             Empleado empleado = getListaEmpleados().get(i);
-            if (empleado.getNumIdentificacion().equalsIgnoreCase(numIdentificacion)){
+            if (empleado.getNumIdentificacion().equalsIgnoreCase(numIdentificacion)) {
                 getListaEmpleados().remove(i);
                 break;
             }
