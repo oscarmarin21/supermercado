@@ -4,28 +4,19 @@ import co.edu.uniquindio.supermercado.enumeracion.RolEmpleado;
 import co.edu.uniquindio.supermercado.enumeracion.TipoIdentificacion;
 import co.edu.uniquindio.supermercado.model.Cliente;
 import co.edu.uniquindio.supermercado.model.Empleado;
-import co.edu.uniquindio.supermercado.model.Producto;
 import co.edu.uniquindio.supermercado.model.Supermercado;
 
 import javax.swing.*;
 import java.util.List;
-import java.util.Objects;
 
 public class Main {
     public static void main(String[] args) {
         Supermercado supermercado = inicializarDatosPrueba();
+
         boolean continuar = true;
         int valorSeleccion;
 
-
-        //CRUD CLIENTE
-
-        //Create
-        crearCliente(supermercado, "001", TipoIdentificacion.Cedula, "Teresa", "Ramirez", false);
-        crearCliente(supermercado, "002", TipoIdentificacion.Cedula, "Gloria", "Valencia", false);
-        crearCliente(supermercado, "003", TipoIdentificacion.Cedula, "Santiago", "Castrillon", false);
-        crearCliente(supermercado, "004", TipoIdentificacion.Cedula, "Steven", "Marin", false);
-
+        //MENU
         do {
 
             valorSeleccion = leerEnteroVentana("Ingrese el número de la acción que se desea realizar \n " +
@@ -40,7 +31,6 @@ public class Main {
                             "3. Eliminar cliente \n" +
                             "4. Imprimir clientes \n" +
                             "5. Salir");
-
                     switch (valorSeleccion) {
                         case 1:
                             //Create
@@ -52,7 +42,7 @@ public class Main {
                             break;
                         case 3:
                             //Delete
-                            eliminarCliente(supermercado);
+                            solicitarDatosClienteEliminar(supermercado);
                             break;
                         case 4:
                             //Read
@@ -64,13 +54,34 @@ public class Main {
                     break;
                 case 2:
                     continuar = false;
-
             }
-
         } while (continuar);
 
 
-        //CRUD EMPLEADO
+        //CRUD CLIENTE ----------------------------------------------------------------
+
+        //Create
+        crearCliente(supermercado, "001", TipoIdentificacion.Cedula, "Teresa", "Ramirez", false);
+        crearCliente(supermercado, "002", TipoIdentificacion.Cedula, "Gloria", "Valencia", false);
+        crearCliente(supermercado, "003", TipoIdentificacion.Cedula, "Santiago", "Castrillon", false);
+        crearCliente(supermercado, "004", TipoIdentificacion.Cedula, "Steven", "Marin", false);
+
+        //Read
+        mostrarInformacionClientes(supermercado);
+
+        //Update
+        editarCliente(supermercado, "123456", TipoIdentificacion.Cedula, "Pocholo", "Marquez");
+        System.out.println("\nDespues de editar Cliente");
+        mostrarImformacionEmpleados(supermercado);
+
+
+        //Delete
+        eliminarEmpleados(supermercado, "506040");
+        System.out.println("\nDespues de eliminar Cliente");
+        mostrarImformacionEmpleados(supermercado);
+        System.out.println();
+
+        //CRUD EMPLEADO ----------------------------------------------------------------
 
         //Create
         crearEmpleado(supermercado, "102030", "Ivan", "Cortez", RolEmpleado.Surtidor, "13/05/1997", "3104569887");
@@ -83,7 +94,7 @@ public class Main {
 
         //Update
         editarEmpleado(supermercado, "123456", "Pocholo", "Marquez", RolEmpleado.Domiciliario, "01/01/1990", "3128529647");
-        System.out.println("\nDespues de editar Cliente");
+        System.out.println("\nDespues de editar Empleado");
         mostrarImformacionEmpleados(supermercado);
 
 
@@ -94,43 +105,7 @@ public class Main {
         System.out.println();
 
     }
-
-    private static void solicitarDatosClienteEditar(Supermercado supermercado) {
-        String identificacion = leerStringVentana("Ingrese el número de identificación del cliente");
-        String tipoIdentificacion = leerStringVentana("Tipo de identificación\n" +
-                "1. Cedula\n" +
-                "2. Pasaporte");
-        String nombres = leerStringVentana("Ingrese los nombres del cliente");
-        String apellidos = leerStringVentana("Ingrese los apellidos del cliente");
-
-        if (tipoIdentificacion.equalsIgnoreCase("1")) {
-            supermercado.editarCliente(identificacion, TipoIdentificacion.Cedula, nombres, apellidos, supermercado);
-        } else {
-            supermercado.editarCliente(identificacion, TipoIdentificacion.Pasaporte, nombres, apellidos, supermercado);
-        }
-    }
-
-    private static void solicitarDatosClienteCrear(Supermercado supermercado) {
-        String identificacion = leerStringVentana("Ingrese el número de identificación del cliente");
-        String tipoIdentificacion = leerStringVentana("Tipo de identificación\n" +
-                "1. Cedula\n" +
-                "2. Pasaporte");
-        String nombres = leerStringVentana("Ingrese los nombres del cliente");
-        String apellidos = leerStringVentana("Ingrese los apellidos del cliente");
-
-        if (tipoIdentificacion.equalsIgnoreCase("1")) {
-            supermercado.crearCliente(identificacion, TipoIdentificacion.Cedula, nombres, apellidos, supermercado, true);
-        } else {
-            supermercado.crearCliente(identificacion, TipoIdentificacion.Pasaporte, nombres, apellidos, supermercado, true);
-        }
-
-    }
-
-    private static void eliminarCliente(Supermercado supermercado) {
-        String identificacion = leerStringVentana("Ingrese el número de identificación del cliente");
-        supermercado.eliminarCliente(identificacion);
-    }
-
+    //INICIALIZADOR ----------------------------------------------------------------
     private static Supermercado inicializarDatosPrueba() {
         Supermercado supermercado = new Supermercado();
         supermercado.setNit("951753852");
@@ -138,6 +113,65 @@ public class Main {
         return supermercado;
     }
 
+    //VENTANAS DE SOLICITUD ----------------------------------------------------------------
+
+    private static void solicitarDatosClienteEditar(Supermercado supermercado) {
+        String identificacion = leerStringVentana("Ingrese el número de identificación del cliente");
+        boolean exist = supermercado.validarExistenciaCliente(identificacion);
+        if (exist==true){
+            TipoIdentificacion tipoIdentificacion = null;
+            boolean continuar = false;
+            do {
+                int tipo = leerEnteroVentana("Tipo de identificación\n" +
+                        "1. Cedula\n" +
+                        "2. Pasaporte");
+                switch (tipo) {
+                    case 1:
+                        tipoIdentificacion = TipoIdentificacion.Cedula; continuar=true; break;
+                    case 2:
+                        tipoIdentificacion = TipoIdentificacion.Pasaporte; continuar=true; break;
+                    default: JOptionPane.showMessageDialog(null, "Opcion Invalida");
+                }
+            }while (continuar==false);
+            String nombres = leerStringVentana("Ingrese los nombres del cliente");
+            String apellidos = leerStringVentana("Ingrese los apellidos del cliente");
+            editarCliente( supermercado, identificacion, tipoIdentificacion, nombres, apellidos);
+        } else {
+            JOptionPane.showMessageDialog(null, "No se encuentra registrado este documento");
+        };
+    }
+
+    private static void solicitarDatosClienteCrear(Supermercado supermercado) {
+        String identificacion = leerStringVentana("Ingrese el número de identificación del cliente");
+        TipoIdentificacion tipoIdentificacion = null;
+        boolean continuar = false;
+        do {
+            int tipo = leerEnteroVentana("Tipo de identificación\n" +
+                    "1. Cedula\n" +
+                    "2. Pasaporte");
+            switch (tipo) {
+                case 1:
+                    tipoIdentificacion = TipoIdentificacion.Cedula; continuar=true; break;
+                case 2:
+                    tipoIdentificacion = TipoIdentificacion.Pasaporte; continuar=true; break;
+                default: JOptionPane.showMessageDialog(null, "Opcion Invalida");
+            }
+        }while (continuar==false);
+        String nombres = leerStringVentana("Ingrese los nombres del cliente");
+        String apellidos = leerStringVentana("Ingrese los apellidos del cliente");
+        supermercado.crearCliente(identificacion, tipoIdentificacion, nombres, apellidos, supermercado, true);
+    }
+
+
+    private static void solicitarDatosClienteEliminar(Supermercado supermercado) {
+        String identificacion = leerStringVentana("Ingrese el número de identificación del cliente");
+        supermercado.eliminarCliente(identificacion);
+    }
+
+
+    //METODOS CRUD ----------------------------------------------------------------
+
+    //CLIENTE
     private static void crearCliente(Supermercado supermercado, String numIdentificacion, TipoIdentificacion tipoIdentificacion, String nombres, String apellidos, boolean mostrarVendtana) {
         supermercado.crearCliente(numIdentificacion, tipoIdentificacion, nombres, apellidos, supermercado, mostrarVendtana);
 
@@ -163,7 +197,7 @@ public class Main {
     }
 
 
-
+    //EMPLEADO
     private static void crearEmpleado(Supermercado supermercado, String numIdentificacion, String nombres, String apellidos, RolEmpleado rol, String fechaNacimiento, String telefono) {
         supermercado.crearEmpleado(numIdentificacion, nombres, apellidos, rol, fechaNacimiento, telefono, supermercado);
     }
@@ -185,8 +219,19 @@ public class Main {
         supermercado.eliminarEmpleado(numIdentificacion);
     }
 
+
+    //LECTOR DE VENTANA ----------------------------------------------------------------
     public static int leerEnteroVentana(String mensaje) {
-        int dato = Integer.parseInt(JOptionPane.showInputDialog(mensaje));
+        boolean bucle = true;
+        int dato = 0;
+        do {
+            try {
+                dato = Integer.parseInt(JOptionPane.showInputDialog(mensaje));
+                bucle=false;
+            }catch (NumberFormatException e){
+                JOptionPane.showMessageDialog(null,"Invalid: Ingresa solo numeros");
+            }
+        }while (bucle);
         return dato;
     }
 

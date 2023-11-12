@@ -70,6 +70,7 @@ public class Supermercado {
      * @param nombres
      * @param apellidos
      * @param supermercado
+     * @param mostrarVentana
      * @return boolean
      */
     public boolean crearCliente(String numIdentificacion, TipoIdentificacion tipoIdentificacion, String nombres, String apellidos, Supermercado supermercado, boolean mostrarVentana) {
@@ -110,6 +111,22 @@ public class Supermercado {
      */
     public List<Cliente> obtenerClientes() {
         return getListaClientes();
+    }
+
+    public boolean validarExistenciaCliente(String numIdentificacion) {
+        int tamanioLista = getListaClientes().size();
+        boolean exist = false;
+        for (int i = 0; i < tamanioLista; i++) {
+            Cliente cliente = getListaClientes().get(i);
+            if (cliente.getNumIdentificacion().equalsIgnoreCase(numIdentificacion)) {
+                exist = true;
+            }
+        }
+        if (exist==true){
+            return true;
+        }else {
+            return false;
+        }
     }
 
     /**

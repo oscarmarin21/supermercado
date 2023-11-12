@@ -2,29 +2,13 @@ package co.edu.uniquindio.supermercado.model;
 
 import co.edu.uniquindio.supermercado.enumeracion.TipoIdentificacion;
 
-public class Cliente {
-    private String numIdentificacion;
+public class Cliente extends Persona {
     private TipoIdentificacion tipoIdentificacion;
-    private String nombres;
-    private String apellidos;
     Supermercado ownedBySupermercado;
 
-    public Cliente() {
-    }
-
     public Cliente(String numIdentificacion, TipoIdentificacion tipoIdentificacion, String nombres, String apellidos) {
-        this.numIdentificacion = numIdentificacion;
+        super(numIdentificacion,nombres,apellidos);
         this.tipoIdentificacion = tipoIdentificacion;
-        this.nombres = nombres;
-        this.apellidos = apellidos;
-    }
-
-    public String getNumIdentificacion() {
-        return numIdentificacion;
-    }
-
-    public void setNumIdentificacion(String numIdentificacion) {
-        this.numIdentificacion = numIdentificacion;
     }
 
     public TipoIdentificacion getTipoIdentificacion() {
@@ -33,22 +17,6 @@ public class Cliente {
 
     public void setTipoIdentificacion(TipoIdentificacion tipoIdentificacion) {
         this.tipoIdentificacion = tipoIdentificacion;
-    }
-
-    public String getNombres() {
-        return nombres;
-    }
-
-    public void setNombres(String nombres) {
-        this.nombres = nombres;
-    }
-
-    public String getApellidos() {
-        return apellidos;
-    }
-
-    public void setApellidos(String apellidos) {
-        this.apellidos = apellidos;
     }
 
     public Supermercado getOwnedBySupermercado() {
@@ -62,10 +30,9 @@ public class Cliente {
     @Override
     public String toString() {
         return "Cliente{" +
-                "numIdentificacion='" + numIdentificacion + '\'' +
-                ", tipoIdentificacion=" + tipoIdentificacion +
-                ", nombres='" + nombres + '\'' +
-                ", apellidos='" + apellidos + '\'' +
+                super.toString()+
+                "tipoIdentificacion=" + tipoIdentificacion +
+                ", ownedBySupermercado=" + ownedBySupermercado +
                 '}';
     }
 }
