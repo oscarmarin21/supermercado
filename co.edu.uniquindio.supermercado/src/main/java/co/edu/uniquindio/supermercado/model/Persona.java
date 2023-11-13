@@ -1,6 +1,6 @@
 package co.edu.uniquindio.supermercado.model;
 
-public class Persona {
+public abstract class Persona {
     private String numIdentificacion;
     private String nombres;
     private String apellidos;

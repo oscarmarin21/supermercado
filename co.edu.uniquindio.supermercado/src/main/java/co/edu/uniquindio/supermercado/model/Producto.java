@@ -80,7 +80,7 @@ public class Producto {
     @Override
     public String toString() {
         return "Producto{" +
-                "idProducto='" + idProducto + '\'' +
+                " idProducto='" + idProducto + '\'' +
                 ", nombre='" + nombre + '\'' +
                 ", marca='" + marca + '\'' +
                 ", fechaVencimiento='" + fechaVencimiento + '\'' +

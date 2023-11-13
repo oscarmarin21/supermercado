@@ -51,9 +51,8 @@ public class Empleado extends Persona{
     public String toString() {
         return
                 super.toString() + "," +
-                "rol=" + rol +
+                " rol=" + rol +
                 ", fechaNacimiento='" + fechaNacimiento + '\'' +
-                ", telefono='" + telefono + '\'' +
-                ", ownedBySupermercado=" + ownedBySupermercado;
+                ", telefono='" + telefono;
     }
 }

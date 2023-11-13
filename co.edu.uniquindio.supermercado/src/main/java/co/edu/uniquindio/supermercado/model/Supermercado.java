@@ -70,18 +70,14 @@ public class Supermercado {
      * @param nombres
      * @param apellidos
      * @param supermercado
-     * @param mostrarVentana
      * @return boolean
      */
-    public boolean crearCliente(String numIdentificacion, TipoIdentificacion tipoIdentificacion, String nombres, String apellidos, Supermercado supermercado, boolean mostrarVentana) {
+    public boolean crearCliente(String numIdentificacion, TipoIdentificacion tipoIdentificacion, String nombres, String apellidos, Supermercado supermercado) {
         boolean exist = validarExistenciaCliente(numIdentificacion);
         if (exist==false) {
             Cliente cliente = new Cliente(numIdentificacion, tipoIdentificacion, nombres, apellidos);
             cliente.setOwnedBySupermercado(supermercado);
             getListaClientes().add(cliente);
-            if (mostrarVentana){
-                JOptionPane.showMessageDialog(null, "Cliente Registrado con exito");
-            }
             return true;
         } else {
             return false;
@@ -156,20 +152,13 @@ public class Supermercado {
      */
     public void eliminarCliente(String numIdentificacion) {
         int tamanioLista = getListaClientes().size();
-        boolean eliminado = false;
 
         for (int i = 0; i < tamanioLista; i++) {
             Cliente cliente = getListaClientes().get(i);
             if (cliente.getNumIdentificacion().equalsIgnoreCase(numIdentificacion)) {
                 getListaClientes().remove(i);
-                eliminado = true;
                 break;
             }
-        }
-        if (eliminado){
-            JOptionPane.showMessageDialog(null, "Cliente eliminado");
-        }else{
-            JOptionPane.showMessageDialog(null, "El número de identificación del cliente no se encuentra registrado");
         }
 
     }
@@ -186,10 +175,34 @@ public class Supermercado {
      * @return boolean
      */
     public boolean crearEmpleado(String numIdentificacion, String nombres, String apellidos, RolEmpleado rol, String fechaNcimiento, String telefono, Supermercado supermercado) {
-        Empleado empleado = new Empleado(numIdentificacion, nombres, apellidos, rol, fechaNcimiento, telefono);
-        empleado.setOwnedBySupermercado(supermercado);
-        getListaEmpleados().add(empleado);
-        return true;
+
+        boolean exist = validarExistenciaEmpleado(numIdentificacion);
+        if (exist==false) {
+            Empleado empleado = new Empleado(numIdentificacion, nombres, apellidos, rol, fechaNcimiento, telefono);
+            empleado.setOwnedBySupermercado(supermercado);
+            getListaEmpleados().add(empleado);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean validarExistenciaEmpleado(String numIdentificacion) {
+        int tamanioLista = getListaEmpleados().size();
+        boolean exist = false;
+
+        for (int i = 0; i < tamanioLista; i++) {
+            Empleado empleado = getListaEmpleados().get(i);
+            if (empleado.getNumIdentificacion().equalsIgnoreCase(numIdentificacion)) {
+                exist = true;
+                break;
+            }
+        }
+        if (exist==true){
+            return true;
+        }else {
+            return false;
+        }
     }
 
     /**
@@ -202,7 +215,7 @@ public class Supermercado {
     }
 
     /**
-     * Metodo para esitar empleados
+     * Metodo para editar empleados
      *
      * @param numIdentificacion
      * @param nombres
@@ -239,6 +252,95 @@ public class Supermercado {
             Empleado empleado = getListaEmpleados().get(i);
             if (empleado.getNumIdentificacion().equalsIgnoreCase(numIdentificacion)) {
                 getListaEmpleados().remove(i);
+                break;
+            }
+        }
+    }
+
+    /**
+     * Metodo para crear un producto
+     *
+     * @param supermercado
+     * @param idProducto
+     * @param nombre
+     * @param marca
+     * @param fechaVencimiento
+     * @param cantidad
+     * @param precio
+     * @return boolean
+     */
+    public boolean crearProducto(Supermercado supermercado, String idProducto, String nombre, String marca,
+                                String fechaVencimiento, int cantidad, double precio) {
+        boolean exist = validarExistenciaProducto(idProducto);
+        if (exist==false) {
+            Producto producto = new Producto(idProducto, nombre, marca, fechaVencimiento, cantidad, precio);
+            producto.setOwnedBySupermercado(supermercado);
+            getListaProductos().add(producto);
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    /**
+     * Metodo para editar empleados
+     *
+     * @param supermercado
+     * @param idProducto
+     * @param nombre
+     * @param marca
+     * @param fechaVencimiento
+     * @param cantidad
+     * @param precio
+     */
+    public void editarProducto(Supermercado supermercado, String idProducto, String nombre, String marca,
+                               String fechaVencimiento, int cantidad, double precio) {
+        int tamanioLista = getListaProductos().size();
+        for (int i = 0; i < tamanioLista; i++) {
+            Producto producto = getListaProductos().get(i);
+            if (producto.getIdProducto().equalsIgnoreCase(idProducto)) {
+                producto.setIdProducto(idProducto);
+                producto.setNombre(nombre);
+                producto.setFechaVencimiento(fechaVencimiento);
+                producto.setCantidad(cantidad);
+                producto.setPrecio(precio);
+                producto.setOwnedBySupermercado(supermercado);
+                break;
+            }
+        }
+    }
+
+
+    public boolean validarExistenciaProducto(String numIdentificacion) {
+        int tamanioLista = getListaProductos().size();
+        boolean exist = false;
+
+        for (int i = 0; i < tamanioLista; i++) {
+            Producto producto = getListaProductos().get(i);
+            if (producto.getIdProducto().equalsIgnoreCase(numIdentificacion)) {
+                exist = true;
+                break;
+            }
+        }
+        if (exist==true){
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    /**
+     * Metodo para eliminar empleados
+     *
+     * @param idProducto
+     */
+    public void eliminarProducto(String idProducto) {
+        int tamanioLista = getListaProductos().size();
+        for (int i = 0; i < tamanioLista; i++) {
+            Producto producto = getListaProductos().get(i);
+            if (producto.getIdProducto().equalsIgnoreCase(idProducto)) {
+                getListaProductos().remove(i);
                 break;
             }
         }
