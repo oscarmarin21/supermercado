@@ -29,10 +29,9 @@ public class Cliente extends Persona {
 
     @Override
     public String toString() {
-        return "Cliente{" +
-                super.toString()+
+        return
+                super.toString()+ "," +
                 "tipoIdentificacion=" + tipoIdentificacion +
-                ", ownedBySupermercado=" + ownedBySupermercado +
-                '}';
+                ", ownedBySupermercado=" + ownedBySupermercado;
     }
 }

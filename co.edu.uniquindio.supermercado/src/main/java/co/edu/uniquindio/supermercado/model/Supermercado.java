@@ -74,28 +74,13 @@ public class Supermercado {
      * @return boolean
      */
     public boolean crearCliente(String numIdentificacion, TipoIdentificacion tipoIdentificacion, String nombres, String apellidos, Supermercado supermercado, boolean mostrarVentana) {
-
-        List<Cliente> clientes = obtenerClientes();
-        int numClientes = clientes.size();
-        boolean guardar = true;
-
-        for (int i = 0; i < numClientes; i++) {
-            Cliente cliente = clientes.get(i);
-
-            if (cliente.getNumIdentificacion().equalsIgnoreCase(numIdentificacion)) {
-                JOptionPane.showMessageDialog(null, "El número de identificación ya se encuentra registrado");
-                guardar = false;
-                break;
-            }
-        }
-
-        if (guardar) {
+        boolean exist = validarExistenciaCliente(numIdentificacion);
+        if (exist==false) {
             Cliente cliente = new Cliente(numIdentificacion, tipoIdentificacion, nombres, apellidos);
             cliente.setOwnedBySupermercado(supermercado);
             getListaClientes().add(cliente);
             if (mostrarVentana){
                 JOptionPane.showMessageDialog(null, "Cliente Registrado con exito");
-
             }
             return true;
         } else {
@@ -113,6 +98,11 @@ public class Supermercado {
         return getListaClientes();
     }
 
+    /**
+     * Metodo para obtener validar si existe un numero de Identificacion
+     * @param numIdentificacion
+     * @return boolean
+     */
     public boolean validarExistenciaCliente(String numIdentificacion) {
         int tamanioLista = getListaClientes().size();
         boolean exist = false;
@@ -120,6 +110,7 @@ public class Supermercado {
             Cliente cliente = getListaClientes().get(i);
             if (cliente.getNumIdentificacion().equalsIgnoreCase(numIdentificacion)) {
                 exist = true;
+                break;
             }
         }
         if (exist==true){
@@ -141,7 +132,6 @@ public class Supermercado {
     public void editarCliente(String numIdentificacion, TipoIdentificacion tipoIdentificacion, String nombres, String apellidos, Supermercado supermercado) {
         int tamanioLista = getListaClientes().size();
         boolean actualizar = false;
-
         for (int i = 0; i < tamanioLista; i++) {
             Cliente cliente = getListaClientes().get(i);
             if (cliente.getNumIdentificacion().equalsIgnoreCase(numIdentificacion)) {
@@ -153,12 +143,8 @@ public class Supermercado {
                 break;
             }
         }
-
         if (actualizar){
             JOptionPane.showMessageDialog(null, "Cliente actualizado");
-
-        }else{
-            JOptionPane.showMessageDialog(null, "El número de identificación del cliente no se encuentra registrado");
 
         }
     }
@@ -180,18 +166,13 @@ public class Supermercado {
                 break;
             }
         }
-
         if (eliminado){
             JOptionPane.showMessageDialog(null, "Cliente eliminado");
-
         }else{
             JOptionPane.showMessageDialog(null, "El número de identificación del cliente no se encuentra registrado");
-
         }
 
     }
-
-
     /**
      * Metodo para crear un empleado
      *

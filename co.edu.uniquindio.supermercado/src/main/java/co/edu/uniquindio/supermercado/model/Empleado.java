@@ -47,4 +47,13 @@ public class Empleado extends Persona{
         this.ownedBySupermercado = ownedBySupermercado;
     }
 
+    @Override
+    public String toString() {
+        return
+                super.toString() + "," +
+                "rol=" + rol +
+                ", fechaNacimiento='" + fechaNacimiento + '\'' +
+                ", telefono='" + telefono + '\'' +
+                ", ownedBySupermercado=" + ownedBySupermercado;
+    }
 }

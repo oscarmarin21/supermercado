@@ -12,17 +12,30 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) {
         Supermercado supermercado = inicializarDatosPrueba();
-
         boolean continuar = true;
         int valorSeleccion;
 
-        //MENU
-        do {
+    //INICIALIZAR CLIENTE ----------------------------------------------------------------
 
+        //Create
+        crearCliente(supermercado, "001", TipoIdentificacion.Cedula, "Teresa", "Ramirez", false);
+        crearCliente(supermercado, "002", TipoIdentificacion.Cedula, "Gloria", "Valencia", false);
+        crearCliente(supermercado, "003", TipoIdentificacion.Cedula, "Santiago", "Castrillon", false);
+        crearCliente(supermercado, "004", TipoIdentificacion.Cedula, "Steven", "Marin", false);
+
+    //INICIALIZAR EMPLEADOS ----------------------------------------------------------------
+
+        //Create
+        crearEmpleado(supermercado, "102030", "Ivan", "Cortez", RolEmpleado.Surtidor, "13/05/1997", "3104569887");
+        crearEmpleado(supermercado, "908070", "Casper", "Galeon", RolEmpleado.Empacador, "31/05/1995", "3205897412");
+        crearEmpleado(supermercado, "506040", "Isco", "Martinel", RolEmpleado.Gerente, "25/01/1996", "3189636547");
+        crearEmpleado(supermercado, "123456", "Pocholo", "Garcia", RolEmpleado.Domiciliario, "01/01/1990", "3128529647");
+
+    //MENU
+        do {
             valorSeleccion = leerEnteroVentana("Ingrese el número de la acción que se desea realizar \n " +
                     "1. Gestionar clientes \n " +
                     "2. Salir");
-
             switch (valorSeleccion) {
                 case 1:
                     valorSeleccion = leerEnteroVentana("Ingrese el número de la acción que se desea realizar \n" +
@@ -57,55 +70,9 @@ public class Main {
             }
         } while (continuar);
 
-
-        //CRUD CLIENTE ----------------------------------------------------------------
-
-        //Create
-        crearCliente(supermercado, "001", TipoIdentificacion.Cedula, "Teresa", "Ramirez", false);
-        crearCliente(supermercado, "002", TipoIdentificacion.Cedula, "Gloria", "Valencia", false);
-        crearCliente(supermercado, "003", TipoIdentificacion.Cedula, "Santiago", "Castrillon", false);
-        crearCliente(supermercado, "004", TipoIdentificacion.Cedula, "Steven", "Marin", false);
-
-        //Read
-        mostrarInformacionClientes(supermercado);
-
-        //Update
-        editarCliente(supermercado, "123456", TipoIdentificacion.Cedula, "Pocholo", "Marquez");
-        System.out.println("\nDespues de editar Cliente");
-        mostrarImformacionEmpleados(supermercado);
-
-
-        //Delete
-        eliminarEmpleados(supermercado, "506040");
-        System.out.println("\nDespues de eliminar Cliente");
-        mostrarImformacionEmpleados(supermercado);
-        System.out.println();
-
-        //CRUD EMPLEADO ----------------------------------------------------------------
-
-        //Create
-        crearEmpleado(supermercado, "102030", "Ivan", "Cortez", RolEmpleado.Surtidor, "13/05/1997", "3104569887");
-        crearEmpleado(supermercado, "908070", "Casper", "Galeon", RolEmpleado.Empacador, "31/05/1995", "3205897412");
-        crearEmpleado(supermercado, "506040", "Isco", "Martinel", RolEmpleado.Gerente, "25/01/1996", "3189636547");
-        crearEmpleado(supermercado, "123456", "Pocholo", "Garcia", RolEmpleado.Domiciliario, "01/01/1990", "3128529647");
-
-        //Read
-        mostrarImformacionEmpleados(supermercado);
-
-        //Update
-        editarEmpleado(supermercado, "123456", "Pocholo", "Marquez", RolEmpleado.Domiciliario, "01/01/1990", "3128529647");
-        System.out.println("\nDespues de editar Empleado");
-        mostrarImformacionEmpleados(supermercado);
-
-
-        //Delete
-        eliminarEmpleados(supermercado, "506040");
-        System.out.println("\nDespues de eliminar Cliente");
-        mostrarImformacionEmpleados(supermercado);
-        System.out.println();
-
     }
-    //INICIALIZADOR ----------------------------------------------------------------
+
+//INICIALIZADOR ----------------------------------------------------------------
     private static Supermercado inicializarDatosPrueba() {
         Supermercado supermercado = new Supermercado();
         supermercado.setNit("951753852");
@@ -113,7 +80,7 @@ public class Main {
         return supermercado;
     }
 
-    //VENTANAS DE SOLICITUD ----------------------------------------------------------------
+//VENTANAS DE SOLICITUD ----------------------------------------------------------------
 
     private static void solicitarDatosClienteEditar(Supermercado supermercado) {
         String identificacion = leerStringVentana("Ingrese el número de identificación del cliente");
@@ -159,44 +126,42 @@ public class Main {
         }while (continuar==false);
         String nombres = leerStringVentana("Ingrese los nombres del cliente");
         String apellidos = leerStringVentana("Ingrese los apellidos del cliente");
-        supermercado.crearCliente(identificacion, tipoIdentificacion, nombres, apellidos, supermercado, true);
+        crearCliente(supermercado, identificacion, tipoIdentificacion, nombres, apellidos, true);
     }
 
 
     private static void solicitarDatosClienteEliminar(Supermercado supermercado) {
         String identificacion = leerStringVentana("Ingrese el número de identificación del cliente");
-        supermercado.eliminarCliente(identificacion);
+        eliminarCliente(supermercado, identificacion);
     }
 
 
-    //METODOS CRUD ----------------------------------------------------------------
+//METODOS CRUD ----------------------------------------------------------------
 
     //CLIENTE
+    //create
     private static void crearCliente(Supermercado supermercado, String numIdentificacion, TipoIdentificacion tipoIdentificacion, String nombres, String apellidos, boolean mostrarVendtana) {
         supermercado.crearCliente(numIdentificacion, tipoIdentificacion, nombres, apellidos, supermercado, mostrarVendtana);
-
     }
-
+    //read
     private static void mostrarInformacionClientes(Supermercado supermercado) {
         List<Cliente> listaClientes = supermercado.obtenerClientes();
         String mensaje = "";
         int tamanioLista = listaClientes.size();
         for (int i = 0; i < tamanioLista; i++) {
             Cliente cliente = listaClientes.get(i);
-            System.out.println(cliente.toString());
-            mensaje += cliente.toString().replace("Cliente{", "").replace("}", "") + "\n";
+            mensaje += cliente+"\n";
         }
-
         JOptionPane.showMessageDialog(null, mensaje);
-
-
     }
-
+    //update
     private static void editarCliente(Supermercado supermercado, String numIdentificacion, TipoIdentificacion tipoIdentificacion, String nombres, String apellidos) {
         supermercado.editarCliente(numIdentificacion, tipoIdentificacion, nombres, apellidos, supermercado);
     }
-
-
+    //delete
+    private static void eliminarCliente(Supermercado supermercado, String numIdentificacion) {
+        supermercado.eliminarCliente(numIdentificacion);
+    }
     //EMPLEADO
     private static void crearEmpleado(Supermercado supermercado, String numIdentificacion, String nombres, String apellidos, RolEmpleado rol, String fechaNacimiento, String telefono) {
         supermercado.crearEmpleado(numIdentificacion, nombres, apellidos, rol, fechaNacimiento, telefono, supermercado);
@@ -220,7 +185,7 @@ public class Main {
     }
 
 
-    //LECTOR DE VENTANA ----------------------------------------------------------------
+//LECTOR DE VENTANA ----------------------------------------------------------------
     public static int leerEnteroVentana(String mensaje) {
         boolean bucle = true;
         int dato = 0;
