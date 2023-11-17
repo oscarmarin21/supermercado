@@ -2,10 +2,7 @@ package co.edu.uniquindio.supermercado;
 
 import co.edu.uniquindio.supermercado.enumeracion.RolEmpleado;
 import co.edu.uniquindio.supermercado.enumeracion.TipoIdentificacion;
-import co.edu.uniquindio.supermercado.model.Cliente;
-import co.edu.uniquindio.supermercado.model.Empleado;
-import co.edu.uniquindio.supermercado.model.Producto;
-import co.edu.uniquindio.supermercado.model.Supermercado;
+import co.edu.uniquindio.supermercado.model.*;
 
 import javax.swing.*;
 import java.sql.Struct;
@@ -20,10 +17,10 @@ public class Main {
         //CREATE
 
         //INICIALIZAR CLIENTE ----------------------------------------------------------------
-        crearCliente(supermercado, "001", TipoIdentificacion.Cedula, "Teresa", "Ramirez", false);
-        crearCliente(supermercado, "002", TipoIdentificacion.Cedula, "Gloria", "Valencia", false);
-        crearCliente(supermercado, "003", TipoIdentificacion.Cedula, "Santiago", "Castrillon", false);
-        crearCliente(supermercado, "004", TipoIdentificacion.Cedula, "Steven", "Marin", false);
+        crearCliente(supermercado, "001", TipoIdentificacion.Cedula, "Teresa", "Ramirez");
+        crearCliente(supermercado, "002", TipoIdentificacion.Cedula, "Gloria", "Valencia");
+        crearCliente(supermercado, "003", TipoIdentificacion.Cedula, "Santiago", "Castrillon");
+        crearCliente(supermercado, "004", TipoIdentificacion.Cedula, "Steven", "Marin");
 
         //INICIALIZAR EMPLEADOS ----------------------------------------------------------------
         crearEmpleado(supermercado, "001", "Ivan", "Cortez", RolEmpleado.Surtidor, "13/05/1997", "3104569887");
@@ -32,11 +29,10 @@ public class Main {
         crearEmpleado(supermercado, "004", "Pocholo", "Garcia", RolEmpleado.Domiciliario, "01/01/1990", "3128529647");
 
         //INICIALIZAR PRODUCTOS ----------------------------------------------------------------
-        crearProducto(supermercado, "001", "Arepas", "El paisa", "17/12/2023", 200, 4.500, false);
-        crearProducto(supermercado, "002", "Arroz", "Roa", "05/05/2024", 1200, 1.500, false);
-        crearProducto(supermercado, "003", "Natilla", "La abuela", "03/03/2024", 150, 6.200, false);
-        crearProducto(supermercado, "004", "Buñuelos", "Promasa", "25/02/2024", 350, 6.500, false);
-
+        crearProducto(supermercado, "001", "Arepas", "El paisa", "17/12/2023", 200, 4.500);
+        crearProducto(supermercado, "002", "Arroz", "Roa", "05/05/2024", 1200, 1.500);
+        crearProducto(supermercado, "003", "Natilla", "La abuela", "03/03/2024", 150, 6.200);
+        crearProducto(supermercado, "004", "Buñuelos", "Promasa", "25/02/2024", 350, 6.500);
 
         //MENU
         do {
@@ -44,7 +40,8 @@ public class Main {
                     "1. Gestionar clientes \n " +
                     "2. Gestionar empleados \n " +
                     "3. Gestionar productos \n " +
-                    "4. Salir");
+                    "4. Gestionar proveedor \n " +
+                    "5. Salir");
             switch (valorSeleccion) {
                 case 1:
                     //Gestión clientes
@@ -57,16 +54,16 @@ public class Main {
                     switch (valorSeleccion) {
                         case 1 ->
                             //Create
-                                solicitarDatosClienteCrear(supermercado);
+                                crearCliente(supermercado);
                         case 2 ->
                             //Update
-                                solicitarDatosClienteEditar(supermercado);
+                                editarCliente(supermercado);
                         case 3 ->
                             //Delete
-                                solicitarDatosClienteEliminar(supermercado);
+                                eliminarCliente(supermercado);
                         case 4 ->
                             //Read
-                                mostrarInformacionClientes(supermercado);
+                                mostrarClientes(supermercado);
                         case 5 -> continuar = false;
                     }
                     break;
@@ -82,16 +79,16 @@ public class Main {
                     switch (valorSeleccion) {
                         case 1 ->
                             //Create
-                                solicitarDatosEmpleadoCrear(supermercado);
+                                crearEmpleado(supermercado);
                         case 2 ->
                             //Update
-                                solicitarDatosEmpleadoEditar(supermercado);
+                                editarEmpleado(supermercado);
                         case 3 ->
                             //Delete
-                                solicitarDatosEmpleadoEliminar(supermercado);
+                                eliminarEmpleado(supermercado);
                         case 4 ->
                             //Read
-                                mostrarInformacionEmpleado(supermercado);
+                                mostrarEmpleados(supermercado);
                         case 5 -> continuar = false;
                     }
                     break;
@@ -106,20 +103,44 @@ public class Main {
                     switch (valorSeleccion) {
                         case 1 ->
                             //Create
-                                solicitarDatosProductoCrear(supermercado);
+                                crearProducto(supermercado);
                         case 2 ->
                             //Update
-                                solicitarDatosProductoEditar(supermercado);
+                                editarProducto(supermercado);
                         case 3 ->
                             //Delete
-                                solicitarDatosProductoEliminar(supermercado);
+                                eliminarProducto(supermercado);
                         case 4 ->
                             //Read
-                                mostrarInformacionProducto(supermercado);
+                                mostrarProductos(supermercado);
                         case 5 -> continuar = false;
                     }
                     break;
                 case 4:
+                    valorSeleccion = leerEnteroVentana("Ingrese el número de la acción que se desea realizar \n" +
+                            "1. Registrar proveedor \n" +
+                            "2. Actualizar proveedor \n" +
+                            "3. Eliminar proveedor \n" +
+                            "4. Imprimir proveedor \n" +
+                            "5. Salir");
+
+                    switch (valorSeleccion) {
+                        case 1 ->
+                            //Create
+                                crearProveedor(supermercado);
+                        case 2 ->
+                            //Update
+                                editarProveedor(supermercado);
+                        case 3 ->
+                            //Delete
+                                eliminarProveedor(supermercado);
+                        case 4 ->
+                            //Read
+                                mostrarProveedor(supermercado);
+                        case 5 -> continuar = false;
+                    }
+                    break;
+                case 5:
                     continuar = false;
                     break;
             }
@@ -127,7 +148,7 @@ public class Main {
 
     }
 
-    //INICIALIZADOR ----------------------------------------------------------------
+//INICIALIZADOR ----------------------------------------------------------------
     private static Supermercado inicializarDatosPrueba() {
         Supermercado supermercado = new Supermercado();
         supermercado.setNit("951753852");
@@ -135,15 +156,39 @@ public class Main {
         return supermercado;
     }
 
-//VENTANAS DE SOLICITUD ----------------------------------------------------------------
-
-
-    //SOLICITAR DATOS PARA ACTUALIZAR
+//VENTANAS - CRUD ----------------------------------------------------------------
     //Cliente
-    private static void solicitarDatosClienteEditar(Supermercado supermercado) {
+    private static void crearCliente(Supermercado supermercado) {
+        String identificacion = leerStringVentana("Ingrese el número de identificación del cliente");
+        TipoIdentificacion tipoIdentificacion = null;
+        boolean continuar = false;
+        do {
+            int tipo = leerEnteroVentana("Tipo de identificación\n" +
+                    "1. Cedula\n" +
+                    "2. Pasaporte");
+            switch (tipo) {
+                case 1:
+                    tipoIdentificacion = TipoIdentificacion.Cedula;
+                    continuar = true;
+                    break;
+                case 2:
+                    tipoIdentificacion = TipoIdentificacion.Pasaporte;
+                    continuar = true;
+                    break;
+                default:
+                    JOptionPane.showMessageDialog(null, "Opcion Invalida");
+            }
+        } while (continuar == false);
+        String nombres = leerStringVentana("Ingrese los nombres del cliente");
+        String apellidos = leerStringVentana("Ingrese los apellidos del cliente");
+        boolean respuesta = supermercado.crearCliente(identificacion, tipoIdentificacion, nombres, apellidos, supermercado);
+        mostrarMensajeRespuesta(respuesta, "Se ha creado correctamente el cliente", "No ha sido posible crear el cliente");
+    }
+
+    private static void editarCliente(Supermercado supermercado) {
         String identificacion = leerStringVentana("Ingrese el número de identificación del cliente");
         boolean exist = supermercado.validarExistenciaCliente(identificacion);
-        if (exist == true) {
+        if (exist) {
             TipoIdentificacion tipoIdentificacion = null;
             boolean continuar = false;
             do {
@@ -167,139 +212,44 @@ public class Main {
             String apellidos = leerStringVentana("Ingrese los apellidos del cliente");
 
             //Actualizar Cliente
-            supermercado.editarCliente(identificacion, tipoIdentificacion, nombres, apellidos, supermercado);
+            boolean respuesta = supermercado.editarCliente(identificacion, tipoIdentificacion, nombres, apellidos, supermercado);
+            mostrarMensajeRespuesta(respuesta, "Producto actualizado", "No se ha podido actualizar el producto");
         } else {
-            JOptionPane.showMessageDialog(null, "No se encuentra registrado este documento");
+            mostrarMensajeRespuesta(exist, "", "No se encuentra registrado este identificador");
         }
-        ;
+    }
+
+    private static void eliminarCliente(Supermercado supermercado) {
+        String identificacion = leerStringVentana("Ingrese el número de identificación del cliente");
+        boolean exist = supermercado.validarExistenciaCliente(identificacion);
+        if (exist) {
+            //Eliminar cliente
+            boolean respuesta = supermercado.eliminarCliente(identificacion);
+            mostrarMensajeRespuesta(respuesta, "Producto actualizado", "No se ha podido actualizar el producto");
+        } else {
+            mostrarMensajeRespuesta(exist, "", "No se encuentra registrado este identificador");
+        }
+    }
+
+    private static void mostrarClientes(Supermercado supermercado) {
+        List<Cliente> listaClientes = supermercado.obtenerClientes();
+        String mensaje = "";
+        int tamanioLista = listaClientes.size();
+        for (int i = 0; i < tamanioLista; i++) {
+            Cliente cliente = listaClientes.get(i);
+            mensaje += cliente + "\n";
+        }
+        JOptionPane.showMessageDialog(null, mensaje);
     }
 
     //Empleado
-    private static void solicitarDatosEmpleadoEditar(Supermercado supermercado) {
-        String identificacion = leerStringVentana("Ingrese el número de identificación del cliente");
-        boolean exist = supermercado.validarExistenciaEmpleado(identificacion);
-        if (exist == true) {
-            RolEmpleado rolEmpleado = null;
-            boolean continuar = false;
-
-            String nombres = leerStringVentana("Ingrese el nombre del empleado");
-            String apellidos = leerStringVentana("Ingrese el apellido del empleado");
-            String fechaNacimiento = leerStringVentana("Ingrese la fecha de nacimiento del empleado");
-            String telefono = leerStringVentana("Ingrese el teléfono del empleado");
-
-
-            do {
-                int tipo = leerEnteroVentana("Rol del empleado\n" +
-                        "1. Gerente\n" +
-                        "2. Caja\n" +
-                        "3. Operario\n" +
-                        "4. Surtidor\n" +
-                        "5. Empacador\n" +
-                        "6. Domiciliario");
-                switch (tipo) {
-                    case 1:
-                        rolEmpleado = RolEmpleado.Gerente;
-                        continuar = true;
-                        break;
-                    case 2:
-                        rolEmpleado = RolEmpleado.Caja;
-                        continuar = true;
-                        break;
-                    case 3:
-                        rolEmpleado = RolEmpleado.Operario;
-                        continuar = true;
-                        break;
-                    case 4:
-                        rolEmpleado = RolEmpleado.Surtidor;
-                        continuar = true;
-                        break;
-                    case 5:
-                        rolEmpleado = RolEmpleado.Empacador;
-                        continuar = true;
-                        break;
-                    case 6:
-                        rolEmpleado = RolEmpleado.Domiciliario;
-                        continuar = true;
-                        break;
-                    default:
-                        JOptionPane.showMessageDialog(null, "Opcion Invalida");
-                }
-            } while (continuar == false);
-
-            //Actualizar Empleado
-            supermercado.editarEmpleado(identificacion, nombres, apellidos, rolEmpleado, fechaNacimiento, telefono, supermercado);
-
-            JOptionPane.showMessageDialog(null, "Empleado actualizado");
-
-
-        } else {
-            JOptionPane.showMessageDialog(null, "No se encuentra registrado este documento");
-        }
-
-    }
-
-    private static void solicitarDatosProductoEditar(Supermercado supermercado) {
-        String identificacion = leerStringVentana("Ingrese el número de identificación del producto");
-        boolean exist = supermercado.validarExistenciaEmpleado(identificacion);
-        if (exist == true) {
-
-            String nombre = leerStringVentana("Ingrese el nombre del producto");
-            String marca = leerStringVentana("Ingrese la marca del producto");
-            String fechaVencimiento = leerStringVentana("Ingrese la fecha de vencimiento del producto");
-            int cantidad = leerEnteroVentana("Ingrese la cantidad del producto");
-            double precio = leerDoubleVentana("Ingrese el precio del producto");
-
-            //Actualizar Producto
-            supermercado.editarProducto(supermercado, identificacion, nombre, marca, fechaVencimiento, cantidad, precio);
-
-            JOptionPane.showMessageDialog(null, "Producto actualizado");
-
-
-        } else {
-            JOptionPane.showMessageDialog(null, "No se encuentra registrado este identificador");
-        }
-
-    }
-
-
-    //SOLICITAR DATOS PARA CREAR
-
-    //Cliente
-    private static void solicitarDatosClienteCrear(Supermercado supermercado) {
-        String identificacion = leerStringVentana("Ingrese el número de identificación del cliente");
-        TipoIdentificacion tipoIdentificacion = null;
-        boolean continuar = false;
-        do {
-            int tipo = leerEnteroVentana("Tipo de identificación\n" +
-                    "1. Cedula\n" +
-                    "2. Pasaporte");
-            switch (tipo) {
-                case 1:
-                    tipoIdentificacion = TipoIdentificacion.Cedula;
-                    continuar = true;
-                    break;
-                case 2:
-                    tipoIdentificacion = TipoIdentificacion.Pasaporte;
-                    continuar = true;
-                    break;
-                default:
-                    JOptionPane.showMessageDialog(null, "Opcion Invalida");
-            }
-        } while (continuar == false);
-        String nombres = leerStringVentana("Ingrese los nombres del cliente");
-        String apellidos = leerStringVentana("Ingrese los apellidos del cliente");
-        crearCliente(supermercado, identificacion, tipoIdentificacion, nombres, apellidos, true);
-    }
-
-    //Empleado
-    private static void solicitarDatosEmpleadoCrear(Supermercado supermercado) {
+    private static void crearEmpleado(Supermercado supermercado) {
         RolEmpleado rolEmpleado = null;
         boolean continuar = false;
 
         String identificacion = leerStringVentana("Ingrese el número de identificación del empleado");
         String nombres = leerStringVentana("Ingrese el nombre del empleado");
         String apellidos = leerStringVentana("Ingrese el apellido del empleado");
-
         do {
             int tipo = leerEnteroVentana("Rol del empleado\n" +
                     "1. Gerente\n" +
@@ -337,88 +287,85 @@ public class Main {
                     JOptionPane.showMessageDialog(null, "Opcion Invalida");
             }
         } while (continuar == false);
-
         String fechaNacimiento = leerStringVentana("Ingrese la fecha de nacimiento del empleado");
         String telefono = leerStringVentana("Ingrese el teléfono del empleado");
 
-
-        crearEmpleado(supermercado, identificacion, rolEmpleado, nombres, apellidos, fechaNacimiento, telefono, true);
-    }
-
-    //Producto
-    private static void solicitarDatosProductoCrear(Supermercado supermercado) {
-
-        String idProducto = leerStringVentana("Ingrese el identificación del producto");
-        String nombre = leerStringVentana("Ingrese el nombre del producto");
-        String marcas = leerStringVentana("Ingrese la marca del producto");
-        String fechaVencimiento = leerStringVentana("Ingrese la fecha de vencimiento del producto");
-        int cantidad = leerEnteroVentana("Ingrese la cantidad del producto");
-        double precio = leerDoubleVentana("Ingrese el precio del producto");
-
-        crearProducto(supermercado, idProducto, nombre, marcas, fechaVencimiento, cantidad, precio, true);
-    }
-
-//METODOS CRUD ----------------------------------------------------------------
-
-    //CREATE
-
-    //Cliente
-    private static void crearCliente(Supermercado supermercado, String numIdentificacion, TipoIdentificacion tipoIdentificacion, String nombres, String apellidos, boolean mostrarVendtana) {
-        boolean respuesta = supermercado.crearCliente(numIdentificacion, tipoIdentificacion, nombres, apellidos, supermercado);
-
-        if ((respuesta == true && mostrarVendtana == true)) {
-            JOptionPane.showMessageDialog(null, "Cliente Registrado con exito");
-        } else if (respuesta == false || mostrarVendtana == true) {
-            JOptionPane.showMessageDialog(null, "El número de identificación ingresado ya existe");
-        }
-    }
-
-    //Empleado
-    private static void crearEmpleado(Supermercado supermercado, String identificacion, RolEmpleado rolEmpleado,
-                                      String nombres, String apellidos, String fechaNacimiento, String telefono, boolean mostrarVendtana) {
-
         boolean respuesta = supermercado.crearEmpleado(identificacion, nombres, apellidos, rolEmpleado, fechaNacimiento, telefono, supermercado);
+        mostrarMensajeRespuesta(respuesta, "Se ha creado correctamente el empleado", "No ha sido posible crear el empleado");
+    }
 
-        if ((respuesta == true && mostrarVendtana == true)) {
-            JOptionPane.showMessageDialog(null, "Empleado Registrado con exito");
-        } else if (respuesta == false || mostrarVendtana == true) {
-            JOptionPane.showMessageDialog(null, "El número de identificación ingresado ya existe");
+    private static void editarEmpleado(Supermercado supermercado) {
+        String identificacion = leerStringVentana("Ingrese el número de identificación del cliente");
+        boolean exist = supermercado.validarExistenciaEmpleado(identificacion);
+        if (exist) {
+            RolEmpleado rolEmpleado = null;
+            boolean continuar = false;
+
+            String nombres = leerStringVentana("Ingrese el nombre del empleado");
+            String apellidos = leerStringVentana("Ingrese el apellido del empleado");
+            String fechaNacimiento = leerStringVentana("Ingrese la fecha de nacimiento del empleado");
+            String telefono = leerStringVentana("Ingrese el teléfono del empleado");
+            do {
+                int tipo = leerEnteroVentana("Rol del empleado\n" +
+                        "1. Gerente\n" +
+                        "2. Caja\n" +
+                        "3. Operario\n" +
+                        "4. Surtidor\n" +
+                        "5. Empacador\n" +
+                        "6. Domiciliario");
+                switch (tipo) {
+                    case 1:
+                        rolEmpleado = RolEmpleado.Gerente;
+                        continuar = true;
+                        break;
+                    case 2:
+                        rolEmpleado = RolEmpleado.Caja;
+                        continuar = true;
+                        break;
+                    case 3:
+                        rolEmpleado = RolEmpleado.Operario;
+                        continuar = true;
+                        break;
+                    case 4:
+                        rolEmpleado = RolEmpleado.Surtidor;
+                        continuar = true;
+                        break;
+                    case 5:
+                        rolEmpleado = RolEmpleado.Empacador;
+                        continuar = true;
+                        break;
+                    case 6:
+                        rolEmpleado = RolEmpleado.Domiciliario;
+                        continuar = true;
+                        break;
+                    default:
+                        JOptionPane.showMessageDialog(null, "Opcion Invalida");
+                }
+            } while (continuar == false);
+            //Actualizar Empleado
+            boolean respuesta = supermercado.editarEmpleado(identificacion, nombres, apellidos, rolEmpleado, fechaNacimiento, telefono, supermercado);
+            mostrarMensajeRespuesta(respuesta, "Empleado actualizado", "No se ha podido actualizar el empleado");
+        } else {
+            mostrarMensajeRespuesta(exist, "", "No se encuentra registrado este identificador");
         }
+
     }
 
-    private static void crearEmpleado(Supermercado supermercado, String numIdentificacion, String nombres, String apellidos, RolEmpleado rol, String fechaNacimiento, String telefono) {
-        supermercado.crearEmpleado(numIdentificacion, nombres, apellidos, rol, fechaNacimiento, telefono, supermercado);
-    }
+    private static void eliminarEmpleado(Supermercado supermercado) {
+        String identificacion = leerStringVentana("Ingrese el número de identificación del empleado");
 
-
-    //Producto
-    private static void crearProducto(Supermercado supermercado, String idProducto, String nombre, String marca,
-                                      String fechaVencimiento, int cantidad, double precio, boolean mostrarVendtana) {
-
-        boolean respuesta = supermercado.crearProducto(supermercado, idProducto, nombre, marca, fechaVencimiento, cantidad, precio);
-
-        if ((respuesta == true && mostrarVendtana == true)) {
-            JOptionPane.showMessageDialog(null, "Producto Registrado con exito");
-        } else if (respuesta == false || mostrarVendtana == true) {
-            JOptionPane.showMessageDialog(null, "El número de identificación ingresado ya existe");
+        boolean exist = supermercado.validarExistenciaEmpleado(identificacion);
+        if (exist) {
+            //Eliminar empleado
+            boolean respuesta = supermercado.eliminarEmpleado(identificacion);
+            mostrarMensajeRespuesta(respuesta, "Producto actualizado", "No se ha podido actualizar el producto");
+        } else {
+            mostrarMensajeRespuesta(exist, "", "No se encuentra registrado este identificador");
         }
+
     }
 
-    //READ
-    //Cliente
-    private static void mostrarInformacionClientes(Supermercado supermercado) {
-        List<Cliente> listaClientes = supermercado.obtenerClientes();
-        String mensaje = "";
-        int tamanioLista = listaClientes.size();
-        for (int i = 0; i < tamanioLista; i++) {
-            Cliente cliente = listaClientes.get(i);
-            mensaje += cliente + "\n";
-        }
-        JOptionPane.showMessageDialog(null, mensaje);
-    }
-
-    //Empleado
-    private static void mostrarInformacionEmpleado(Supermercado supermercado) {
+    private static void mostrarEmpleados(Supermercado supermercado) {
         List<Empleado> listaEmpleado = supermercado.obtenerEmpleados();
         String mensaje = "";
         int tamanioLista = listaEmpleado.size();
@@ -430,7 +377,50 @@ public class Main {
     }
 
     //Producto
-    private static void mostrarInformacionProducto(Supermercado supermercado) {
+    private static void crearProducto(Supermercado supermercado) {
+
+        String idProducto = leerStringVentana("Ingrese el identificación del producto");
+        String nombre = leerStringVentana("Ingrese el nombre del producto");
+        String marca = leerStringVentana("Ingrese la marca del producto");
+        String fechaVencimiento = leerStringVentana("Ingrese la fecha de vencimiento del producto");
+        int cantidad = leerEnteroVentana("Ingrese la cantidad del producto");
+        double precio = leerDoubleVentana("Ingrese el precio del producto");
+
+        boolean respuesta = supermercado.crearProducto(supermercado, idProducto, nombre, marca, fechaVencimiento, cantidad, precio);
+        mostrarMensajeRespuesta(respuesta, "Se ha creado correctamente el producto", "No ha sido posible crear el producto");
+    }
+
+    private static void editarProducto(Supermercado supermercado) {
+        String idProducto = leerStringVentana("Ingrese el número de identificación del producto");
+        boolean exist = supermercado.validarExistenciaProducto(idProducto);
+        if (exist) {
+            String nombre = leerStringVentana("Ingrese el nombre del producto");
+            String marca = leerStringVentana("Ingrese la marca del producto");
+            String fechaVencimiento = leerStringVentana("Ingrese la fecha de vencimiento del producto");
+            int cantidad = leerEnteroVentana("Ingrese la cantidad del producto");
+            double precio = leerDoubleVentana("Ingrese el precio del producto");
+            //Actualizar Producto
+            boolean respuesta = supermercado.editarProducto(supermercado, idProducto, nombre, marca, fechaVencimiento, cantidad, precio);
+            mostrarMensajeRespuesta(respuesta, "Producto actualizado", "No se ha podido actualizar el producto");
+        } else {
+            mostrarMensajeRespuesta(exist, "", "No se encuentra registrado este identificador");
+        }
+
+    }
+
+    private static void eliminarProducto(Supermercado supermercado) {
+        String idProducto = leerStringVentana("Ingrese el número de identificación del producto");
+        boolean exist = supermercado.validarExistenciaProducto(idProducto);
+        if (exist) {
+
+            boolean respuesta = supermercado.eliminarProducto(idProducto);
+            mostrarMensajeRespuesta(respuesta, "Producto eliminado", "No se ha podido eliminar el producto");
+        } else {
+            mostrarMensajeRespuesta(exist, "", "No se encuentra registrado este identificador");
+        }
+    }
+
+    private static void mostrarProductos(Supermercado supermercado) {
         List<Producto> listaProducto = supermercado.getListaProductos();
         String mensaje = "";
         int tamanioLista = listaProducto.size();
@@ -441,56 +431,80 @@ public class Main {
         JOptionPane.showMessageDialog(null, mensaje);
     }
 
+    //Proveedor
+    private static void crearProveedor(Supermercado supermercado) {
+        String identificacion = leerStringVentana("Ingrese el número de identificación del proveedor");
+        String nombre = leerStringVentana("Ingrese el nombre del proveedor");
+        String telefono = leerStringVentana("Ingrese el teléfono del proveedor");
 
-    //DELETE
-    //Empleado
-    private static void solicitarDatosEmpleadoEliminar(Supermercado supermercado) {
-        String identificacion = leerStringVentana("Ingrese el número de identificación del empleado");
+        boolean respuesta = supermercado.crearProveedor(supermercado, identificacion, nombre, telefono);
+        mostrarMensajeRespuesta(respuesta, "Se ha creado correctamente el producto", "No ha sido posible crear el producto");
+    }
 
-        boolean exist = supermercado.validarExistenciaEmpleado(identificacion);
-        if (exist == true) {
-            //Eliminar empleado
-            supermercado.eliminarEmpleado(identificacion);
-            JOptionPane.showMessageDialog(null, "Empleado eliminado");
+    private static void editarProveedor(Supermercado supermercado) {
+        String identificacion = leerStringVentana("Ingrese el número de identificación del proveedor");
+        boolean exist = supermercado.validarExistenciaProveedor(identificacion);
+        if (exist) {
+            String nombre = leerStringVentana("Ingrese el nombre del proveedor");
+            String telefono = leerStringVentana("Ingrese el teléfono del proveedor");
+            //Actualizar Producto
+            boolean respuesta = supermercado.editarProveedor(supermercado, identificacion, nombre, telefono);
+            mostrarMensajeRespuesta(respuesta, "Producto actualizado", "No se ha podido actualizar el producto");
         } else {
-            JOptionPane.showMessageDialog(null, "No se encuentra registrado este identificador");
+            mostrarMensajeRespuesta(exist, "", "No se encuentra registrado este identificador");
         }
 
     }
+
+    private static void eliminarProveedor(Supermercado supermercado) {
+        String identificacion = leerStringVentana("Ingrese el número de identificación del proveedor");
+        boolean exist = supermercado.validarExistenciaProveedor(identificacion);
+        if (exist) {
+
+            boolean respuesta = supermercado.eliminarProveedor(identificacion);
+            mostrarMensajeRespuesta(respuesta, "Producto eliminado", "No se ha podido eliminar el producto");
+        } else {
+            mostrarMensajeRespuesta(exist, "", "No se encuentra registrado este identificador");
+        }
+    }
+
+    private static void mostrarProveedor(Supermercado supermercado) {
+        List<Proveedor> listaProveedores = supermercado.getListaProveedores();
+        String mensaje = "";
+        int tamanioLista = listaProveedores.size();
+        for (int i = 0; i < tamanioLista; i++) {
+            Proveedor proveedor = listaProveedores.get(i);
+            mensaje += proveedor + "\n";
+        }
+        JOptionPane.showMessageDialog(null, mensaje);
+    }
+
+//METODOS CREATE SIN VENTANA ----------------------------------------------------------------
+
+    //CREATE
 
     //Cliente
-    private static void solicitarDatosClienteEliminar(Supermercado supermercado) {
-        String identificacion = leerStringVentana("Ingrese el número de identificación del cliente");
-
-        boolean exist = supermercado.validarExistenciaCliente(identificacion);
-        if (exist == true) {
-            //Eliminar cliente
-            supermercado.eliminarCliente(identificacion);
-            JOptionPane.showMessageDialog(null, "Cliente eliminado");
-        } else {
-            JOptionPane.showMessageDialog(null, "No se encuentra registrado este identificador");
-        }
+    private static void crearCliente(Supermercado supermercado, String numIdentificacion, TipoIdentificacion tipoIdentificacion, String nombres, String apellidos) {
+        boolean respuesta = supermercado.crearCliente(numIdentificacion, tipoIdentificacion, nombres, apellidos, supermercado);
     }
 
-
-    //Eliminar producto
-    private static void solicitarDatosProductoEliminar(Supermercado supermercado) {
-        String idProducto = leerStringVentana("Ingrese el número de identificación del producto");
-
-        boolean exist = supermercado.validarExistenciaProducto(idProducto);
-        if (exist == true) {
-
-            supermercado.eliminarProducto(idProducto);
-
-            JOptionPane.showMessageDialog(null, "Producto eliminado");
-        } else {
-            JOptionPane.showMessageDialog(null, "No se encuentra registrado este identificador");
-        }
+    //Empleado
+    private static void crearEmpleado(Supermercado supermercado, String numIdentificacion, String nombres, String apellidos, RolEmpleado rol, String fechaNacimiento, String telefono) {
+        boolean respuesta = supermercado.crearEmpleado(numIdentificacion, nombres, apellidos, rol, fechaNacimiento, telefono, supermercado);
     }
 
+    //Producto
+    private static void crearProducto(Supermercado supermercado, String idProducto, String nombre, String marca, String fechaVencimiento, int cantidad, double precio) {
+        boolean respuesta = supermercado.crearProducto(supermercado, idProducto, nombre, marca, fechaVencimiento, cantidad, precio);
+    }
+
+    //Proveedor
+    private static void crearProveedor(Supermercado supermercado, String numIdentificacion, String nombre, String telefono){
+        boolean respuesta = supermercado.crearProveedor(supermercado, numIdentificacion, nombre, telefono);
+    }
 
     //LECTOR DE VENTANA ----------------------------------------------------------------
-    public static int leerEnteroVentana(String mensaje) {
+    private static int leerEnteroVentana(String mensaje) {
         boolean bucle = true;
         int dato = 0;
         do {
@@ -504,7 +518,7 @@ public class Main {
         return dato;
     }
 
-    public static double leerDoubleVentana(String mensaje) {
+    private static double leerDoubleVentana(String mensaje) {
         boolean bucle = true;
         double dato = 0.0;
         do {
@@ -518,9 +532,18 @@ public class Main {
         return dato;
     }
 
-    public static String leerStringVentana(String mensaje) {
+    private static String leerStringVentana(String mensaje) {
         String respuesta = "";
         respuesta = JOptionPane.showInputDialog(mensaje);
         return respuesta;
+    }
+
+    //MENSAJES ----------------------------------------------------------------
+    private static void mostrarMensajeRespuesta(boolean event, String mensajeCorrecto, String mensajeError){
+        if (event) {
+            JOptionPane.showMessageDialog(null, mensajeCorrecto, "Correct", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(null, mensajeError, "Information", JOptionPane.WARNING_MESSAGE);
+        }
     }
 }

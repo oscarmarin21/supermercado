@@ -4,6 +4,7 @@ public class Proveedor {
     String numIdentificacion;
     String nombre;
     String telefono;
+    Supermercado ownedBySupermercado;
 
     public Proveedor() {
     }
@@ -36,6 +37,14 @@ public class Proveedor {
 
     public void setTelefono(String telefono) {
         this.telefono = telefono;
+    }
+
+    public Supermercado getOwnedBySupermercado() {
+        return ownedBySupermercado;
+    }
+
+    public void setOwnedBySupermercado(Supermercado ownedBySupermercado) {
+        this.ownedBySupermercado = ownedBySupermercado;
     }
 
     @Override
