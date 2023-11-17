@@ -34,6 +34,9 @@ public class Main {
         crearProducto(supermercado, "003", "Natilla", "La abuela", "03/03/2024", 150, 6.200);
         crearProducto(supermercado, "004", "Buñuelos", "Promasa", "25/02/2024", 350, 6.500);
 
+        //INICIALIZAR PRODUCTOS ----------------------------------------------------------------
+        crearProveedor(supermercado, "001", "Rammo", "3159456374");
+
         //MENU
         do {
             valorSeleccion = leerEnteroVentana("Ingrese el número de la acción que se desea realizar \n " +
