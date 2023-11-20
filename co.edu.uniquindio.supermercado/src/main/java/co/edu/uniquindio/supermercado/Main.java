@@ -27,10 +27,10 @@ public class Main {
         crearEmpleado(supermercado, "004", "Pocholo", "Garcia", RolEmpleado.Domiciliario, "01/01/1990", "3128529647");
 
         //INICIALIZAR PRODUCTOS ----------------------------------------------------------------
-        crearProducto(supermercado, "001", "Arepas", "El paisa", "17/12/2023", 200, 4.500);
+        crearProducto(supermercado, "001", "Arepas", "El paisa", "17/12/2023", 200, 4500);
         crearProducto(supermercado, "002", "Arroz", "Roa", "05/05/2024", 1200, 1.500);
-        crearProducto(supermercado, "003", "Natilla", "La abuela", "03/03/2024", 150, 6.200);
-        crearProducto(supermercado, "004", "Buñuelos", "Promasa", "25/02/2024", 350, 6.500);
+        crearProducto(supermercado, "003", "Natilla", "La abuela", "03/03/2024", 150, 6200);
+        crearProducto(supermercado, "004", "Buñuelos", "Promasa", "25/02/2024", 350, 6500);
 
         //INICIALIZAR PRODUCTOS ----------------------------------------------------------------
         crearProveedor(supermercado, "001", "Rammo", "3159456374");
@@ -518,12 +518,15 @@ public class Main {
         String identificacionEmpleado = ServicesUtil.leerStringVentana("Ingrese el número de identificación del empleado");
 
         boolean respuesta = supermercado.crearVenta(idVenta, fecha, identificacionCliente, identificacionEmpleado, supermercado);
+        Venta venta = supermercado.obtenerVenta(idVenta);
         boolean respuestaDetalle = false;
         if (respuesta){
-            Venta venta = supermercado.obtenerVenta(idVenta);
             respuestaDetalle = generarDetalle(venta, supermercado);
+            double totalVenta = venta.calcularTotal(idVenta);
+            venta.setTotalVenta(totalVenta);
         }
         ServicesUtil.mostrarMensajeRespuesta(respuestaDetalle, "Se ha creado correctamente la venta", "No ha sido posible crear la venta");
+        JOptionPane.showMessageDialog(null, venta);
     }
 
     private static boolean generarDetalle(Venta venta, Supermercado supermercado) {
@@ -567,13 +570,16 @@ public class Main {
             String identificacionEmpleado = ServicesUtil.leerStringVentana("Ingrese el número de identificación del empleado");
             //Actualizar Producto
             boolean respuesta = supermercado.editarVenta(idVenta, fecha, identificacionCliente, identificacionEmpleado, supermercado);
+            Venta venta = supermercado.obtenerVenta(idVenta);
             boolean respuestaDetalle = false;
             if (respuesta){
-                Venta venta = supermercado.obtenerVenta(idVenta);
                 venta.eliminarDetalleVenta(idVenta);
                 respuestaDetalle = generarDetalle(venta, supermercado);
+                double totalVenta = venta.calcularTotal(idVenta);
+                venta.setTotalVenta(totalVenta);
             }
-            ServicesUtil.mostrarMensajeRespuesta(respuestaDetalle, "Producto actualizado", "No se ha podido actualizar el producto");
+            ServicesUtil.mostrarMensajeRespuesta(respuestaDetalle, "Venta actualizada", "No se ha podido actualizar la venta");
+            JOptionPane.showMessageDialog(null, venta);
         } else {
             ServicesUtil.mostrarMensajeRespuesta(exist, "", "No se encuentra registrado este identificador");
         }

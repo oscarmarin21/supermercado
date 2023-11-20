@@ -8,6 +8,7 @@ import java.util.List;
 public class Venta implements IVenta {
     private String idVenta;
     private String fechaVenta;
+    private double totalVenta;
     private Cliente clienteAsociado;
     private Empleado empleadoAsociado;
     private Supermercado ownedBySupermercado;
@@ -20,7 +21,7 @@ public class Venta implements IVenta {
     public Venta(String idVenta, String fechaVenta) {
         this.idVenta = idVenta;
         this.fechaVenta = fechaVenta;
-
+        this.totalVenta = totalVenta;
     }
 
     public String getIdVenta() {
@@ -37,6 +38,14 @@ public class Venta implements IVenta {
 
     public void setFechaVenta(String fechaVenta) {
         this.fechaVenta = fechaVenta;
+    }
+
+    public double getTotalVenta() {
+        return totalVenta;
+    }
+
+    public void setTotalVenta(double totalVenta) {
+        this.totalVenta = totalVenta;
     }
 
     public Cliente getClienteAsociado() {   return clienteAsociado; }
@@ -67,8 +76,8 @@ public class Venta implements IVenta {
                 ", clienteAsociado=" + clienteAsociado.getNombres() +
                 ", empleadoAsociado=" + empleadoAsociado.getNombres() +
                 ", ownedBySupermercado=" + ownedBySupermercado.getNombre() + "\n" +
-                "  Detalle=" + detalle +
-                '}';
+                "Detalle=" + detalle +
+                "} = " + totalVenta;
     }
 
     /**
@@ -111,6 +120,17 @@ public class Venta implements IVenta {
             }
         }
         return eliminar;
+    }
+
+    @Override
+    public double calcularTotal(String idVenta) {
+        double total = 0;
+        for (DetalleVenta detalle:getListaDetalleVenta()) {
+            if (detalle.getOwnedByVenta().getIdVenta().equalsIgnoreCase(idVenta)){
+                total += detalle.getProductoAsociado().getPrecio()*detalle.getCantidad();
+            }
+        }
+        return total;
     }
 
     /**
