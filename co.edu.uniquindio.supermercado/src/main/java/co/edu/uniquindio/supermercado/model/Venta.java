@@ -78,15 +78,15 @@ public class Venta implements IVenta {
      * @param idVenta
      * @param idProducto
      * @param supermercado
-     * @return DetalleVenta
+     * @return boolean
      */
     @Override
-    public DetalleVenta crearDetalleVenta(String idDetalle, int cantidad, String idVenta, String idProducto, Supermercado supermercado) {
+    public boolean crearDetalleVenta(String idDetalle, int cantidad, String idVenta, String idProducto, Supermercado supermercado) {
         Venta venta = supermercado.obtenerVenta(idVenta);
         Producto producto = supermercado.obtenerProducto(idProducto);
 
         if (venta == null || producto == null){
-            return null;
+            return false;
         }
 
         DetalleVenta detalle = new DetalleVenta(idDetalle, cantidad);
@@ -96,7 +96,21 @@ public class Venta implements IVenta {
 
         getListaDetalleVenta().add(detalle);
 
-        return detalle;
+        return true;
+    }
+
+    @Override
+    public boolean eliminarDetalleVenta(String idVenta) {
+        int tamanioLista = getListaDetalleVenta().size();
+        boolean eliminar = false;
+        for (int i = 0; i < tamanioLista; i++) {
+            DetalleVenta detalle = getListaDetalleVenta().get(i);
+            if (detalle.getOwnedByVenta().getIdVenta().equalsIgnoreCase(idVenta)) {
+                getListaDetalleVenta().remove(i);
+                eliminar = true;
+            }
+        }
+        return eliminar;
     }
 
     /**

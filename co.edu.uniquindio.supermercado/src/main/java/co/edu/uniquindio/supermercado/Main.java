@@ -162,10 +162,10 @@ public class Main {
                                 crearVenta(supermercado);
                         case 2 ->
                             //Update
-                                editarProveedor(supermercado);
+                                editarVenta(supermercado);
                         case 3 ->
                             //Delete
-                                eliminarProveedor(supermercado);
+                                eliminarVenta(supermercado);
                         case 4 ->
                             //Read
                                 mostrarVenta(supermercado);
@@ -542,9 +542,8 @@ public class Main {
                 }
             }
             int cantidad = ServicesUtil.leerEnteroVentana("Ingrese la cantidad del detalle");
-            DetalleVenta detalle = venta.crearDetalleVenta(idDetalle, cantidad, venta.getIdVenta(), idProducto, supermercado);
-            if (detalle!=null) {
-                venta.getListaDetalleVenta().add(detalle);
+            boolean detalle = venta.crearDetalleVenta(idDetalle, cantidad, venta.getIdVenta(), idProducto, supermercado);
+            if (detalle) {
                 generado = true;
             }else {
                 JOptionPane.showMessageDialog(null, "Ocurrio un error no se pudo registrar");
@@ -560,27 +559,34 @@ public class Main {
     }
 
     private static void editarVenta(Supermercado supermercado) {
-        String identificacion = ServicesUtil.leerStringVentana("Ingrese el número de identificación del proveedor");
-        boolean exist = supermercado.validarExistenciaProveedor(identificacion);
+        String idVenta = ServicesUtil.leerStringVentana("Ingrese el ID de la venta");
+        boolean exist = supermercado.validarExistenciaVenta(idVenta);
         if (exist) {
-            String nombre = ServicesUtil.leerStringVentana("Ingrese el nombre del proveedor");
-            String telefono = ServicesUtil.leerStringVentana("Ingrese el teléfono del proveedor");
+            String fecha = ServicesUtil.leerStringVentana("Ingrese la fecha de la venta");
+            String identificacionCliente = ServicesUtil.leerStringVentana("Ingrese el número de identificación del cliente");
+            String identificacionEmpleado = ServicesUtil.leerStringVentana("Ingrese el número de identificación del empleado");
             //Actualizar Producto
-            boolean respuesta = supermercado.editarProveedor(supermercado, identificacion, nombre, telefono);
-            ServicesUtil.mostrarMensajeRespuesta(respuesta, "Producto actualizado", "No se ha podido actualizar el producto");
+            boolean respuesta = supermercado.editarVenta(idVenta, fecha, identificacionCliente, identificacionEmpleado, supermercado);
+            boolean respuestaDetalle = false;
+            if (respuesta){
+                Venta venta = supermercado.obtenerVenta(idVenta);
+                venta.eliminarDetalleVenta(idVenta);
+                respuestaDetalle = generarDetalle(venta, supermercado);
+            }
+            ServicesUtil.mostrarMensajeRespuesta(respuestaDetalle, "Producto actualizado", "No se ha podido actualizar el producto");
         } else {
             ServicesUtil.mostrarMensajeRespuesta(exist, "", "No se encuentra registrado este identificador");
         }
-
     }
 
     private static void eliminarVenta(Supermercado supermercado) {
-        String identificacion = ServicesUtil.leerStringVentana("Ingrese el número de identificación del proveedor");
-        boolean exist = supermercado.validarExistenciaProveedor(identificacion);
+        String idVenta = ServicesUtil.leerStringVentana("Ingrese el ID de la venta");
+        boolean exist = supermercado.validarExistenciaVenta(idVenta);
         if (exist) {
-
-            boolean respuesta = supermercado.eliminarProveedor(identificacion);
-            ServicesUtil.mostrarMensajeRespuesta(respuesta, "Producto eliminado", "No se ha podido eliminar el producto");
+            Venta venta = supermercado.obtenerVenta(idVenta);
+            venta.eliminarDetalleVenta(idVenta);
+            boolean respuesta = supermercado.eliminarVenta(idVenta);
+            ServicesUtil.mostrarMensajeRespuesta(respuesta, "Venta eliminado", "No se ha podido eliminar la venta");
         } else {
             ServicesUtil.mostrarMensajeRespuesta(exist, "", "No se encuentra registrado este identificador");
         }

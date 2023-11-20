@@ -677,6 +677,7 @@ public class Supermercado {
                 break;
             }
         }
+
         return eliminar;
     }
     @Override
