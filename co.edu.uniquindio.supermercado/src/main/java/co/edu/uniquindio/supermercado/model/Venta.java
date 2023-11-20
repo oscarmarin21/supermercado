@@ -57,12 +57,17 @@ public class Venta implements IVenta {
 
     @Override
     public String toString() {
+        String detalle = "";
+        for (DetalleVenta detalleV: listaDetalleVenta) {
+            detalle += detalleV.getProductoAsociado().getNombre() + " = " + detalleV.getCantidad() + "/UNID\n";
+        }
         return "Venta{" +
-                "idVenta='" + idVenta + '\'' +
-                ", fechaVenta='" + fechaVenta + '\'' +
-                ", clienteAsociado=" + clienteAsociado +
-                ", empleadoAsociado=" + empleadoAsociado +
-                ", ownedBySupermercado=" + ownedBySupermercado +
+                "idVenta='" + idVenta +
+                ", fechaVenta='" + fechaVenta +
+                ", clienteAsociado=" + clienteAsociado.getNombres() +
+                ", empleadoAsociado=" + empleadoAsociado.getNombres() +
+                ", ownedBySupermercado=" + ownedBySupermercado.getNombre() + "\n" +
+                "  Detalle=" + detalle +
                 '}';
     }
 
