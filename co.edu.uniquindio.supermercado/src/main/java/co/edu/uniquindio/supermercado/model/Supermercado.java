@@ -10,10 +10,11 @@ import java.util.List;
 public class Supermercado {
     private String nit;
     private String nombre;
-    List<Cliente> listaClientes = new ArrayList<>();
-    List<Empleado> listaEmpleados = new ArrayList<>();
-    List<Producto> listaProductos = new ArrayList<>();
-    List<Proveedor> listaProveedores = new ArrayList<>();
+    private List<Cliente> listaClientes = new ArrayList<>();
+    private List<Empleado> listaEmpleados = new ArrayList<>();
+    private List<Producto> listaProductos = new ArrayList<>();
+    private List<Proveedor> listaProveedores = new ArrayList<>();
+    private List<Venta> listaVentas = new ArrayList<>();
 
     public Supermercado() {
     }
@@ -69,6 +70,10 @@ public class Supermercado {
         this.listaProveedores = listaProveedores;
     }
 
+    public List<Venta> getListaVentas() {   return listaVentas; }
+
+    public void setListaVentas(List<Venta> listaVentas) {   this.listaVentas = listaVentas; }
+
     /**
      * Metodo para crear un cliente
      *
@@ -98,6 +103,22 @@ public class Supermercado {
      */
     public List<Cliente> obtenerClientes() {
         return getListaClientes();
+    }
+
+    /**
+     * Metodo para obtener un cliente por identificacion
+     * @param numIdentificacion
+     * @return Cliente
+     */
+    public Cliente obtenerCliente(String numIdentificacion) {
+        Cliente clienteEncontrado = null;
+        for (Cliente cliente : getListaClientes()) {
+            if (cliente.getNumIdentificacion().equalsIgnoreCase(numIdentificacion)){
+                clienteEncontrado = cliente;
+                break;
+            }
+        }
+        return clienteEncontrado;
     }
 
     /**
@@ -165,6 +186,7 @@ public class Supermercado {
         }
         return eliminar;
     }
+
     /**
      * Metodo para crear un empleado
      *
@@ -217,6 +239,22 @@ public class Supermercado {
      */
     public List<Empleado> obtenerEmpleados() {
         return getListaEmpleados();
+    }
+
+    /**
+     * Metodo para obtener un empleado por identificacion
+     * @param numIdentificacion
+     * @return Empleado
+     */
+    public Empleado obtenerEmpleado(String numIdentificacion) {
+        Empleado empleadoEncontrado = null;
+        for (Empleado empleado : getListaEmpleados()) {
+            if (empleado.getNumIdentificacion().equalsIgnoreCase(numIdentificacion)){
+                empleadoEncontrado = empleado;
+                break;
+            }
+        }
+        return empleadoEncontrado;
     }
 
     /**
@@ -294,6 +332,31 @@ public class Supermercado {
             return false;
         }
 
+    }
+
+    /**
+     * Metodo para obtener los Productos
+     *
+     * @return List<Producto>
+     */
+    public List<Producto> obtenerProductos() {
+        return getListaProductos();
+    }
+
+    /**
+     * Metodo para obtener un empleado por identificacion
+     * @param idProducto
+     * @return Empleado
+     */
+    public Producto obtenerProducto(String idProducto) {
+        Producto productoEncontrado = null;
+        for (Producto producto : getListaProductos()) {
+            if (producto.getIdProducto().equalsIgnoreCase(idProducto)){
+                productoEncontrado = producto;
+                break;
+            }
+        }
+        return productoEncontrado;
     }
 
     /**
@@ -390,6 +453,15 @@ public class Supermercado {
     }
 
     /**
+     * Metodo para obtener los proveedores
+     *
+     * @return List<Proveedor>
+     */
+    public List<Proveedor> obtenerProveedores() {
+        return getListaProveedores();
+    }
+
+    /**
      * Metodo para editar Proveedor
      *
      * @param supermercado
@@ -455,6 +527,130 @@ public class Supermercado {
         return eliminar;
     }
 
+    /**
+     * Metodo para crear un venta
+     *
+     * @param idVenta
+     * @param fechaVenta
+     * @param numIdentificacionCliente
+     * @param numIdentificacionEmpleado
+     * @param supermercado
+     * @return boolean
+     */
+    public boolean crearVenta(String idVenta, String fechaVenta, String numIdentificacionCliente, String numIdentificacionEmpleado, Supermercado supermercado) {
+        boolean exist = validarExistenciaVenta(idVenta);
+        if (exist==false) {
+            Cliente cliente = obtenerCliente(numIdentificacionCliente);
+            Empleado empleado = obtenerEmpleado(numIdentificacionEmpleado);
+            if (cliente == null || empleado == null) {
+                return false;
+            }
+            Venta venta = new Venta(idVenta, fechaVenta);
+            venta.setClienteAsociado(cliente);
+            venta.setEmpleadoAsociado(empleado);
+            venta.setOwnedBySupermercado(supermercado);
+            getListaVentas().add(venta);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Metodo para obtener la lista de ventas
+     *
+     * @return List<Venta>
+     */
+    public List<Venta> obtenerVentas() {
+        return getListaVentas();
+    }
+
+    /**
+     * Metodo para obtener un Venta por IdVenta
+     * @param idVenta
+     * @return Venta
+     */
+    public Venta obtenerVenta(String idVenta) {
+        Venta ventaEncontrada = null;
+        for (Venta venta : getListaVentas()) {
+            if (venta.getIdVenta().equalsIgnoreCase(idVenta)){
+                ventaEncontrada = venta;
+                break;
+            }
+        }
+        return ventaEncontrada;
+    }
+
+    /**
+     * Metodo para obtener validar si existe Venta
+     * @param idVenta
+     * @return boolean
+     */
+    public boolean validarExistenciaVenta(String idVenta) {
+        int tamanioLista = getListaVentas().size();
+        boolean exist = false;
+        for (int i = 0; i < tamanioLista; i++) {
+            Venta venta = getListaVentas().get(i);
+            if (venta.getIdVenta().equalsIgnoreCase(idVenta)) {
+                exist = true;
+                break;
+            }
+        }
+        return exist;
+    }
+
+    /**
+     * Metodo para obtener editar venta
+     *
+     * @param idVenta
+     * @param fechaVenta
+     * @param numIdentificacionCliente
+     * @param numIdentificacionEmpleado
+     * @param supermercado
+     * @return boolean
+     */
+    public boolean editarVenta(String idVenta, String fechaVenta, String numIdentificacionCliente, String numIdentificacionEmpleado, Supermercado supermercado) {
+        int tamanioLista = getListaVentas().size();
+        boolean actualizar = false;
+        for (int i = 0; i < tamanioLista; i++) {
+            Venta venta = getListaVentas().get(i);
+            if (venta.getIdVenta().equalsIgnoreCase(idVenta)) {
+                Cliente cliente = obtenerCliente(numIdentificacionCliente);
+                Empleado empleado = obtenerEmpleado(numIdentificacionEmpleado);
+                if (cliente == null || empleado == null) {
+                    return false;
+                }
+                venta.setFechaVenta(fechaVenta);
+                venta.setClienteAsociado(cliente);
+                venta.setEmpleadoAsociado(empleado);
+                venta.setOwnedBySupermercado(supermercado);
+                actualizar = true;
+                break;
+            }
+        }
+        return actualizar;
+    }
+
+    /**
+     * Metodo para eliminar venta
+     *
+     * @param idVenta
+     * @return boolean
+     */
+    public boolean eliminarVenta(String idVenta) {
+        int tamanioLista = getListaVentas().size();
+        boolean eliminar = false;
+
+        for (int i = 0; i < tamanioLista; i++) {
+            Venta venta = getListaVentas().get(i);
+            if (venta.getIdVenta().equalsIgnoreCase(idVenta)) {
+                getListaVentas().remove(i);
+                eliminar = true;
+                break;
+            }
+        }
+        return eliminar;
+    }
     @Override
     public String toString() {
         return "Supermercado{" +

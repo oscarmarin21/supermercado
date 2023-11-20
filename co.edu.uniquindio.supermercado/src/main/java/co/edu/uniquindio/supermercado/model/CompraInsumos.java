@@ -1,8 +1,8 @@
 package co.edu.uniquindio.supermercado.model;
 
 public class CompraInsumos {
-    String idCompra;
-    String fechaCompra;
+    private String idCompra;
+    private String fechaCompra;
 
     public CompraInsumos() {
     }

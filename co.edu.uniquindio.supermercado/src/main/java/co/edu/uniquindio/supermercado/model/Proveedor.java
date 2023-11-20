@@ -1,10 +1,10 @@
 package co.edu.uniquindio.supermercado.model;
 
 public class Proveedor {
-    String numIdentificacion;
-    String nombre;
-    String telefono;
-    Supermercado ownedBySupermercado;
+    private String numIdentificacion;
+    private String nombre;
+    private String telefono;
+    private Supermercado ownedBySupermercado;
 
     public Proveedor() {
     }

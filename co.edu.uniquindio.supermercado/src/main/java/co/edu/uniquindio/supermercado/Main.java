@@ -6,7 +6,6 @@ import co.edu.uniquindio.supermercado.model.*;
 import co.edu.uniquindio.supermercado.util.CapturaDatosUtil;
 
 import javax.swing.*;
-import java.sql.Struct;
 import java.util.List;
 
 public class Main {
@@ -49,7 +48,8 @@ public class Main {
                     "2. Gestionar empleados \n " +
                     "3. Gestionar productos \n " +
                     "4. Gestionar proveedor \n " +
-                    "5. Salir");
+                    "5. Gestionar ventas \n " +
+                    "6. Salir");
             switch (valorSeleccion) {
                 case 1:
                     //Gestión clientes
@@ -149,6 +149,30 @@ public class Main {
                     }
                     break;
                 case 5:
+                    valorSeleccion = CapturaDatosUtil.leerEnteroVentana("Ingrese el número de la acción que se desea realizar \n" +
+                            "1. Registrar ventas \n" +
+                            "2. Actualizar ventas \n" +
+                            "3. Eliminar ventas \n" +
+                            "4. Imprimir ventas \n" +
+                            "5. Salir");
+
+                    switch (valorSeleccion) {
+                        case 1 ->
+                            //Create
+                                crearVenta(supermercado);
+                        case 2 ->
+                            //Update
+                                editarProveedor(supermercado);
+                        case 3 ->
+                            //Delete
+                                eliminarProveedor(supermercado);
+                        case 4 ->
+                            //Read
+                                mostrarVenta(supermercado);
+                        case 5 -> continuar = false;
+                    }
+                    break;
+                case 6:
                     continuar = false;
                     break;
             }
@@ -428,7 +452,7 @@ public class Main {
     }
 
     private static void mostrarProductos(Supermercado supermercado) {
-        List<Producto> listaProducto = supermercado.getListaProductos();
+        List<Producto> listaProducto = supermercado.obtenerProductos();
         String mensaje = "";
         int tamanioLista = listaProducto.size();
         for (int i = 0; i < tamanioLista; i++) {
@@ -476,12 +500,99 @@ public class Main {
     }
 
     private static void mostrarProveedor(Supermercado supermercado) {
-        List<Proveedor> listaProveedores = supermercado.getListaProveedores();
+        List<Proveedor> listaProveedores = supermercado.obtenerProveedores();
         String mensaje = "";
         int tamanioLista = listaProveedores.size();
         for (int i = 0; i < tamanioLista; i++) {
             Proveedor proveedor = listaProveedores.get(i);
             mensaje += proveedor + "\n";
+        }
+        JOptionPane.showMessageDialog(null, mensaje);
+    }
+
+    //Venta
+    private static void crearVenta(Supermercado supermercado) {
+        String idVenta = CapturaDatosUtil.leerStringVentana("Ingrese el id de la venta");
+        String fecha = CapturaDatosUtil.leerStringVentana("Ingrese la fecha de la venta");
+        String identificacionCliente = CapturaDatosUtil.leerStringVentana("Ingrese el número de identificación del cliente");
+        String identificacionEmpleado = CapturaDatosUtil.leerStringVentana("Ingrese el número de identificación del empleado");
+
+        boolean respuesta = supermercado.crearVenta(idVenta, fecha, identificacionCliente, identificacionEmpleado, supermercado);
+        boolean respuestaDetalle = false;
+        if (respuesta){
+            Venta venta = supermercado.obtenerVenta(idVenta);
+            respuestaDetalle = generarDetalle(venta, supermercado);
+        }
+        CapturaDatosUtil.mostrarMensajeRespuesta(respuestaDetalle, "Se ha creado correctamente la venta", "No ha sido posible crear la venta");
+    }
+
+    private static boolean generarDetalle(Venta venta, Supermercado supermercado) {
+        boolean continuar = true;
+        boolean generado = false;
+        do {
+            generado = false;
+            String idDetalle = CapturaDatosUtil.leerStringVentana("Ingrese el id del detalle");
+            String idProducto = "";
+            boolean exist = false;
+            while (exist==false) {
+                idProducto = CapturaDatosUtil.leerStringVentana("Ingrese el id del producto");
+                exist = supermercado.validarExistenciaProducto(idProducto);
+                if (exist == false) {
+                    JOptionPane.showMessageDialog(null, "No existe producto registrado con este ID");
+                }
+            }
+            int cantidad = CapturaDatosUtil.leerEnteroVentana("Ingrese la cantidad del detalle");
+            DetalleVenta detalle = venta.crearDetalleVenta(idDetalle, cantidad, venta.getIdVenta(), idProducto, supermercado);
+            if (detalle!=null) {
+                venta.getListaDetalleVenta().add(detalle);
+                generado = true;
+            }else {
+                JOptionPane.showMessageDialog(null, "Ocurrio un error no se pudo registrar");
+            }
+            int opcion = CapturaDatosUtil.leerEnteroVentana("1. Continuar registrando\n2. Salir");
+            switch (opcion) {
+                case 1: continuar=true; break;
+                case 2: continuar=false; break;
+                default: continuar=false; break;
+            }
+        }while (continuar);
+        return generado;
+    }
+
+    private static void editarVenta(Supermercado supermercado) {
+        String identificacion = CapturaDatosUtil.leerStringVentana("Ingrese el número de identificación del proveedor");
+        boolean exist = supermercado.validarExistenciaProveedor(identificacion);
+        if (exist) {
+            String nombre = CapturaDatosUtil.leerStringVentana("Ingrese el nombre del proveedor");
+            String telefono = CapturaDatosUtil.leerStringVentana("Ingrese el teléfono del proveedor");
+            //Actualizar Producto
+            boolean respuesta = supermercado.editarProveedor(supermercado, identificacion, nombre, telefono);
+            CapturaDatosUtil.mostrarMensajeRespuesta(respuesta, "Producto actualizado", "No se ha podido actualizar el producto");
+        } else {
+            CapturaDatosUtil.mostrarMensajeRespuesta(exist, "", "No se encuentra registrado este identificador");
+        }
+
+    }
+
+    private static void eliminarVenta(Supermercado supermercado) {
+        String identificacion = CapturaDatosUtil.leerStringVentana("Ingrese el número de identificación del proveedor");
+        boolean exist = supermercado.validarExistenciaProveedor(identificacion);
+        if (exist) {
+
+            boolean respuesta = supermercado.eliminarProveedor(identificacion);
+            CapturaDatosUtil.mostrarMensajeRespuesta(respuesta, "Producto eliminado", "No se ha podido eliminar el producto");
+        } else {
+            CapturaDatosUtil.mostrarMensajeRespuesta(exist, "", "No se encuentra registrado este identificador");
+        }
+    }
+
+    private static void mostrarVenta(Supermercado supermercado) {
+        List<Venta> listaVentas = supermercado.obtenerVentas();
+        String mensaje = "";
+        int tamanioLista = listaVentas.size();
+        for (int i = 0; i < tamanioLista; i++) {
+            Venta venta = listaVentas.get(i);
+            mensaje += venta + "\n";
         }
         JOptionPane.showMessageDialog(null, mensaje);
     }

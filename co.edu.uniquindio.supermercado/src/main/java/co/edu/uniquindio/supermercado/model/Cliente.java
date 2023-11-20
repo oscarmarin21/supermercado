@@ -2,9 +2,13 @@ package co.edu.uniquindio.supermercado.model;
 
 import co.edu.uniquindio.supermercado.enumeracion.TipoIdentificacion;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Cliente extends Persona {
     private TipoIdentificacion tipoIdentificacion;
-    Supermercado ownedBySupermercado;
+    private Supermercado ownedBySupermercado;
+    private List<Venta> listaVentasAsociadas = new ArrayList<>();
 
     public Cliente(String numIdentificacion, TipoIdentificacion tipoIdentificacion, String nombres, String apellidos) {
         super(numIdentificacion,nombres,apellidos);
@@ -25,6 +29,14 @@ public class Cliente extends Persona {
 
     public void setOwnedBySupermercado(Supermercado ownedBySupermercado) {
         this.ownedBySupermercado = ownedBySupermercado;
+    }
+
+    public List<Venta> getListaVentasAsociadas() {
+        return listaVentasAsociadas;
+    }
+
+    public void setListaVentasAsociadas(List<Venta> listaVentasAsociadas) {
+        this.listaVentasAsociadas = listaVentasAsociadas;
     }
 
     @Override

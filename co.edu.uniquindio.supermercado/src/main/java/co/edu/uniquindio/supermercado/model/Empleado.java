@@ -6,7 +6,7 @@ public class Empleado extends Persona{
     private RolEmpleado rol;
     private String fechaNacimiento;
     private String telefono;
-    Supermercado ownedBySupermercado;
+    private Supermercado ownedBySupermercado;
 
     public Empleado(String numIdentificacion, String nombres, String apellidos, RolEmpleado rol, String fechaNacimiento, String telefono) {
         super(numIdentificacion, nombres, apellidos);
