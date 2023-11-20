@@ -71,6 +71,11 @@ public class ServicesUtil {
         }
     }
 
+    /**
+     * Metodo para incrementar el id
+     * @param id
+     * @return String
+     */
     public static String nextId(String id) {
         int maxId = Integer.parseInt(id);
         String nextId = String.format("%03d", maxId + 1);

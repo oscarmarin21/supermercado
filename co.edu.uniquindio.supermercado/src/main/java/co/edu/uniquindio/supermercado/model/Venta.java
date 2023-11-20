@@ -71,6 +71,15 @@ public class Venta implements IVenta {
                 '}';
     }
 
+    /**
+     * Metodo para crear detalle de Venta
+     * @param idDetalle
+     * @param cantidad
+     * @param idVenta
+     * @param idProducto
+     * @param supermercado
+     * @return DetalleVenta
+     */
     @Override
     public DetalleVenta crearDetalleVenta(String idDetalle, int cantidad, String idVenta, String idProducto, Supermercado supermercado) {
         Venta venta = supermercado.obtenerVenta(idVenta);
@@ -90,6 +99,10 @@ public class Venta implements IVenta {
         return detalle;
     }
 
+    /**
+     * Metodo para obtener el mayor Id del Detalle de venta
+     * @return String
+     */
     public String obtenerMayorIdDetalle(){
         String mayorId = "000";
         for (DetalleVenta detalle:listaDetalleVenta) {

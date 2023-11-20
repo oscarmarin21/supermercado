@@ -410,7 +410,7 @@ public class Main {
     //Producto
     private static void crearProducto(Supermercado supermercado) {
 
-        String idProducto = ServicesUtil.leerStringVentana("Ingrese el identificación del producto");
+        String idProducto = ServicesUtil.nextId(supermercado.obtenerMayorIdProducto());
         String nombre = ServicesUtil.leerStringVentana("Ingrese el nombre del producto");
         String marca = ServicesUtil.leerStringVentana("Ingrese la marca del producto");
         String fechaVencimiento = ServicesUtil.leerStringVentana("Ingrese la fecha de vencimiento del producto");

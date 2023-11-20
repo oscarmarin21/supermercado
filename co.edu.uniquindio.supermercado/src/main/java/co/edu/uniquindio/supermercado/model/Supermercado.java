@@ -335,6 +335,20 @@ public class Supermercado {
     }
 
     /**
+     * Metodo para obtener el mayor Id del producto
+     * @return String
+     */
+    public String obtenerMayorIdProducto(){
+        String mayorId = "000";
+        for (Producto producto:listaProductos) {
+            if (Integer.parseInt(producto.getIdProducto())>Integer.parseInt(mayorId)){
+                mayorId = producto.getIdProducto();
+            }
+        }
+        return  mayorId;
+    }
+
+    /**
      * Metodo para obtener los Productos
      *
      * @return List<Producto>
@@ -556,6 +570,10 @@ public class Supermercado {
         }
     }
 
+    /**
+     * Metodo para obtener el mayor Id del venta
+     * @return String
+     */
     public String obtenerMayorIdVenta(){
         String mayorId = "000";
         for (Venta venta:listaVentas) {
