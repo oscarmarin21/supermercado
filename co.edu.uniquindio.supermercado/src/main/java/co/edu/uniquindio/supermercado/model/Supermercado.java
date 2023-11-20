@@ -556,6 +556,16 @@ public class Supermercado {
         }
     }
 
+    public String obtenerMayorIdVenta(){
+        String mayorId = "000";
+        for (Venta venta:listaVentas) {
+            if (Integer.parseInt(venta.getIdVenta())>Integer.parseInt(mayorId)){
+                mayorId = venta.getIdVenta();
+            }
+        }
+        return  mayorId;
+    }
+
     /**
      * Metodo para obtener la lista de ventas
      *

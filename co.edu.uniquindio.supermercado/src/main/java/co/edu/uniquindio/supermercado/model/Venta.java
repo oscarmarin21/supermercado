@@ -89,4 +89,14 @@ public class Venta implements IVenta {
 
         return detalle;
     }
+
+    public String obtenerMayorIdDetalle(){
+        String mayorId = "000";
+        for (DetalleVenta detalle:listaDetalleVenta) {
+            if (Integer.parseInt(detalle.getIdDetalle())>Integer.parseInt(mayorId)){
+                mayorId = detalle.getIdDetalle();
+            }
+        }
+        return  mayorId;
+    }
 }

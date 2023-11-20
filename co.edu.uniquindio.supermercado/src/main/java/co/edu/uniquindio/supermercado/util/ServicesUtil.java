@@ -2,7 +2,7 @@ package co.edu.uniquindio.supermercado.util;
 
 import javax.swing.*;
 
-public class CapturaDatosUtil {
+public class ServicesUtil {
 
     //LECTOR DE VENTANA ----------------------------------------------------------------
 
@@ -69,5 +69,11 @@ public class CapturaDatosUtil {
         } else {
             JOptionPane.showMessageDialog(null, mensajeError, "Information", JOptionPane.WARNING_MESSAGE);
         }
+    }
+
+    public static String nextId(String id) {
+        int maxId = Integer.parseInt(id);
+        String nextId = String.format("%03d", maxId + 1);
+        return nextId;
     }
 }
