@@ -21,7 +21,6 @@ public class Venta implements IVenta {
     public Venta(String idVenta, String fechaVenta) {
         this.idVenta = idVenta;
         this.fechaVenta = fechaVenta;
-        this.totalVenta = totalVenta;
     }
 
     public String getIdVenta() {

@@ -15,6 +15,7 @@ public class Supermercado {
     private List<Producto> listaProductos = new ArrayList<>();
     private List<Proveedor> listaProveedores = new ArrayList<>();
     private List<Venta> listaVentas = new ArrayList<>();
+    private List<CompraInsumos> listaCompraInsumos = new ArrayList<>();
 
     public Supermercado() {
     }
@@ -522,6 +523,22 @@ public class Supermercado {
     }
 
     /**
+     * Metodo para obtener un proveedor por identificacion
+     * @param numIdentificacion
+     * @return Proveedor
+     */
+    public Proveedor obtenerProveedor(String numIdentificacion) {
+        Proveedor proveedor = null;
+        for (Proveedor proveedor1 : getListaProveedores()) {
+            if (proveedor1.getNumIdentificacion().equalsIgnoreCase(numIdentificacion)){
+                proveedor = proveedor1;
+                break;
+            }
+        }
+        return proveedor;
+    }
+
+    /**
      * Metodo para eliminar Proveedor
      *
      * @param numIdentificacion
@@ -575,6 +592,20 @@ public class Supermercado {
      * @return String
      */
     public String obtenerMayorIdVenta(){
+        String mayorId = "000";
+        for (Venta venta:listaVentas) {
+            if (Integer.parseInt(venta.getIdVenta())>Integer.parseInt(mayorId)){
+                mayorId = venta.getIdVenta();
+            }
+        }
+        return  mayorId;
+    }
+
+    /**
+     * Metodo para obtener el mayor Id del venta
+     * @return String
+     */
+    public String obtenerMayorIdCompra(){
         String mayorId = "000";
         for (Venta venta:listaVentas) {
             if (Integer.parseInt(venta.getIdVenta())>Integer.parseInt(mayorId)){
@@ -688,4 +719,53 @@ public class Supermercado {
                 '}';
     }
 
+    public List<CompraInsumos> getListaCompraInsumos() {
+        return listaCompraInsumos;
+    }
+
+    public void setListaCompraInsumos(List<CompraInsumos> listaCompraInsumos) {
+        this.listaCompraInsumos = listaCompraInsumos;
+    }
+
+    /**
+     * Metodo para obtener una compra por idCompra
+     * @param idCompra
+     * @return compra
+     */
+    public CompraInsumos obtenerCompraInsumos(String idCompra) {
+        CompraInsumos compra = null;
+        for (CompraInsumos compraInsumos : getListaCompraInsumos()) {
+            if (compraInsumos.getIdCompra().equalsIgnoreCase(idCompra)){
+                compra = compraInsumos;
+                break;
+            }
+        }
+        return compra;
+    }
+
+    /**
+     * Metodo para crear un venta
+     *
+     * @param idVenta
+     * @param fechaVenta
+     * @param numIdentificacionCliente
+     * @param numIdentificacionEmpleado
+     * @param supermercado
+     * @return boolean
+     */
+    public boolean crearCompraInsumos(String idCompra, String fechaCompra, String numIdentificacionProveedor, String numIdentificacionEmpleado, Supermercado supermercado) {
+
+            Proveedor proveedor = obtenerProveedor(numIdentificacionProveedor);
+            Empleado empleado = obtenerEmpleado(numIdentificacionEmpleado);
+            if (proveedor == null || empleado == null) {
+                return false;
+            }
+            CompraInsumos compra = new CompraInsumos(idCompra, fechaCompra);
+            compra.setProveedor(proveedor);
+            compra.setEmpleadoAsociado(empleado);
+            compra.setOwnedBySupermercado(supermercado);
+            getListaCompraInsumos().add(compra);
+            return true;
+
+    }
 }
