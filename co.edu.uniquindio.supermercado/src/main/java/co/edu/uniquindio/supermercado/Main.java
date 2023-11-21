@@ -27,10 +27,10 @@ public class Main {
         crearEmpleado(supermercado, "004", "Pocholo", "Garcia", RolEmpleado.Domiciliario, "01/01/1990", "3128529647");
 
         //INICIALIZAR PRODUCTOS ----------------------------------------------------------------
-        crearProducto(supermercado, "001", "Arepas", "El paisa", "17/12/2023", 200, 4500);
-        crearProducto(supermercado, "002", "Arroz", "Roa", "05/05/2024", 1200, 1.500);
-        crearProducto(supermercado, "003", "Natilla", "La abuela", "03/03/2024", 150, 6200);
-        crearProducto(supermercado, "004", "Buñuelos", "Promasa", "25/02/2024", 350, 6500);
+        crearProducto(supermercado, "001", "Arepas", "El paisa", "17/12/2023", 200, 4500, 3500);
+        crearProducto(supermercado, "002", "Arroz", "Roa", "05/05/2024", 1200, 1500, 800);
+        crearProducto(supermercado, "003", "Natilla", "La abuela", "03/03/2024", 150, 6200, 5000);
+        crearProducto(supermercado, "004", "Buñuelos", "Promasa", "25/02/2024", 350, 6500, 5200);
 
         //INICIALIZAR PROVEEDOR ----------------------------------------------------------------
         crearProveedor(supermercado, "001", "Rammo", "3159456374");
@@ -448,8 +448,10 @@ public class Main {
         String fechaVencimiento = ServicesUtil.leerStringVentana("Ingrese la fecha de vencimiento del producto");
         int cantidad = ServicesUtil.leerEnteroVentana("Ingrese la cantidad del producto");
         double precio = ServicesUtil.leerDoubleVentana("Ingrese el precio del producto");
+        double precioDeCompra = ServicesUtil.leerDoubleVentana("Ingrese el precio de compra del producto");
 
-        boolean respuesta = supermercado.crearProducto(supermercado, idProducto, nombre, marca, fechaVencimiento, cantidad, precio);
+
+        boolean respuesta = supermercado.crearProducto(supermercado, idProducto, nombre, marca, fechaVencimiento, cantidad, precio, precioDeCompra);
         ServicesUtil.mostrarMensajeRespuesta(respuesta, "Se ha creado correctamente el producto", "No ha sido posible crear el producto");
     }
 
@@ -462,8 +464,10 @@ public class Main {
             String fechaVencimiento = ServicesUtil.leerStringVentana("Ingrese la fecha de vencimiento del producto");
             int cantidad = ServicesUtil.leerEnteroVentana("Ingrese la cantidad del producto");
             double precio = ServicesUtil.leerDoubleVentana("Ingrese el precio del producto");
+            double precioDeCompra = ServicesUtil.leerDoubleVentana("Ingrese el precio de compra del producto");
+
             //Actualizar Producto
-            boolean respuesta = supermercado.editarProducto(supermercado, idProducto, nombre, marca, fechaVencimiento, cantidad, precio);
+            boolean respuesta = supermercado.editarProducto(supermercado, idProducto, nombre, marca, fechaVencimiento, cantidad, precio, precioDeCompra);
             ServicesUtil.mostrarMensajeRespuesta(respuesta, "Producto actualizado", "No se ha podido actualizar el producto");
         } else {
             ServicesUtil.mostrarMensajeRespuesta(exist, "", "No se encuentra registrado este identificador");
@@ -546,19 +550,30 @@ public class Main {
     private static void crearVenta(Supermercado supermercado) {
         String idVenta = ServicesUtil.nextId(supermercado.obtenerMayorIdVenta());
         String fecha = ServicesUtil.leerStringVentana("Ingrese la fecha de la venta");
-        String identificacionCliente = ServicesUtil.leerStringVentana("Ingrese el número de identificación del cliente");
-        String identificacionEmpleado = ServicesUtil.leerStringVentana("Ingrese el número de identificación del empleado");
+        String identificacionCliente="";
+        do {
+            identificacionCliente = ServicesUtil.leerStringVentana("Ingrese el número de identificación del cliente");
+            if (!supermercado.validarExistenciaCliente(identificacionCliente)){
+                JOptionPane.showMessageDialog(null, "No existe un cliente registrado con esta identificacion");
+            }
+        } while (!supermercado.validarExistenciaCliente(identificacionCliente));
+        String identificacionEmpleado="";
+        do {
+            identificacionEmpleado = ServicesUtil.leerStringVentana("Ingrese el número de identificación del empleado");
+            if (!supermercado.validarExistenciaEmpleado(identificacionEmpleado)){
+                JOptionPane.showMessageDialog(null, "No existe un empleado registrado con esta identificacion");
+            }
+        } while (!supermercado.validarExistenciaEmpleado(identificacionEmpleado));
 
         boolean respuesta = supermercado.crearVenta(idVenta, fecha, identificacionCliente, identificacionEmpleado, supermercado);
-        Venta venta = supermercado.obtenerVenta(idVenta);
-        boolean respuestaDetalle = false;
-        if (respuesta) {
-            respuestaDetalle = generarDetalle(venta, supermercado);
+        if (respuesta){
+            Venta venta = supermercado.obtenerVenta(idVenta);
+            boolean  respuestaDetalle = generarDetalle(venta, supermercado);
             double totalVenta = venta.calcularTotal(idVenta);
             venta.setTotalVenta(totalVenta);
+            ServicesUtil.mostrarMensajeRespuesta(respuestaDetalle, "Se ha creado correctamente la venta", "No ha sido posible crear la venta");
+            JOptionPane.showMessageDialog(null, venta);
         }
-        ServicesUtil.mostrarMensajeRespuesta(respuestaDetalle, "Se ha creado correctamente la venta", "No ha sido posible crear la venta");
-        JOptionPane.showMessageDialog(null, venta);
     }
 
     private static boolean generarDetalle(Venta venta, Supermercado supermercado) {
@@ -578,45 +593,6 @@ public class Main {
             }
             int cantidad = ServicesUtil.leerEnteroVentana("Ingrese la cantidad del producto");
             boolean detalle = venta.crearDetalleVenta(idDetalle, cantidad, venta.getIdVenta(), idProducto, supermercado);
-            if (detalle) {
-                generado = true;
-            } else {
-                JOptionPane.showMessageDialog(null, "Ocurrio un error. No se pudo registrar");
-            }
-            int opcion = ServicesUtil.leerEnteroVentana("1. Continuar registrando\n2. Salir");
-            switch (opcion) {
-                case 1:
-                    continuar = true;
-                    break;
-                case 2:
-                    continuar = false;
-                    break;
-                default:
-                    continuar = false;
-                    break;
-            }
-        } while (continuar);
-        return generado;
-    }
-// SobreCarga
-    private static boolean generarDetalle(CompraInsumos compra, Supermercado supermercado) {
-        boolean continuar = true;
-        boolean generado = false;
-        do {
-            generado = false;
-            String idDetalle = ServicesUtil.nextId(compra.obtenerMayorIdDetalle());
-            String idProducto = "";
-            boolean exist = false;
-
-            while (exist == false) {
-                idProducto = ServicesUtil.leerStringVentana("Ingrese el id del producto");
-                exist = supermercado.validarExistenciaProducto(idProducto);
-                if (exist == false) {
-                    JOptionPane.showMessageDialog(null, "No existe producto registrado con este ID");
-                }
-            }
-            int cantidad = ServicesUtil.leerEnteroVentana("Ingrese la cantidad del producto");
-            boolean detalle = compra.crearDetalleCompraInsumos(idDetalle, cantidad, compra.getIdCompra(), idProducto, supermercado);
             if (detalle) {
                 generado = true;
             } else {
@@ -690,23 +666,71 @@ public class Main {
     //Compra
 
     private static void crearCompra(Supermercado supermercado) {
-        boolean respuestaDetalle = false;
-
         String idCompra = ServicesUtil.nextId(supermercado.obtenerMayorIdCompra());
         String fecha = ServicesUtil.leerStringVentana("Ingrese la fecha de la compra");
-        String identificacionProveedor = ServicesUtil.leerStringVentana("Ingrese el número de identificación del proveedor");
-        String identificacionEmpleado = ServicesUtil.leerStringVentana("Ingrese el número de identificación del empleado");
+        String identificacionProveedor = "";
+        do {
+            identificacionProveedor = ServicesUtil.leerStringVentana("Ingrese el número de identificación del proveedor");
+            if (!supermercado.validarExistenciaProveedor(identificacionProveedor)){
+                JOptionPane.showMessageDialog(null, "No existe un proveedor registrado con esta identificacion");
+            }
+        } while (!supermercado.validarExistenciaProveedor(identificacionProveedor));
+        String identificacionEmpleado = "";
+        do {
+            identificacionEmpleado = ServicesUtil.leerStringVentana("Ingrese el número de identificación del empleado");
+            if (!supermercado.validarExistenciaEmpleado(identificacionEmpleado)){
+                JOptionPane.showMessageDialog(null, "No existe un empleado registrado con esta identificacion");
+            }
+        } while (!supermercado.validarExistenciaEmpleado(identificacionEmpleado));
 
         boolean respuesta = supermercado.crearCompraInsumos(idCompra, fecha, identificacionProveedor, identificacionEmpleado, supermercado);
-        CompraInsumos compra = supermercado.obtenerCompraInsumos(idCompra);
-
         if (respuesta) {
-            respuestaDetalle = generarDetalle(compra, supermercado);
+            CompraInsumos compra = supermercado.obtenerCompraInsumos(idCompra);
+            boolean respuestaDetalle = generarDetalle(compra, supermercado);
             double totalCompra = compra.calcularTotal(idCompra);
             compra.setTotalCompra(totalCompra);
+            ServicesUtil.mostrarMensajeRespuesta(respuestaDetalle, "Se ha creado correctamente la compra", "No ha sido posible crear la compra");
+            JOptionPane.showMessageDialog(null, compra);
         }
-        ServicesUtil.mostrarMensajeRespuesta(respuestaDetalle, "Se ha creado correctamente la compra", "No ha sido posible crear la compra");
-        //JOptionPane.showMessageDialog(null, compra.toString());
+    }
+
+    //Sobrecarga de metodos
+    private static boolean generarDetalle(CompraInsumos compra, Supermercado supermercado) {
+        boolean continuar = true;
+        boolean generado = false;
+        do {
+            generado = false;
+            String idDetalle = ServicesUtil.nextId(compra.obtenerMayorIdDetalle());
+            String idProducto = "";
+            boolean exist = false;
+            while (exist == false) {
+                idProducto = ServicesUtil.leerStringVentana("Ingrese el id del producto");
+                exist = supermercado.validarExistenciaProducto(idProducto);
+                if (exist == false) {
+                    JOptionPane.showMessageDialog(null, "No existe producto registrado con este ID");
+                }
+            }
+            int cantidad = ServicesUtil.leerEnteroVentana("Ingrese la cantidad del producto");
+            boolean detalle = compra.crearDetalleCompraInsumos(idDetalle, cantidad, compra.getIdCompra(), idProducto, supermercado);
+            if (detalle) {
+                generado = true;
+            } else {
+                JOptionPane.showMessageDialog(null, "Ocurrio un error. No se pudo registrar");
+            }
+            int opcion = ServicesUtil.leerEnteroVentana("1. Continuar registrando\n2. Salir");
+            switch (opcion) {
+                case 1:
+                    continuar = true;
+                    break;
+                case 2:
+                    continuar = false;
+                    break;
+                default:
+                    continuar = false;
+                    break;
+            }
+        } while (continuar);
+        return generado;
     }
 
     private static void mostrarCompra(Supermercado supermercado) {
@@ -735,8 +759,8 @@ public class Main {
     }
 
     //Producto
-    private static void crearProducto(Supermercado supermercado, String idProducto, String nombre, String marca, String fechaVencimiento, int cantidad, double precio) {
-        boolean respuesta = supermercado.crearProducto(supermercado, idProducto, nombre, marca, fechaVencimiento, cantidad, precio);
+    private static void crearProducto(Supermercado supermercado, String idProducto, String nombre, String marca, String fechaVencimiento, int cantidad, double precio, double precioDeCompra) {
+        boolean respuesta = supermercado.crearProducto(supermercado, idProducto, nombre, marca, fechaVencimiento, cantidad, precio, precioDeCompra);
     }
 
     //Proveedor

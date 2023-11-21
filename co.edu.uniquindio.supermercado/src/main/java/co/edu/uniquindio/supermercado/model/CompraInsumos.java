@@ -10,7 +10,7 @@ public class CompraInsumos implements ICompraInsumos {
     private String fechaCompra;
     private double totalCompra;
     private Empleado empleadoAsociado;
-    private Proveedor proveedor;
+    private Proveedor proveedorAsociado;
     private Supermercado ownedBySupermercado;
     private List<DetalleCopraInsumos> listaDetalleCompra = new ArrayList<>();
 
@@ -70,25 +70,29 @@ public class CompraInsumos implements ICompraInsumos {
         this.listaDetalleCompra = listaDetalleCompra;
     }
 
-    public Proveedor getProveedor() {
-        return proveedor;
+    public Proveedor getProveedorAsociado() {
+        return proveedorAsociado;
     }
 
-    public void setProveedor(Proveedor proveedor) {
-        this.proveedor = proveedor;
+    public void setProveedorAsociado(Proveedor proveedor) {
+        this.proveedorAsociado = proveedor;
     }
 
     @Override
     public String toString() {
+        String detalle = "";
+        for (DetalleCopraInsumos detalleC: listaDetalleCompra) {
+            detalle += detalleC.getProductoAsociado().getNombre() + "=" + detalleC.getCantidad() + "/UNID\n";
+        }
         return "CompraInsumos{" +
                 "idCompra='" + idCompra + '\'' +
                 ", fechaCompra='" + fechaCompra + '\'' +
                 ", totalCompra=" + totalCompra +
                 ", empleadoAsociado=" + empleadoAsociado +
-                ", proveedor=" + proveedor +
-                ", ownedBySupermercado=" + ownedBySupermercado +
-                ", listaDetalleCompra=" + listaDetalleCompra +
-                '}';
+                ", proveedor=" + proveedorAsociado +
+                ", ownedBySupermercado=" + ownedBySupermercado + "\n" +
+                detalle +
+                "} = " + totalCompra;
     }
 
     @Override
@@ -107,6 +111,7 @@ public class CompraInsumos implements ICompraInsumos {
 
         getListaDetalleCompra().add(detalle);
 
+        producto.setCantidad(producto.getCantidad()+cantidad);
         return true;
     }
 
@@ -128,11 +133,10 @@ public class CompraInsumos implements ICompraInsumos {
 
     @Override
     public double calcularTotal(String idCompra) {
-
         double total = 0;
         for (DetalleCopraInsumos detalle:getListaDetalleCompra()) {
             if (detalle.getOwnedByCompraInsumos().getIdCompra().equalsIgnoreCase(idCompra)){
-                total += detalle.getProductoAsociado().getPrecio()*detalle.getCantidad();
+                total += detalle.getProductoAsociado().getPrecioDeCompra()*detalle.getCantidad();
             }
         }
         return total;

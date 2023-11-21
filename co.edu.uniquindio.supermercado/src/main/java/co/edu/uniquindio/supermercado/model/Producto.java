@@ -1,5 +1,7 @@
 package co.edu.uniquindio.supermercado.model;
 
+import java.util.List;
+
 public class Producto {
     private String idProducto;
     private String nombre;
@@ -7,18 +9,21 @@ public class Producto {
     private String fechaVencimiento;
     private int cantidad;
     private double precio;
+    private double precioDeCompra;
     Supermercado ownedBySupermercado;
+    private List<DetalleVenta> listaDetalleVentasAsociadas;
 
     public Producto() {
     }
 
-    public Producto(String idProducto, String nombre, String marca, String fechaVencimiento, int cantidad, double precio) {
+    public Producto(String idProducto, String nombre, String marca, String fechaVencimiento, int cantidad, double precio, double precioDeCompra) {
         this.idProducto = idProducto;
         this.nombre = nombre;
         this.marca = marca;
         this.fechaVencimiento = fechaVencimiento;
         this.cantidad = cantidad;
         this.precio = precio;
+        this.precioDeCompra = precioDeCompra;
     }
 
     public String getIdProducto() {
@@ -73,8 +78,24 @@ public class Producto {
         return ownedBySupermercado;
     }
 
+    public double getPrecioDeCompra() {
+        return precioDeCompra;
+    }
+
+    public void setPrecioDeCompra(double precioDeCompra) {
+        this.precioDeCompra = precioDeCompra;
+    }
+
     public void setOwnedBySupermercado(Supermercado ownedBySupermercado) {
         this.ownedBySupermercado = ownedBySupermercado;
+    }
+
+    public List<DetalleVenta> getListaDetalleVentasAsociadas() {
+        return listaDetalleVentasAsociadas;
+    }
+
+    public void setListaDetalleVentasAsociadas(List<DetalleVenta> listaDetalleVentasAsociadas) {
+        this.listaDetalleVentasAsociadas = listaDetalleVentasAsociadas;
     }
 
     @Override
@@ -86,6 +107,7 @@ public class Producto {
                 ", fechaVencimiento='" + fechaVencimiento + '\'' +
                 ", cantidad=" + cantidad +
                 ", precio=" + precio +
+                ", precio de compra=" + precioDeCompra +
                 '}';
     }
 }

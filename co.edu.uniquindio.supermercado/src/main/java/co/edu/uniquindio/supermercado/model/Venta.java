@@ -2,6 +2,7 @@ package co.edu.uniquindio.supermercado.model;
 
 import co.edu.uniquindio.supermercado.services.IVenta;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -75,7 +76,7 @@ public class Venta implements IVenta {
                 ", clienteAsociado=" + clienteAsociado.getNombres() +
                 ", empleadoAsociado=" + empleadoAsociado.getNombres() +
                 ", ownedBySupermercado=" + ownedBySupermercado.getNombre() + "\n" +
-                "Detalle=" + detalle +
+                detalle +
                 "} = " + totalVenta;
     }
 
@@ -96,7 +97,10 @@ public class Venta implements IVenta {
         if (venta == null || producto == null){
             return false;
         }
-
+        if (producto.getCantidad()<cantidad){
+            JOptionPane.showMessageDialog(null, "Super la cantidad de productos en existencia");
+            return false;
+        }
         DetalleVenta detalle = new DetalleVenta(idDetalle, cantidad);
 
         detalle.setProductoAsociado(producto);
@@ -104,6 +108,7 @@ public class Venta implements IVenta {
 
         getListaDetalleVenta().add(detalle);
 
+        producto.setCantidad(producto.getCantidad()-cantidad);
         return true;
     }
 

@@ -75,6 +75,10 @@ public class Supermercado {
 
     public void setListaVentas(List<Venta> listaVentas) {   this.listaVentas = listaVentas; }
 
+    public List<CompraInsumos> getListaCompraInsumos() {    return listaCompraInsumos;  }
+
+    public void setListaCompraInsumos(List<CompraInsumos> listaCompraInsumos) { this.listaCompraInsumos = listaCompraInsumos;   }
+
     /**
      * Metodo para crear un cliente
      *
@@ -322,10 +326,10 @@ public class Supermercado {
      * @return boolean
      */
     public boolean crearProducto(Supermercado supermercado, String idProducto, String nombre, String marca,
-                                String fechaVencimiento, int cantidad, double precio) {
+                                String fechaVencimiento, int cantidad, double precio, double precioDeCompra) {
         boolean exist = validarExistenciaProducto(idProducto);
         if (exist==false) {
-            Producto producto = new Producto(idProducto, nombre, marca, fechaVencimiento, cantidad, precio);
+            Producto producto = new Producto(idProducto, nombre, marca, fechaVencimiento, cantidad, precio, precioDeCompra);
             producto.setOwnedBySupermercado(supermercado);
             getListaProductos().add(producto);
             return true;
@@ -386,7 +390,7 @@ public class Supermercado {
      * @param precio
      * @return boolean
      */
-    public boolean editarProducto(Supermercado supermercado, String idProducto, String nombre, String marca, String fechaVencimiento, int cantidad, double precio) {
+    public boolean editarProducto(Supermercado supermercado, String idProducto, String nombre, String marca, String fechaVencimiento, int cantidad, double precio, double precioDeCompra) {
         int tamanioLista = getListaProductos().size();
         boolean actualizar = false;
         for (int i = 0; i < tamanioLista; i++) {
@@ -397,6 +401,7 @@ public class Supermercado {
                 producto.setFechaVencimiento(fechaVencimiento);
                 producto.setCantidad(cantidad);
                 producto.setPrecio(precio);
+                producto.setPrecioDeCompra(precioDeCompra);
                 producto.setOwnedBySupermercado(supermercado);
                 actualizar = true;
                 break;
@@ -602,20 +607,6 @@ public class Supermercado {
     }
 
     /**
-     * Metodo para obtener el mayor Id del venta
-     * @return String
-     */
-    public String obtenerMayorIdCompra(){
-        String mayorId = "000";
-        for (Venta venta:listaVentas) {
-            if (Integer.parseInt(venta.getIdVenta())>Integer.parseInt(mayorId)){
-                mayorId = venta.getIdVenta();
-            }
-        }
-        return  mayorId;
-    }
-
-    /**
      * Metodo para obtener la lista de ventas
      *
      * @return List<Venta>
@@ -711,21 +702,6 @@ public class Supermercado {
 
         return eliminar;
     }
-    @Override
-    public String toString() {
-        return "Supermercado{" +
-                "nit='" + nit + '\'' +
-                ", nombre='" + nombre + '\'' +
-                '}';
-    }
-
-    public List<CompraInsumos> getListaCompraInsumos() {
-        return listaCompraInsumos;
-    }
-
-    public void setListaCompraInsumos(List<CompraInsumos> listaCompraInsumos) {
-        this.listaCompraInsumos = listaCompraInsumos;
-    }
 
     /**
      * Metodo para obtener una compra por idCompra
@@ -744,28 +720,74 @@ public class Supermercado {
     }
 
     /**
-     * Metodo para crear un venta
-     *
-     * @param idVenta
-     * @param fechaVenta
-     * @param numIdentificacionCliente
+     * Metodo para obtener el mayor Id del venta
+     * @return String
+     */
+    public String obtenerMayorIdCompra(){
+        String mayorId = "000";
+        for (CompraInsumos compraInsumos:listaCompraInsumos) {
+            if (Integer.parseInt(compraInsumos.getIdCompra())>Integer.parseInt(mayorId)){
+                mayorId = compraInsumos.getIdCompra();
+            }
+        }
+        return  mayorId;
+    }
+
+    /**
+     * Metodo para crear un compra de Insumos
+     * @param idCompra
+     * @param fechaCompra
+     * @param numIdentificacionProveedor
      * @param numIdentificacionEmpleado
      * @param supermercado
      * @return boolean
      */
     public boolean crearCompraInsumos(String idCompra, String fechaCompra, String numIdentificacionProveedor, String numIdentificacionEmpleado, Supermercado supermercado) {
-
+        boolean exist = validarExistenciaCompra(idCompra);
+        if (exist==false) {
             Proveedor proveedor = obtenerProveedor(numIdentificacionProveedor);
             Empleado empleado = obtenerEmpleado(numIdentificacionEmpleado);
             if (proveedor == null || empleado == null) {
                 return false;
             }
             CompraInsumos compra = new CompraInsumos(idCompra, fechaCompra);
-            compra.setProveedor(proveedor);
+            compra.setProveedorAsociado(proveedor);
             compra.setEmpleadoAsociado(empleado);
             compra.setOwnedBySupermercado(supermercado);
             getListaCompraInsumos().add(compra);
             return true;
-
+        } else {
+            return false;
+        }
     }
+
+    /**
+     * Metodo para obtener validar si existe Compra
+     * @param idCompra
+     * @return boolean
+     */
+    public boolean validarExistenciaCompra(String idCompra) {
+        int tamanioLista = getListaCompraInsumos().size();
+        boolean exist = false;
+        for (int i = 0; i < tamanioLista; i++) {
+            CompraInsumos compra = getListaCompraInsumos().get(i);
+            if (compra.getIdCompra().equalsIgnoreCase(idCompra)) {
+                exist = true;
+                break;
+            }
+        }
+        return exist;
+    }
+
+    @Override
+    public String toString() {
+        return "Supermercado{" +
+                "nit='" + nit + '\'' +
+                ", nombre='" + nombre + '\'' +
+                '}';
+    }
+
+
+
+
 }
