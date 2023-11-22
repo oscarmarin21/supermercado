@@ -101,6 +101,7 @@ public class Venta implements IVenta {
             JOptionPane.showMessageDialog(null, "Super la cantidad de productos en existencia");
             return false;
         }
+
         DetalleVenta detalle = new DetalleVenta(idDetalle, cantidad);
 
         detalle.setProductoAsociado(producto);
@@ -112,6 +113,11 @@ public class Venta implements IVenta {
         return true;
     }
 
+    /**
+     * Metodo para eliminar detalle de Venta
+     * @param idVenta
+     * @return boolean
+     */
     @Override
     public boolean eliminarDetalleVenta(String idVenta) {
         int tamanioLista = getListaDetalleVenta().size();
@@ -119,6 +125,7 @@ public class Venta implements IVenta {
         for (int i = 0; i < tamanioLista; i++) {
             DetalleVenta detalle = getListaDetalleVenta().get(i);
             if (detalle.getOwnedByVenta().getIdVenta().equalsIgnoreCase(idVenta)) {
+                detalle.getProductoAsociado().setCantidad(detalle.getProductoAsociado().getCantidad() + detalle.getCantidad());
                 getListaDetalleVenta().remove(i);
                 eliminar = true;
             }
@@ -126,6 +133,11 @@ public class Venta implements IVenta {
         return eliminar;
     }
 
+    /**
+     * Metodo para calcular el total de la factura
+     * @param idVenta
+     * @return double
+     */
     @Override
     public double calcularTotal(String idVenta) {
         double total = 0;

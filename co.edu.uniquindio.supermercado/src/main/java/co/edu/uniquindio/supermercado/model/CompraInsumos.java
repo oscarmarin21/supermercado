@@ -124,6 +124,7 @@ public class CompraInsumos implements ICompraInsumos {
         for (int i = 0; i < tamanioLista; i++) {
             DetalleCopraInsumos detalle = getListaDetalleCompra().get(i);
             if (detalle.getOwnedByCompraInsumos().getIdCompra().equalsIgnoreCase(idVenta)) {
+                detalle.getProductoAsociado().setCantidad(detalle.getProductoAsociado().getCantidad() - detalle.getCantidad());
                 getListaDetalleCompra().remove(i);
                 eliminar = true;
             }

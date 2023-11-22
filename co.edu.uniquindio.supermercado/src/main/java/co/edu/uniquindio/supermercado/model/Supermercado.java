@@ -704,6 +704,15 @@ public class Supermercado {
     }
 
     /**
+     * Metodo para obtener la lista de compras
+     *
+     * @return List<CompraInsumos>
+     */
+    public  List<CompraInsumos> obtenerComprasInsumos() {
+        return getListaCompraInsumos();
+    }
+
+    /**
      * Metodo para obtener una compra por idCompra
      * @param idCompra
      * @return compra
@@ -734,7 +743,7 @@ public class Supermercado {
     }
 
     /**
-     * Metodo para crear un compra de Insumos
+     * Metodo para crear una compra de Insumos
      * @param idCompra
      * @param fechaCompra
      * @param numIdentificacionProveedor
@@ -777,6 +786,59 @@ public class Supermercado {
             }
         }
         return exist;
+    }
+
+    /**
+     * Metodo para editar una compra de Insumos
+     * @param idCompra
+     * @param fechaCompra
+     * @param numIdentificacionProveedor
+     * @param numIdentificacionEmpleado
+     * @param supermercado
+     * @return boolean
+     */
+    public boolean editarCompraInsumos(String idCompra, String fechaCompra, String numIdentificacionProveedor, String numIdentificacionEmpleado, Supermercado supermercado) {
+        int tamanioLista = getListaCompraInsumos().size();
+        boolean actualizar = false;
+        for (int i = 0; i < tamanioLista; i++) {
+            CompraInsumos compra = getListaCompraInsumos().get(i);
+            if (compra.getIdCompra().equalsIgnoreCase(idCompra)) {
+                Proveedor proveedor = obtenerProveedor(numIdentificacionProveedor);
+                Empleado empleado = obtenerEmpleado(numIdentificacionEmpleado);
+                if (proveedor == null || empleado == null) {
+                    return false;
+                }
+                compra.setIdCompra(fechaCompra);
+                compra.setProveedorAsociado(proveedor);
+                compra.setEmpleadoAsociado(empleado);
+                compra.setOwnedBySupermercado(supermercado);
+                actualizar = true;
+                break;
+            }
+        }
+        return actualizar;
+    }
+
+    /**
+     * Metodo para eliminar compra
+     *
+     * @param idCompra
+     * @return boolean
+     */
+    public boolean eliminarCompraInsumos(String idCompra) {
+        int tamanioLista = getListaCompraInsumos().size();
+        boolean eliminar = false;
+
+        for (int i = 0; i < tamanioLista; i++) {
+            CompraInsumos compra = getListaCompraInsumos().get(i);
+            if (compra.getIdCompra().equalsIgnoreCase(idCompra)) {
+                getListaCompraInsumos().remove(i);
+                eliminar = true;
+                break;
+            }
+        }
+
+        return eliminar;
     }
 
     @Override

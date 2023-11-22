@@ -194,13 +194,13 @@ public class Main {
                                 crearCompra(supermercado);
                         case 2 ->
                             //Update
-                                editarVenta(supermercado);
+                                editarCompra(supermercado);
                         case 3 ->
                             //Delete
-                                eliminarVenta(supermercado);
+                                eliminarCompra(supermercado);
                         case 4 ->
                             //Read
-                                mostrarVenta(supermercado);
+                                mostrarCompra(supermercado);
                         case 5 -> continuar = false;
                     }
                     break;
@@ -731,6 +731,43 @@ public class Main {
             }
         } while (continuar);
         return generado;
+    }
+
+    private static void editarCompra(Supermercado supermercado) {
+        String idCompra = ServicesUtil.leerStringVentana("Ingrese el ID de la compra");
+        boolean exist = supermercado.validarExistenciaVenta(idVenta);
+        if (exist) {
+            String fecha = ServicesUtil.leerStringVentana("Ingrese la fecha de la compra");
+            String identificacionProveedor = ServicesUtil.leerStringVentana("Ingrese el número de identificación del proveedor");
+            String identificacionEmpleado = ServicesUtil.leerStringVentana("Ingrese el número de identificación del empleado");
+            //Actualizar Producto
+            boolean respuesta = supermercado.editarVenta(idCompra, fecha, identificacionProveedor, identificacionEmpleado, supermercado);
+            CompraInsumos compra = supermercado.obtenerCompraInsumos(idCompra);
+            boolean respuestaDetalle = false;
+            if (respuesta) {
+                compra.eliminarDetalleCompraInsumos(idCompra);
+                respuestaDetalle = generarDetalle(compra, supermercado);
+                double totalCompra = compra.calcularTotal(idCompra);
+                compra.setTotalCompra(totalCompra);
+            }
+            ServicesUtil.mostrarMensajeRespuesta(respuestaDetalle, "compra actualizada", "No se ha podido actualizar la compra");
+            JOptionPane.showMessageDialog(null, compra);
+        } else {
+            ServicesUtil.mostrarMensajeRespuesta(exist, "", "No se encuentra registrado este identificador");
+        }
+    }
+
+    private static void eliminarCompra(Supermercado supermercado) {
+        String idCompra = ServicesUtil.leerStringVentana("Ingrese el ID de la compra");
+        boolean exist = supermercado.validarExistenciaCompra(idCompra);
+        if (exist) {
+            CompraInsumos compra = supermercado.obtenerCompraInsumos(idCompra);
+            compra.eliminarDetalleCompraInsumos(idCompra);
+            boolean respuesta = supermercado.eliminarCompraInsumos(idCompra);
+            ServicesUtil.mostrarMensajeRespuesta(respuesta, "compra eliminado", "No se ha podido eliminar la compra");
+        } else {
+            ServicesUtil.mostrarMensajeRespuesta(exist, "", "No se encuentra registrado este identificador");
+        }
     }
 
     private static void mostrarCompra(Supermercado supermercado) {
