@@ -2,11 +2,15 @@ package co.edu.uniquindio.supermercado.model;
 
 import co.edu.uniquindio.supermercado.enumeracion.RolEmpleado;
 
+import java.util.List;
+
 public class Empleado extends Persona{
     private RolEmpleado rol;
     private String fechaNacimiento;
     private String telefono;
     private Supermercado ownedBySupermercado;
+    private List<Venta> listaVentasAsociadas;
+    private List<CompraInsumos> listaComprasInsumosAsociadas;
 
     public Empleado(String numIdentificacion, String nombres, String apellidos, RolEmpleado rol, String fechaNacimiento, String telefono) {
         super(numIdentificacion, nombres, apellidos);
@@ -45,6 +49,22 @@ public class Empleado extends Persona{
 
     public void setOwnedBySupermercado(Supermercado ownedBySupermercado) {
         this.ownedBySupermercado = ownedBySupermercado;
+    }
+
+    public List<Venta> getListaVentasAsociadas() {
+        return listaVentasAsociadas;
+    }
+
+    public void setListaVentasAsociadas(List<Venta> listaVentasAsociadas) {
+        this.listaVentasAsociadas = listaVentasAsociadas;
+    }
+
+    public List<CompraInsumos> getListaComprasInsumosAsociadas() {
+        return listaComprasInsumosAsociadas;
+    }
+
+    public void setListaComprasInsumosAsociadas(List<CompraInsumos> listaComprasInsumosAsociadas) {
+        this.listaComprasInsumosAsociadas = listaComprasInsumosAsociadas;
     }
 
     @Override

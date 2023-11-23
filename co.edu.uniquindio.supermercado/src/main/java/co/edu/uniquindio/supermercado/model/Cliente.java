@@ -8,7 +8,7 @@ import java.util.List;
 public class Cliente extends Persona {
     private TipoIdentificacion tipoIdentificacion;
     private Supermercado ownedBySupermercado;
-    private List<Venta> listaVentasAsociadas = new ArrayList<>();
+    private List<Venta> listaVentasAsociadas;
 
     public Cliente(String numIdentificacion, TipoIdentificacion tipoIdentificacion, String nombres, String apellidos) {
         super(numIdentificacion,nombres,apellidos);

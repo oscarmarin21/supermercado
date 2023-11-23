@@ -1,10 +1,13 @@
 package co.edu.uniquindio.supermercado.model;
 
+import java.util.List;
+
 public class Proveedor {
     private String numIdentificacion;
     private String nombre;
     private String telefono;
     private Supermercado ownedBySupermercado;
+    private List<CompraInsumos> listaCompraInsumosAsociados;
 
     public Proveedor() {
     }
@@ -45,6 +48,14 @@ public class Proveedor {
 
     public void setOwnedBySupermercado(Supermercado ownedBySupermercado) {
         this.ownedBySupermercado = ownedBySupermercado;
+    }
+
+    public List<CompraInsumos> getListaCompraInsumosAsociados() {
+        return listaCompraInsumosAsociados;
+    }
+
+    public void setListaCompraInsumosAsociados(List<CompraInsumos> listaCompraInsumosAsociados) {
+        this.listaCompraInsumosAsociados = listaCompraInsumosAsociados;
     }
 
     @Override
