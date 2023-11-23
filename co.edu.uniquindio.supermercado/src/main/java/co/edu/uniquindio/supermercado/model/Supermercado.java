@@ -849,7 +849,141 @@ public class Supermercado {
                 '}';
     }
 
+//METODOS DE REQUERIMIENTOS
+//Producto
+    public Producto obtenerProductoMasCostoso(){
+
+        Producto producto = null;
+        double precio = 0.0;
+
+        for (Producto producto1 : getListaProductos()) {
+            if (producto1.getPrecio() >= precio){
+                precio = producto1.getPrecio();
+                producto = producto1;
+            }
+        }
+        return producto;
+
+    }
+
+    public Producto obtenerProductoMayorStok(){
+
+        Producto producto = null;
+        double stock = 0;
+
+        for (Producto producto1 : getListaProductos()) {
+            if (producto1.getCantidad() >= stock){
+                stock = producto1.getCantidad();
+                producto = producto1;
+            }
+        }
+        return producto;
+
+    }
 
 
+    public double obtenerValorTotalInventario(){
+
+        double valorTotal = 0;
+
+        for (Producto producto1 : getListaProductos()) {
+            valorTotal += (producto1.getPrecio() * producto1.getCantidad());
+        }
+        return valorTotal;
+
+    }
+
+    //Cliente
+
+    public List<Cliente> obtenerClienteConC(){
+        List<Cliente> clientes = new ArrayList<>();
+
+        for (Cliente cliente : getListaClientes()) {
+            if (cliente.getNombres().toLowerCase().contains("c")){
+                clientes.add(cliente);
+            }
+        }
+        return clientes;
+    }
+
+    public List<Cliente> obtenerClienteIFinalApellidoN(){
+        List<Cliente> clientes = new ArrayList<>();
+
+        for (Cliente cliente : getListaClientes()) {
+            if (cliente.getApellidos().toLowerCase().endsWith("n")){
+                clientes.add(cliente);
+            }
+        }
+        return clientes;
+    }
+
+
+    public List<Cliente> obtenerClienteCodigoPar(){
+        List<Cliente> clientes = new ArrayList<>();
+
+        double residuo = 0;
+        for (Cliente cliente : getListaClientes()) {
+
+            residuo = Integer.parseInt(cliente.getNumIdentificacion()) % 2;
+
+            if (residuo == 0){
+                clientes.add(cliente);
+            }
+        }
+        return clientes;
+    }
+
+    public List<Empleado> obtenerEmpleadoEmpacador(){
+        List<Empleado> empleados = new ArrayList<>();
+
+        double residuo = 0;
+        for (Empleado empleado : getListaEmpleados()) {
+
+            if (empleado.getRol().equals(RolEmpleado.Empacador)){
+                empleados.add(empleado);
+            }
+        }
+        return empleados;
+    }
+
+    public int obtenerCantidadEmpleados(){
+
+        int total = getListaEmpleados().size();
+
+        return total  ;
+    }
+
+
+    public List<String> obtenerSumatelefono(){
+        List<String> suma = new ArrayList<>();
+
+        int sumatoria = 0;
+        int longitudTelefono;
+        for (Empleado empleado : getListaEmpleados()) {
+            longitudTelefono = empleado.getTelefono().length();
+
+            for (int i = 0; i < longitudTelefono; i++) {
+
+                char num = empleado.getTelefono().charAt(i);
+                sumatoria += Character.getNumericValue(num);
+            }
+
+        suma.add(empleado.getNombres() + " " +  sumatoria);
+
+        }
+        return suma;
+    }
+
+    public List<String> obtenerCorreoAutogeneado(){
+        List<String> correos = new ArrayList<>();
+
+
+        for (Empleado empleado : getListaEmpleados()) {
+
+            correos.add(empleado.getNombres() + ": " + empleado.getNombres() + empleado.getNumIdentificacion() + "@super.com");
+
+        }
+        return correos;
+    }
 
 }

@@ -6,6 +6,7 @@ import co.edu.uniquindio.supermercado.model.*;
 import co.edu.uniquindio.supermercado.util.ServicesUtil;
 
 import javax.swing.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
@@ -15,9 +16,9 @@ public class Main {
         //CREATE
 
         //INICIALIZAR CLIENTE ----------------------------------------------------------------
-        crearCliente(supermercado, "001", TipoIdentificacion.Cedula, "Teresa", "Ramirez");
-        crearCliente(supermercado, "002", TipoIdentificacion.Cedula, "Gloria", "Valencia");
-        crearCliente(supermercado, "003", TipoIdentificacion.Cedula, "Santiago", "Castrillon");
+        crearCliente(supermercado, "001", TipoIdentificacion.Cedula, "Teresac", "Ramirez");
+        crearCliente(supermercado, "002", TipoIdentificacion.Pasaporte, "Gloria", "Valencia");
+        crearCliente(supermercado, "003", TipoIdentificacion.Cedula, "SantiagoC", "Castrillon");
         crearCliente(supermercado, "004", TipoIdentificacion.Cedula, "Steven", "Marin");
 
         //INICIALIZAR EMPLEADOS ----------------------------------------------------------------
@@ -53,7 +54,8 @@ public class Main {
                     "4. Gestionar proveedor \n " +
                     "5. Gestionar ventas \n " +
                     "6. Gestionar compra de insumos \n " +
-                    "7. Salir");
+                    "7. Requerimientos\n " +
+                    "8. Salir");
             switch (valorSeleccion) {
                 case 1:
                     //Gestión clientes
@@ -220,7 +222,40 @@ public class Main {
                         case 5 -> continuar = false;
                     }
                     break;
+
                 case 7:
+                    //Gestionar requerimientos
+                    valorSeleccion = ServicesUtil.leerEnteroVentana("Ingrese el número de la acción que se desea realizar \n" +
+                            "1. Obtener el producto mas costoso \n" +
+                            "2. Obtener el producto con mayor stock \n" +
+                            "3. Obtener el valor de todo el inventario \n" +
+                            "4. Obtener los clientes que tiene una 'C' en su nombre \n" +
+                            "5. Obtener los clientes los cuales su apellido terminen en 'N' \n" +
+                            "6. Obtener los clientes con codigo par\n" +
+                            "7. Obtener los empleados con rol 'Empacador'\n" +
+                            "8. Obtener la cantidad de empleados\n" +
+                            "9. Obtener la suma del telefono de los empleados\n" +
+                            "10. Obtener correo autogenerado de cada proveedor\n" +
+//                            "11. Obtener la suma del telefono de los empleados\n" +
+                            "10. Salir");
+
+
+                    switch (valorSeleccion) {
+                        case 1 -> obtenerProductoMasCostoso(supermercado);
+                        case 2 -> obtenerProductoMayorStok(supermercado);
+                        case 3 -> obtenerValorTotalInventario(supermercado);
+                        case 4 -> obtenerClienteConC(supermercado);
+                        case 5 -> obtenerClienteIFinalApellidoN(supermercado);
+                        case 6 -> obtenerClienteCodigoPar(supermercado);
+                        case 7 -> obtenerEmpleadoEmpacador(supermercado);
+                        case 8 -> obtenerCantidadEmpleados(supermercado);
+                        case 9 -> obtenerSumatelefono(supermercado);
+                        case 10 -> obtenerCorreoAutogeneado(supermercado);
+//                        case 11 -> obtenerSumatelefono(supermercado);
+                        case 12 -> continuar = false;
+                    }
+                    break;
+                case 8:
                     continuar = false;
                     break;
             }
@@ -614,25 +649,25 @@ public class Main {
     private static void crearVenta(Supermercado supermercado) {
         String idVenta = ServicesUtil.nextId(supermercado.obtenerMayorIdVenta());
         String fecha = ServicesUtil.leerStringVentana("Ingrese la fecha de la venta");
-        String identificacionCliente="";
+        String identificacionCliente = "";
         do {
             identificacionCliente = ServicesUtil.leerStringVentana("Ingrese el número de identificación del cliente");
-            if (!supermercado.validarExistenciaCliente(identificacionCliente)){
+            if (!supermercado.validarExistenciaCliente(identificacionCliente)) {
                 JOptionPane.showMessageDialog(null, "No existe un cliente registrado con esta identificacion");
             }
         } while (!supermercado.validarExistenciaCliente(identificacionCliente));
-        String identificacionEmpleado="";
+        String identificacionEmpleado = "";
         do {
             identificacionEmpleado = ServicesUtil.leerStringVentana("Ingrese el número de identificación del empleado");
-            if (!supermercado.validarExistenciaEmpleado(identificacionEmpleado)){
+            if (!supermercado.validarExistenciaEmpleado(identificacionEmpleado)) {
                 JOptionPane.showMessageDialog(null, "No existe un empleado registrado con esta identificacion");
             }
         } while (!supermercado.validarExistenciaEmpleado(identificacionEmpleado));
 
         boolean respuesta = supermercado.crearVenta(idVenta, fecha, identificacionCliente, identificacionEmpleado, supermercado);
-        if (respuesta){
+        if (respuesta) {
             Venta venta = supermercado.obtenerVenta(idVenta);
-            boolean  respuestaDetalle = generarDetalle(venta, supermercado);
+            boolean respuestaDetalle = generarDetalle(venta, supermercado);
             double totalVenta = venta.calcularTotal(idVenta);
             venta.setTotalVenta(totalVenta);
             ServicesUtil.mostrarMensajeRespuesta(respuestaDetalle, "Se ha creado correctamente la venta", "No ha sido posible crear la venta");
@@ -735,14 +770,14 @@ public class Main {
         String identificacionProveedor = "";
         do {
             identificacionProveedor = ServicesUtil.leerStringVentana("Ingrese el número de identificación del proveedor");
-            if (!supermercado.validarExistenciaProveedor(identificacionProveedor)){
+            if (!supermercado.validarExistenciaProveedor(identificacionProveedor)) {
                 JOptionPane.showMessageDialog(null, "No existe un proveedor registrado con esta identificacion");
             }
         } while (!supermercado.validarExistenciaProveedor(identificacionProveedor));
         String identificacionEmpleado = "";
         do {
             identificacionEmpleado = ServicesUtil.leerStringVentana("Ingrese el número de identificación del empleado");
-            if (!supermercado.validarExistenciaEmpleado(identificacionEmpleado)){
+            if (!supermercado.validarExistenciaEmpleado(identificacionEmpleado)) {
                 JOptionPane.showMessageDialog(null, "No existe un empleado registrado con esta identificacion");
             }
         } while (!supermercado.validarExistenciaEmpleado(identificacionEmpleado));
@@ -799,7 +834,7 @@ public class Main {
 
     private static void editarCompra(Supermercado supermercado) {
         String idCompra = ServicesUtil.leerStringVentana("Ingrese el ID de la compra");
-        boolean exist = supermercado.validarExistenciaVenta(idVenta);
+        boolean exist = supermercado.validarExistenciaVenta(idCompra);
         if (exist) {
             String fecha = ServicesUtil.leerStringVentana("Ingrese la fecha de la compra");
             String identificacionProveedor = ServicesUtil.leerStringVentana("Ingrese el número de identificación del proveedor");
@@ -867,6 +902,115 @@ public class Main {
     //Proveedor
     private static void crearProveedor(Supermercado supermercado, String numIdentificacion, String nombre, String telefono) {
         boolean respuesta = supermercado.crearProveedor(supermercado, numIdentificacion, nombre, telefono);
+    }
+
+
+    // METODOS DE REQUERIMIENTOS
+
+    //Productos
+    private static void obtenerProductoMasCostoso(Supermercado supermercado) {
+        Producto producto = supermercado.obtenerProductoMasCostoso();
+        JOptionPane.showMessageDialog(null, producto.toString());
+
+    }
+
+    private static void obtenerProductoMayorStok(Supermercado supermercado) {
+        Producto producto = supermercado.obtenerProductoMayorStok();
+        JOptionPane.showMessageDialog(null, producto.toString());
+
+    }
+
+    private static void obtenerValorTotalInventario(Supermercado supermercado) {
+        double total = supermercado.obtenerValorTotalInventario();
+        JOptionPane.showMessageDialog(null, "$ " + total);
+
+    }
+
+    private static void obtenerClienteConC(Supermercado supermercado){
+        List<Cliente> clientes = new ArrayList<>();
+        clientes = supermercado.obtenerClienteConC();
+
+        String mensaje = "";
+        int tamanioLista = clientes.size();
+        for (int i = 0; i < tamanioLista; i++) {
+            Cliente cliente = clientes.get(i);
+            mensaje += cliente + "\n";
+        }
+        JOptionPane.showMessageDialog(null, mensaje);
+    }
+
+    private static void obtenerClienteIFinalApellidoN(Supermercado supermercado){
+        List<Cliente> clientes = new ArrayList<>();
+        clientes = supermercado.obtenerClienteIFinalApellidoN();
+
+        String mensaje = "";
+        int tamanioLista = clientes.size();
+        for (int i = 0; i < tamanioLista; i++) {
+            Cliente cliente = clientes.get(i);
+            mensaje += cliente + "\n";
+        }
+        JOptionPane.showMessageDialog(null, mensaje);
+    }
+
+    private static void obtenerClienteCodigoPar(Supermercado supermercado){
+        List<Cliente> clientes = new ArrayList<>();
+        clientes = supermercado.obtenerClienteCodigoPar();
+
+        String mensaje = "";
+        int tamanioLista = clientes.size();
+        for (int i = 0; i < tamanioLista; i++) {
+            Cliente cliente = clientes.get(i);
+            mensaje += cliente + "\n";
+        }
+        JOptionPane.showMessageDialog(null, mensaje);
+    }
+
+    private static void obtenerEmpleadoEmpacador(Supermercado supermercado){
+        List<Empleado> empleados = new ArrayList<>();
+        empleados = supermercado.obtenerEmpleadoEmpacador();
+
+        String mensaje = "";
+        int tamanioLista = empleados.size();
+        for (int i = 0; i < tamanioLista; i++) {
+            Empleado empleado = empleados.get(i);
+            mensaje += empleado + "\n";
+        }
+        JOptionPane.showMessageDialog(null, mensaje);
+    }
+
+    private static void obtenerCantidadEmpleados(Supermercado supermercado){
+
+        int total = supermercado.obtenerCantidadEmpleados();
+
+        JOptionPane.showMessageDialog(null, total + "empleados");
+    }
+
+    private static void obtenerSumatelefono(Supermercado supermercado){
+
+        List<String> suma = new ArrayList<>();
+        suma = supermercado.obtenerSumatelefono();
+
+        String mensaje = "";
+        int tamanioLista = suma.size();
+        for (int i = 0; i < tamanioLista; i++) {
+            String lugar = suma.get(i);
+            mensaje += lugar + "\n";
+        }
+        JOptionPane.showMessageDialog(null, mensaje);
+    }
+
+    private static void obtenerCorreoAutogeneado(Supermercado supermercado){
+
+        List<String> correo = new ArrayList<>();
+        correo = supermercado.obtenerCorreoAutogeneado();
+
+        String mensaje = "";
+        int tamanioLista = correo.size();
+        for (int i = 0; i < tamanioLista; i++) {
+            String lugar = correo.get(i);
+            mensaje += lugar + "\n";
+        }
+        JOptionPane.showMessageDialog(null, mensaje);
     }
 
 }
