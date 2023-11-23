@@ -62,7 +62,8 @@ public class Main {
                             "2. Actualizar cliente \n" +
                             "3. Eliminar cliente \n" +
                             "4. Imprimir clientes \n" +
-                            "5. Salir");
+                            "5. Consultar clientes \n" +
+                            "6. Salir");
                     switch (valorSeleccion) {
                         case 1 ->
                             //Create
@@ -76,7 +77,10 @@ public class Main {
                         case 4 ->
                             //Read
                                 mostrarClientes(supermercado);
-                        case 5 -> continuar = false;
+                        case 5 ->
+                            //Read
+                                obtenerCliente(supermercado);
+                        case 6 -> continuar = false;
                     }
                     break;
                 case 2:
@@ -85,8 +89,9 @@ public class Main {
                             "1. Registrar empleado \n" +
                             "2. Actualizar empleado \n" +
                             "3. Eliminar empleado \n" +
-                            "4. Imprimir empleado \n" +
-                            "5. Salir");
+                            "4. Imprimir empleados \n" +
+                            "5. Consultar empleado \n" +
+                            "6. Salir");
 
                     switch (valorSeleccion) {
                         case 1 ->
@@ -101,7 +106,10 @@ public class Main {
                         case 4 ->
                             //Read
                                 mostrarEmpleados(supermercado);
-                        case 5 -> continuar = false;
+                        case 5 ->
+                            //Read
+                                obtenerEmpleado(supermercado);
+                        case 6 -> continuar = false;
                     }
                     break;
                 case 3:
@@ -111,7 +119,8 @@ public class Main {
                             "2. Actualizar producto \n" +
                             "3. Eliminar producto \n" +
                             "4. Imprimir producto \n" +
-                            "5. Salir");
+                            "5. Consultar producto \n" +
+                            "6. Salir");
 
                     switch (valorSeleccion) {
                         case 1 ->
@@ -126,7 +135,10 @@ public class Main {
                         case 4 ->
                             //Read
                                 mostrarProductos(supermercado);
-                        case 5 -> continuar = false;
+                        case 5 ->
+                            //Read
+                                obtenerProducto(supermercado);
+                        case 6 -> continuar = false;
                     }
                     break;
                 case 4:
@@ -136,7 +148,8 @@ public class Main {
                             "2. Actualizar proveedor \n" +
                             "3. Eliminar proveedor \n" +
                             "4. Imprimir proveedor \n" +
-                            "5. Salir");
+                            "5. Consultar proveedor \n" +
+                            "6. Salir");
 
                     switch (valorSeleccion) {
                         case 1 ->
@@ -151,7 +164,10 @@ public class Main {
                         case 4 ->
                             //Read
                                 mostrarProveedor(supermercado);
-                        case 5 -> continuar = false;
+                        case 5 ->
+                            //Read
+                                obtenerProveedor(supermercado);
+                        case 6 -> continuar = false;
                     }
                     break;
                 case 5:
@@ -305,6 +321,18 @@ public class Main {
         JOptionPane.showMessageDialog(null, mensaje);
     }
 
+    private static void obtenerCliente(Supermercado supermercado) {
+        String identificacion = ServicesUtil.leerStringVentana("Ingrese el número de identificación del cliente");
+        boolean exist = supermercado.validarExistenciaCliente(identificacion);
+        if (exist) {
+            //Obtener cliente
+            Cliente cliente = supermercado.obtenerCliente(identificacion);
+            JOptionPane.showMessageDialog(null, cliente);
+        } else {
+            ServicesUtil.mostrarMensajeRespuesta(exist, "", "No se encuentra registrado este identificador");
+        }
+    }
+
     //Empleado
     private static void crearEmpleado(Supermercado supermercado) {
         RolEmpleado rolEmpleado = null;
@@ -439,6 +467,18 @@ public class Main {
         JOptionPane.showMessageDialog(null, mensaje);
     }
 
+    private static void obtenerEmpleado(Supermercado supermercado) {
+        String identificacion = ServicesUtil.leerStringVentana("Ingrese el número de identificación del empleado");
+        boolean exist = supermercado.validarExistenciaEmpleado(identificacion);
+        if (exist) {
+            //Obtener empleado
+            Empleado empleado = supermercado.obtenerEmpleado(identificacion);
+            JOptionPane.showMessageDialog(null, empleado);
+        } else {
+            ServicesUtil.mostrarMensajeRespuesta(exist, "", "No se encuentra registrado este identificador");
+        }
+    }
+
     //Producto
     private static void crearProducto(Supermercado supermercado) {
 
@@ -498,6 +538,18 @@ public class Main {
         JOptionPane.showMessageDialog(null, mensaje);
     }
 
+    private static void obtenerProducto(Supermercado supermercado) {
+        String identificacion = ServicesUtil.leerStringVentana("Ingrese el número de Id del Producto");
+        boolean exist = supermercado.validarExistenciaProducto(identificacion);
+        if (exist) {
+            //Obtener producto
+            Producto producto = supermercado.obtenerProducto(identificacion);
+            JOptionPane.showMessageDialog(null, producto);
+        } else {
+            ServicesUtil.mostrarMensajeRespuesta(exist, "", "No se encuentra registrado este identificador");
+        }
+    }
+
     //Proveedor
     private static void crearProveedor(Supermercado supermercado) {
         String identificacion = ServicesUtil.leerStringVentana("Ingrese el número de identificación del proveedor");
@@ -544,6 +596,18 @@ public class Main {
             mensaje += proveedor + "\n";
         }
         JOptionPane.showMessageDialog(null, mensaje);
+    }
+
+    private static void obtenerProveedor(Supermercado supermercado) {
+        String identificacion = ServicesUtil.leerStringVentana("Ingrese el número de Id del Producto");
+        boolean exist = supermercado.validarExistenciaProveedor(identificacion);
+        if (exist) {
+            //Obtener proveedor
+            Proveedor proveedor = supermercado.obtenerProveedor(identificacion);
+            JOptionPane.showMessageDialog(null, proveedor);
+        } else {
+            ServicesUtil.mostrarMensajeRespuesta(exist, "", "No se encuentra registrado este identificador");
+        }
     }
 
     //Venta
