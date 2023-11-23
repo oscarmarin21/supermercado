@@ -82,15 +82,15 @@ public class CompraInsumos implements ICompraInsumos {
     public String toString() {
         String detalle = "";
         for (DetalleCopraInsumos detalleC: listaDetalleCompra) {
-            detalle += detalleC.getProductoAsociado().getNombre() + "=" + detalleC.getCantidad() + "/UNID\n";
+            detalle += "\t"+detalleC.getProductoAsociado().getNombre() + "=" + detalleC.getCantidad() + "/UNID\n";
         }
         return "CompraInsumos{" +
                 "idCompra='" + idCompra + '\'' +
                 ", fechaCompra='" + fechaCompra + '\'' +
                 ", totalCompra=" + totalCompra +
-                ", empleadoAsociado=" + empleadoAsociado +
-                ", proveedor=" + proveedorAsociado +
-                ", ownedBySupermercado=" + ownedBySupermercado + "\n" +
+                ", empleadoAsociado=" + empleadoAsociado.getNombres() +
+                ", proveedor=" + proveedorAsociado.getNombre() +
+                ", ownedBySupermercado=" + ownedBySupermercado.getNombre() + "\n" +
                 detalle +
                 "} = " + totalCompra;
     }

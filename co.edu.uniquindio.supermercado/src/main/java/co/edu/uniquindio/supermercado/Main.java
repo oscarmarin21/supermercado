@@ -7,6 +7,7 @@ import co.edu.uniquindio.supermercado.util.ServicesUtil;
 
 import javax.swing.*;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class Main {
@@ -38,6 +39,14 @@ public class Main {
         crearProveedor(supermercado, "002", "Zenu", "3104587825");
         crearProveedor(supermercado, "003", "Fritolay", "3249876542");
         crearProveedor(supermercado, "004", "Cocacola", "3112699947");
+
+        //INICIALIZAR VENTAS ----------------------------------------------------------------
+        crearVenta(supermercado, "22/11/2023", "002", "002", "003", 4);
+        crearVenta(supermercado, "23/11/2023", "004", "002", "001", 2);
+
+        //INICIALIZAR COMPRAS ----------------------------------------------------------------
+        crearCompra(supermercado, "17/11/2023", "002", "004", "004", 10);
+        crearCompra(supermercado, "15/11/2023", "004", "001", "002", 20);
 
         gestionarOpcionesAplicacion(supermercado);
     }
@@ -236,8 +245,12 @@ public class Main {
                             "8. Obtener la cantidad de empleados\n" +
                             "9. Obtener la suma del telefono de los empleados\n" +
                             "10. Obtener correo autogenerado de cada proveedor\n" +
-//                            "11. Obtener la suma del telefono de los empleados\n" +
-                            "10. Salir");
+                            "11. Contar proveedores del Supermercado\n" +
+                            "12. Obtener ventas por Fecha\n" +
+                            "13. Ordenar ascendentemente las Ventas\n" +
+                            "14. Obtener Compra de Insumos por Fecha\n" +
+                            "15. Ordenar desendentemente las Compra de Insumos\n" +
+                            "16. Salir");
 
 
                     switch (valorSeleccion) {
@@ -251,8 +264,12 @@ public class Main {
                         case 8 -> obtenerCantidadEmpleados(supermercado);
                         case 9 -> obtenerSumatelefono(supermercado);
                         case 10 -> obtenerCorreoAutogeneado(supermercado);
-//                        case 11 -> obtenerSumatelefono(supermercado);
-                        case 12 -> continuar = false;
+                        case 11 -> contarProveedores(supermercado);
+                        case 12 -> obtenerVentasByFecha(supermercado);
+                        case 13 -> orderAscVentas(supermercado);
+                        case 14 -> obtenerComprasByFecha(supermercado);
+                        case 15 -> orderDesCompras(supermercado);
+                        case 16 -> continuar = false;
                     }
                     break;
                 case 8:
@@ -648,7 +665,7 @@ public class Main {
     //Venta
     private static void crearVenta(Supermercado supermercado) {
         String idVenta = ServicesUtil.nextId(supermercado.obtenerMayorIdVenta());
-        String fecha = ServicesUtil.leerStringVentana("Ingrese la fecha de la venta");
+        String fecha = ServicesUtil.leerStringVentana("Ingrese la fecha de la venta DD/MM/AA");
         String identificacionCliente = "";
         do {
             identificacionCliente = ServicesUtil.leerStringVentana("Ingrese el número de identificación del cliente");
@@ -717,7 +734,7 @@ public class Main {
         String idVenta = ServicesUtil.leerStringVentana("Ingrese el ID de la venta");
         boolean exist = supermercado.validarExistenciaVenta(idVenta);
         if (exist) {
-            String fecha = ServicesUtil.leerStringVentana("Ingrese la fecha de la venta");
+            String fecha = ServicesUtil.leerStringVentana("Ingrese la fecha de la venta DD/MM/AA");
             String identificacionCliente = ServicesUtil.leerStringVentana("Ingrese el número de identificación del cliente");
             String identificacionEmpleado = ServicesUtil.leerStringVentana("Ingrese el número de identificación del empleado");
             //Actualizar Producto
@@ -766,7 +783,7 @@ public class Main {
 
     private static void crearCompra(Supermercado supermercado) {
         String idCompra = ServicesUtil.nextId(supermercado.obtenerMayorIdCompra());
-        String fecha = ServicesUtil.leerStringVentana("Ingrese la fecha de la compra");
+        String fecha = ServicesUtil.leerStringVentana("Ingrese la fecha de la compra DD/MM/AA");
         String identificacionProveedor = "";
         do {
             identificacionProveedor = ServicesUtil.leerStringVentana("Ingrese el número de identificación del proveedor");
@@ -834,13 +851,13 @@ public class Main {
 
     private static void editarCompra(Supermercado supermercado) {
         String idCompra = ServicesUtil.leerStringVentana("Ingrese el ID de la compra");
-        boolean exist = supermercado.validarExistenciaVenta(idCompra);
+        boolean exist = supermercado.validarExistenciaCompra(idCompra);
         if (exist) {
-            String fecha = ServicesUtil.leerStringVentana("Ingrese la fecha de la compra");
+            String fecha = ServicesUtil.leerStringVentana("Ingrese la fecha de la compra DD/MM/AA");
             String identificacionProveedor = ServicesUtil.leerStringVentana("Ingrese el número de identificación del proveedor");
             String identificacionEmpleado = ServicesUtil.leerStringVentana("Ingrese el número de identificación del empleado");
-            //Actualizar Producto
-            boolean respuesta = supermercado.editarVenta(idCompra, fecha, identificacionProveedor, identificacionEmpleado, supermercado);
+            //Actualizar Compra
+            boolean respuesta = supermercado.editarCompraInsumos(idCompra, fecha, identificacionProveedor, identificacionEmpleado, supermercado);
             CompraInsumos compra = supermercado.obtenerCompraInsumos(idCompra);
             boolean respuestaDetalle = false;
             if (respuesta) {
@@ -904,6 +921,33 @@ public class Main {
         boolean respuesta = supermercado.crearProveedor(supermercado, numIdentificacion, nombre, telefono);
     }
 
+    private  static void crearVenta(Supermercado supermercado, String fechaVenta, String numIdentificacionCliente, String numIdentificacionEmpleado, String idProducto, int cantidad){
+        String idVenta = ServicesUtil.nextId(supermercado.obtenerMayorIdVenta());
+        supermercado.crearVenta(idVenta, fechaVenta, numIdentificacionCliente, numIdentificacionEmpleado, supermercado);
+        Venta venta = supermercado.obtenerVenta(idVenta);
+        generarDetalle(venta, supermercado, idProducto, cantidad);
+        double totalVenta = venta.calcularTotal(idVenta);
+        venta.setTotalVenta(totalVenta);
+    }
+
+    private static void generarDetalle(Venta venta, Supermercado supermercado, String idProducto, int cantidad) {
+            String idDetalle = ServicesUtil.nextId(venta.obtenerMayorIdDetalle());
+            boolean detalle = venta.crearDetalleVenta(idDetalle, cantidad, venta.getIdVenta(), idProducto, supermercado);
+    }
+
+    private  static void crearCompra(Supermercado supermercado, String fechaVenta, String numIdentificacionProveedor, String numIdentificacionEmpleado, String idProducto, int cantidad){
+        String idCompra = ServicesUtil.nextId(supermercado.obtenerMayorIdCompra());
+        supermercado.crearCompraInsumos(idCompra, fechaVenta, numIdentificacionProveedor, numIdentificacionEmpleado, supermercado);
+        CompraInsumos compra = supermercado.obtenerCompraInsumos(idCompra);
+        generarDetalle(compra, supermercado, idProducto, cantidad);
+        double totalCompra = compra.calcularTotal(idCompra);
+        compra.setTotalCompra(totalCompra);
+    }
+
+    private static void generarDetalle(CompraInsumos compra, Supermercado supermercado, String idProducto, int cantidad) {
+        String idDetalle = ServicesUtil.nextId(compra.obtenerMayorIdDetalle());
+        boolean detalle = compra.crearDetalleCompraInsumos(idDetalle, cantidad, compra.getIdCompra(), idProducto, supermercado);
+    }
 
     // METODOS DE REQUERIMIENTOS
 
@@ -1009,6 +1053,67 @@ public class Main {
         for (int i = 0; i < tamanioLista; i++) {
             String lugar = correo.get(i);
             mensaje += lugar + "\n";
+        }
+        JOptionPane.showMessageDialog(null, mensaje);
+    }
+
+    private static void contarProveedores(Supermercado supermercado) {
+        int proveedores = 0;
+        for (Proveedor proveedor : supermercado.getListaProveedores()) {
+            proveedores += 1;
+        }
+        String mensaje = "La cantidad de proveedores con los que cuenta el suermercado es de "+proveedores;
+        JOptionPane.showMessageDialog(null, mensaje);
+    }
+
+    private static void obtenerVentasByFecha(Supermercado supermercado) {
+        String fecha = ServicesUtil.leerStringVentana("Ingresa la fecha a filtar");
+        List<Venta> listaVentas = supermercado.obtenerVentas();
+        String mensaje = "";
+        int tamanioLista = listaVentas.size();
+        for (int i = 0; i < tamanioLista; i++) {
+            Venta venta = listaVentas.get(i);
+            if (venta.getFechaVenta().equalsIgnoreCase(fecha)){
+                mensaje += venta + "\n";
+            }
+        }
+        JOptionPane.showMessageDialog(null, mensaje);
+    }
+
+    private static void orderAscVentas(Supermercado supermercado) {
+        List<Venta> listaVentas = supermercado.obtenerVentas();
+        listaVentas.sort(Comparator.comparing(Venta::getTotalVenta).reversed());
+        String mensaje = "";
+        int tamanioLista = listaVentas.size();
+        for (int i = 0; i < tamanioLista; i++) {
+            Venta venta = listaVentas.get(i);
+            mensaje += venta + "\n";
+        }
+        JOptionPane.showMessageDialog(null, mensaje);
+    }
+
+    private static void orderDesCompras(Supermercado supermercado) {
+        List<CompraInsumos> listaCompras = supermercado.obtenerComprasInsumos();
+        listaCompras.sort(Comparator.comparing(CompraInsumos::getTotalCompra).reversed());
+        String mensaje = "";
+        int tamanioLista = listaCompras.size();
+        for (int i = 0; i < tamanioLista; i++) {
+            CompraInsumos compra = listaCompras.get(i);
+            mensaje += compra + "\n";
+        }
+        JOptionPane.showMessageDialog(null, mensaje);
+    }
+
+    private static void obtenerComprasByFecha(Supermercado supermercado) {
+        String fecha = ServicesUtil.leerStringVentana("Ingresa la fecha a filtar");
+        List<CompraInsumos> listaCompras = supermercado.obtenerComprasInsumos();
+        String mensaje = "";
+        int tamanioLista = listaCompras.size();
+        for (int i = 0; i < tamanioLista; i++) {
+            CompraInsumos compra = listaCompras.get(i);
+            if (compra.getFechaCompra().equalsIgnoreCase(fecha)){
+                mensaje += compra + "\n";
+            }
         }
         JOptionPane.showMessageDialog(null, mensaje);
     }

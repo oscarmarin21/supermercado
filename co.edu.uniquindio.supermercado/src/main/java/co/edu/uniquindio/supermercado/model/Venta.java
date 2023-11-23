@@ -68,7 +68,7 @@ public class Venta implements IVenta {
     public String toString() {
         String detalle = "";
         for (DetalleVenta detalleV: listaDetalleVenta) {
-            detalle += detalleV.getProductoAsociado().getNombre() + " = " + detalleV.getCantidad() + "/UNID\n";
+            detalle += "\t"+detalleV.getProductoAsociado().getNombre() + " = " + detalleV.getCantidad() + "/UNID\n";
         }
         return "Venta{" +
                 "idVenta='" + idVenta +
