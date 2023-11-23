@@ -851,6 +851,11 @@ public class Supermercado {
 
 //METODOS DE REQUERIMIENTOS
 //Producto
+
+    /**
+     * Metodo para obtener producto más costoso
+     * @return Producto
+     */
     public Producto obtenerProductoMasCostoso(){
 
         Producto producto = null;
@@ -866,6 +871,10 @@ public class Supermercado {
 
     }
 
+    /**
+     * Metodo para obtener producto con mayor Stok
+     * @return Producto
+     */
     public Producto obtenerProductoMayorStok(){
 
         Producto producto = null;
@@ -881,7 +890,10 @@ public class Supermercado {
 
     }
 
-
+    /**
+     * Metodo para obtener valor total del inventario
+     * @return double
+     */
     public double obtenerValorTotalInventario(){
 
         double valorTotal = 0;
@@ -895,6 +907,10 @@ public class Supermercado {
 
     //Cliente
 
+    /**
+     * Metodo para obtener clientes que comience con C
+     * @return List<Cliente>
+     */
     public List<Cliente> obtenerClienteConC(){
         List<Cliente> clientes = new ArrayList<>();
 
@@ -906,6 +922,10 @@ public class Supermercado {
         return clientes;
     }
 
+    /**
+     * Metodo para obtener Cliente con N al final del apellido
+     * @return List<Cliente>
+     */
     public List<Cliente> obtenerClienteIFinalApellidoN(){
         List<Cliente> clientes = new ArrayList<>();
 
@@ -917,7 +937,10 @@ public class Supermercado {
         return clientes;
     }
 
-
+    /**
+     * Metodo para obtener clientes con codigo par
+     * @return List<Cliente>
+     */
     public List<Cliente> obtenerClienteCodigoPar(){
         List<Cliente> clientes = new ArrayList<>();
 
@@ -933,6 +956,10 @@ public class Supermercado {
         return clientes;
     }
 
+    /**
+     * Metodo para obtener los empleados Empacadores
+     * @return List<Empleado>
+     */
     public List<Empleado> obtenerEmpleadoEmpacador(){
         List<Empleado> empleados = new ArrayList<>();
 
@@ -946,6 +973,10 @@ public class Supermercado {
         return empleados;
     }
 
+    /**
+     * Metodo para obtener la cantidad de empleados
+     * @return int
+     */
     public int obtenerCantidadEmpleados(){
 
         int total = getListaEmpleados().size();
@@ -953,7 +984,10 @@ public class Supermercado {
         return total  ;
     }
 
-
+    /**
+     * Metodo para obtener la suma de los telefonos
+     * @return List<String>
+     */
     public List<String> obtenerSumatelefono(){
         List<String> suma = new ArrayList<>();
 
@@ -974,16 +1008,107 @@ public class Supermercado {
         return suma;
     }
 
+    /**
+     * metodo para obtener CorreoAutogenerado
+     * @return List<String>
+     */
     public List<String> obtenerCorreoAutogeneado(){
         List<String> correos = new ArrayList<>();
-
-
         for (Empleado empleado : getListaEmpleados()) {
-
             correos.add(empleado.getNombres() + ": " + empleado.getNombres() + empleado.getNumIdentificacion() + "@super.com");
-
         }
         return correos;
+    }
+
+    /**
+     * Metodo para validar si Cliente tiene relacion con venta
+     * @param identificacion
+     * @return boolean
+     */
+    public boolean validarRelacionClienteVenta(String identificacion) {
+        for (Venta venta:getListaVentas()) {
+            if (venta.getClienteAsociado().getNumIdentificacion().equalsIgnoreCase(identificacion)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Metodo para validar si Proveedor tiene relacion con compra
+     * @param identificacion
+     * @return boolean
+     */
+    public boolean validarRelacionProveedorCompra(String identificacion) {
+        for (CompraInsumos compra:getListaCompraInsumos()) {
+            if (compra.getProveedorAsociado().getNumIdentificacion().equalsIgnoreCase(identificacion)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Metodo para validar si Empleado tiene relacion con venta o compra de insumos
+     * @param identificacion
+     * @return boolean
+     */
+    public boolean validarRelacionEmpleadoVentaCompra(String identificacion) {
+        boolean existV = false;
+        boolean existC = false;
+        for (Venta venta:getListaVentas()) {
+            if (venta.getEmpleadoAsociado().getNumIdentificacion().equalsIgnoreCase(identificacion)){
+                existV = true;
+            }
+        }
+        for (CompraInsumos compra:getListaCompraInsumos()) {
+            if (compra.getEmpleadoAsociado().getNumIdentificacion().equalsIgnoreCase(identificacion)){
+                existC = true;
+            }
+        }
+        if (existV==true||existC==true){return true;}
+        return false;
+    }
+
+    /**
+     * Metodo para validar si Producto tiene relacion con venta o compra de insumos
+     * @param idProducto
+     * @return boolean
+     */
+    public boolean validarRelacionProductoVentaCompra(String idProducto) {
+        boolean existV = false;
+        boolean existC = false;
+        for (Venta venta:getListaVentas()) {
+            for (DetalleVenta detalle:venta.getListaDetalleVenta()) {
+                if (detalle.getProductoAsociado().getIdProducto().equalsIgnoreCase(idProducto)){
+                    existV = true;
+                }
+            }
+        }
+        for (CompraInsumos compra:getListaCompraInsumos()) {
+            for (DetalleCopraInsumos detalle:compra.getListaDetalleCompra()) {
+                if (detalle.getProductoAsociado().getIdProducto().equalsIgnoreCase(idProducto)){
+                    existC = true;
+                }
+            }
+        }
+        if (existV==true||existC==true){return true;}
+        return false;
+    }
+
+    /**
+     * Metodo para totalizar las compras del Proveedor
+     * @param identificacion
+     * @return double
+     */
+    public double totalProveedorCompra(String identificacion) {
+        double total = 0;
+        for (CompraInsumos compra:getListaCompraInsumos()) {
+            if (compra.getProveedorAsociado().getNumIdentificacion().equalsIgnoreCase(identificacion)){
+                total += compra.getTotalCompra();
+            }
+        }
+        return total;
     }
 
 }

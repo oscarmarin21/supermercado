@@ -12,6 +12,7 @@ public class Producto {
     private double precioDeCompra;
     Supermercado ownedBySupermercado;
     private List<DetalleVenta> listaDetalleVentasAsociadas;
+    private List<DetalleCopraInsumos> listaDetalleComprasInsumos;
 
     public Producto() {
     }
@@ -96,6 +97,14 @@ public class Producto {
 
     public void setListaDetalleVentasAsociadas(List<DetalleVenta> listaDetalleVentasAsociadas) {
         this.listaDetalleVentasAsociadas = listaDetalleVentasAsociadas;
+    }
+
+    public List<DetalleCopraInsumos> getListaDetalleComprasInsumos() {
+        return listaDetalleComprasInsumos;
+    }
+
+    public void setListaDetalleComprasInsumos(List<DetalleCopraInsumos> listaDetalleComprasInsumos) {
+        this.listaDetalleComprasInsumos = listaDetalleComprasInsumos;
     }
 
     @Override
