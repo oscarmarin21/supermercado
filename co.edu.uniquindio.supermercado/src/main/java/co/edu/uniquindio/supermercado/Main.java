@@ -259,7 +259,8 @@ public class Main {
                             "14. Ordenar ascendentemente totales las Ventas\n" +
                             "15. Obtener Compra de Insumos por Fecha\n" +
                             "16. Ordenar desendentemente totales las Compra de Insumos\n" +
-                            "17. Salir");
+                            "17. Obtener totales de compras por proveedor\n" +
+                            "18. Salir");
 
 
                     switch (valorSeleccion) {
@@ -279,7 +280,8 @@ public class Main {
                         case 14 -> orderAscVentas(supermercado);
                         case 15 -> obtenerComprasByFecha(supermercado);
                         case 16 -> orderDesCompras(supermercado);
-                        case 17 -> continuar = false;
+                        case 17 -> obtenerTotalComprasProveedor(supermercado);
+                        case 18 -> continuar = false;
                     }
                     break;
                 case 8:
